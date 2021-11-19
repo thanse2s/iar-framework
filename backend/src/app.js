@@ -59,6 +59,11 @@ async function initDb(db){
         const userService = require('./services/user-service');
         const User = require("./models/User");
 
+        //Eigene Collections
+        const salesmanservcies =  require('./services/salesman-service')
+        const Salesman = require("./models/Salesman");
+        await salesmanservcies.add(db,new Salesman(66,"Tobias","Hansen","REST"));
+
         const adminPassword = crypto.randomBytes(8).toString('base64');
         await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
 
