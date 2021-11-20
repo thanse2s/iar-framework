@@ -18,7 +18,7 @@ const domain = 'localhost';
 const port = '27017';
 const username = '';
 const password = '';
-const databaseName = 'intArch';
+const databaseName = 'integration_architecture';
 
 app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({extended: true})); //adds support url encoded bodies

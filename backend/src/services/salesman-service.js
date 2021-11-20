@@ -3,6 +3,6 @@ exports.add = async function (db,salesman){
 }
 
 exports.get = async function(db,id){
-    return db.collection('salesman').findOne({employ_ID:id});
+    return db.collection('salesman').findOne({employee_id:id});
 }
 
