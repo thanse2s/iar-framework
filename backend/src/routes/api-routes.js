@@ -18,6 +18,7 @@ router.get('/user', checkAuthorization(), userApi.getSelf);
 const salesmanApi = require('../apis/salesman-api');
 router.get('/salesman:id',checkAuthorization(),salesmanApi.getOne);
 router.post('/salesman',salesmanApi.addSalesMan);
+router.post('/salesman:id',checkAuthorization,salesmanApi.deleteSalesMan)
 
 const performanceApi = require('../apis/performanceRecord-api');
 router.get('/performance:id',performanceApi.get);
