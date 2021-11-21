@@ -1,0 +1,9 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+actor User
+
+package MEAN-Application {
+}
+
+@enduml
