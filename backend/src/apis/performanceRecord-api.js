@@ -1,5 +1,5 @@
 const performanceservice = require('../services/performancerecords-service');
-const {Salesman} = require("../../../frontend/src/app/models/performance");
+const {Salesman} = require("../models/PerformanceRecord");
 
 exports.add = function (req, res){
     const db = req.app.get('db');

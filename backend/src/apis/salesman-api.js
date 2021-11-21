@@ -1,5 +1,5 @@
 const salesmanservice = require('../services/salesman-service');
-const {Salesman} = require("../../../frontend/src/app/models/Salesman");
+const {Salesman} = require("../models/Salesman");
 
 /**
  * endpoint, which returns information about the user, which is currently authenticated
@@ -9,8 +9,11 @@ const {Salesman} = require("../../../frontend/src/app/models/Salesman");
  */
 exports.getOne  = function (req, res){
     const db = req.app.get('db');
-    id=req.params.id
-    salesmanservice.get(id);
+        salesmanservice.get(db,req.params.id).then(Salesman=> {
+                res.json(Salesman);
+            }
+        ).catch(_=> {res.status(401).send('login faild');
+        });
 }
 
 exports.addSalesMan = function (req, res){
