@@ -1,9 +1,28 @@
 @startuml
 'https://plantuml.com/object-diagram
 
-actor User
+actor Salesman
+actor Manager
+actor HR
 
-package MEAN-Application {
+package Application {
 }
+
+package OrangeHRM {
+}
+
+package OpenCRX {
+}
+
+package MongoDB {
+}
+
+Salesman -- Application
+Manager -- Application
+HR -- Application
+
+Application ..> OrangeHRM :<<import>>
+Application ..> OpenCRX : <<import>>
+Application --> MongoDB : Salesman&Records
 
 @enduml
