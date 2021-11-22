@@ -12,7 +12,7 @@ exports.getOne  = function (req, res){
         salesmanservice.get(db,req.params.id).then(Salesman=> {
                 res.json(Salesman);
             }
-        ).catch(_=> {res.status(401).send('login faild');
+        ).catch(_=> {res.status(401).send('No Salesman found');
         });
 }
 
