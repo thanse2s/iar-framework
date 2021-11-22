@@ -10,7 +10,7 @@ const {Salesman} = require("../../../frontend/src/app/models/Salesman");
 exports.getOne  = function (req, res){
     const db = req.app.get('db');
     id=req.params.id
-    salesmanservice.get(id);
+    salesmanservice.get(db,id);
 }
 
 exports.addSalesMan = function (req, res){
