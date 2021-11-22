@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+package Application {
+component main [
+<<component>>
+app.js
+]
+component services{
+}
+component routes{
+}
+component models{
+}
+component middlewares{
+}
+component apis{
+}
+}
+database "MongoDB" {
+    folder Sales{
+        [Salesman]
+    }
+    folder Eval{
+        [Salesman Record] --> [Perfomance Record]
+        [Salesman Record] --> [Social Performance]
+    }
+}
+
+
+
+@enduml
