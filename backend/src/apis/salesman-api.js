@@ -7,6 +7,7 @@ const {Salesman} = require("../../../frontend/src/app/models/Salesman");
  * @param res express response
  * @return {Promise<void>}
  */
+
 exports.getOne  = function (req, res){
     const db = req.app.get('db');
     id=req.params.id
