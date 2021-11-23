@@ -9,7 +9,7 @@ const {Salesman} = require("../models/Salesman");
  */
 exports.getOne  = function (req, res){
     const db = req.app.get('db');
-        salesmanservice.get(db,req.params.id).then(Salesman=> {
+        salesmanservice.get(db,parseInt(req.params.id)).then(Salesman=> {
                 res.json(Salesman);
             }
         ).catch(_=> {res.status(401).send('No Salesman found');
@@ -23,6 +23,5 @@ exports.addSalesMan = function (req, res){
 
 exports.deleteSalesMan = function (req,res){
     const db = req.app.get('db');
-    id=req.params.id
-    salesmanservice.delete(db,id);
+    salesmanservice.delete(db,parseInt(req.params.id));
 }
