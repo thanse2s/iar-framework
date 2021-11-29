@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+title Get with MOM
+
+Backend -> MassageRouter : call
+alt OrangeHRM
+    MassageRouter -> OHRMEnricher : extends
+    OHRMEnricher -> OrangeHRMAPI : get
+    OrangeHRMAPI --> ContentFilter : return salesman
+    ContentFilter --> Translator : return reduced salesman
+    Translator --> Backend : return translated salesman
+else OpenCRX
+    MassageRouter -> OCRXEnricher : extends
+    OCRXEnricher -> OpenCRXAPI :extends
+    OpenCRXAPI --> ContentFilter : return record
+    ContentFilter --> Translator : return reduced record
+    Translator --> Backend : return translated record
+    end
+
+@enduml
