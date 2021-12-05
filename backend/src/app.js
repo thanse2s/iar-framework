@@ -60,10 +60,14 @@ async function initDb(db){
         const User = require("./models/User");
 
         //Eigene Collection
-        const salesmanservcies =  require('./services/salesman-service')
-        const Salesman = require("./models/Salesman");
-        await salesmanservcies.add(db,new Salesman(66,"Tobias","Hansen","REST"));
+        const salesmanService =  require('./services/salesman-service')
+        const salesman = require("./models/Salesman");
+        await salesmanService.add(db,new salesman(66,"Tobias","Hansen","REST"));
 
+        //Mock Performance-Record
+        const performanceRecord = require("./models/PerformanceRecord");
+        const social_performance = require("./models/SocialPerformance");
+        const orders_evaluation = require("./models/OrderEvaluation");
         const adminPassword = crypto.randomBytes(8).toString('base64');
         await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
 
