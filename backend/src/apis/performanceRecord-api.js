@@ -40,5 +40,5 @@ exports.delete = function (req, res){
     let year=req.params.year
     performanceService.delete(db,id,year)
         .then( _=> res.status(200).send(`Performance Record with id: ${id} and year: ${year} has been deleted!`))
-        .catch( _=> res.status(400).send(`Error. Couldn't delete Perfomance Record with id: ${id} and year: ${year}!`));
+        .catch( _=> res.status(400).send(`Error. Couldn't delete Performance Record with id: ${id} and year: ${year}!`));
 }
