@@ -28,7 +28,7 @@ router.delete('/performance',performanceApi.delete);
 module.exports = router;
 
 const openCrXApi = require('../apis/opencrx-api');
-router.get('/opencrx',);
+router.get('/opencrx',openCrXApi.getContact);
 
 // OrangeHRM
 const bonusSalaryApi = require('../apis/bonussalary-api');
