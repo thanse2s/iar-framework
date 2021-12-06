@@ -26,3 +26,6 @@ router.get('/performance/:id/:year',performanceApi.get);
 router.post('/performance',performanceApi.add);
 router.delete('/Performance',performanceApi.delete);
 module.exports = router;
+
+const openCrXApi = require('../apis/opencrx-api');
+router.get('/opencrx',);

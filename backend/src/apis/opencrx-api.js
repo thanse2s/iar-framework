@@ -10,7 +10,15 @@ const config = {
     },
     auth: credentials,
 };
-const contacts =  await axios.get(`${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Stan
-dard/account`, config);
+const queryString = `${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account`;
 
-const customers = contacts.data.objects;
+//const contacts =  await axios.get(`${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account`, config);
+
+//const customers = contacts.data.objects;
+
+exports.getContact = function (req, res){
+        axios.get(queryString,config).then(customers =>
+            res.json(contacts.data.objects)
+        ).catch(_=> {res.status(401).send('No Contracts found');
+    })
+}
