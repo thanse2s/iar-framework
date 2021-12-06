@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+skinparam packageStyle rectangle
+
+actor HRManager
+actor Salesman
+actor Employer
+
+rectangle ConcreteStack {
+(Login)
+Salesman -- (View Evaluation)
+Employer -- (Inspect Evaluation)
+HRManager -- (Add Evaluation)
+
+(Login) .> (Logout) : <<Includes>>
+(View Evaluation) .> (Login) : <<includes>>
+(Add Evaluation) .> (Login) : <<includes>>
+(Inspect Evaluation) .> (Login) : <<includes>>
+
+(Edit Evaluation) .> (Inspect Evaluation) : <<extends>>
+(Comment Evaluation) .> (Inspect Evaluation) : <<extends>>
+
+}
+@enduml
