@@ -16,12 +16,13 @@ router.get('/user', checkAuthorization(), userApi.getSelf);
 
 
 const salesmanApi = require('../apis/salesman-api');
-router.get('/salesman/:id',checkAuthorization(),salesmanApi.getOne);
+router.get('/salesman/:id',salesmanApi.getOne);
 router.post('/salesman',salesmanApi.addSalesMan);
-router.post('/salesman/:id',checkAuthorization,salesmanApi.deleteSalesMan)
+router.delete('/salesman/:id',salesmanApi.deleteSalesMan)
+
 
 const performanceApi = require('../apis/performanceRecord-api');
 router.get('/performance/:id/:year',performanceApi.get);
 router.post('/performance',performanceApi.add);
-router.delete('/Performance',checkAuthorization,performanceApi.delete);
+router.delete('/Performance',performanceApi.delete);
 module.exports = router;
