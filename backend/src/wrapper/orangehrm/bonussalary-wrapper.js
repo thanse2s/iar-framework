@@ -16,7 +16,6 @@ exports.get = async function (id) {
                 parseInt(item.value)
             ));
         });
-        console.log(result);
         return result;
     }
 }
