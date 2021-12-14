@@ -10,6 +10,7 @@ const s1 = require("../models/Salesman");
  * @return {Promise<void>}
  */
 exports.getOne  = function (req, res){
+    console.log(`I Called ${req.params.id}`);
     const db = req.app.get('db');
         salesmanservice.get(db,parseInt(req.params.id)).then(Salesman=>
                 res.json(Salesman)

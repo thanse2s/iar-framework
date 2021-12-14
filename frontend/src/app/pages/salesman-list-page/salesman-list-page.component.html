@@ -1,5 +1,5 @@
 <h2>Salesman</h2>
-<table>
+<table *ngIf = "salesmans">
   <tr>
     <th>ID</th>
     <th>Firstname</th>
@@ -7,18 +7,18 @@
     <th>department</th>
     <th>Details</th>
   </tr>
-  <tr *ngFor="let salesmans of salesmans">
+  <tr *ngFor="let salesman of salesmans">
     <td id="empoly_id">
-      {{ salesmans.sid }}
+      {{ salesman.employee_id }}
     </td>
     <td>
-      {{ salesmans.firstname }}
+      {{ salesman.firstname }}
     </td>
     <td>
-      {{ salesmans.lastname }}
+      {{ salesman.lastname }}
     </td>
     <td>
-      {{ salesmans.department }}
+      {{ salesman.department }}
     </td>
     <td>
      <!--<button (click)="detail()">Detail</button>-->TEST
