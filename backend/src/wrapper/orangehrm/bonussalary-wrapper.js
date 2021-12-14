@@ -1,5 +1,6 @@
 const axios = require('axios');
 const auth = require('./auth-service');
+const qs = require('qs');
 const BonusSalary = require('./BonusSalary');
 
 exports.get = async function (id) {
@@ -21,20 +22,26 @@ exports.get = async function (id) {
 }
 exports.post = async function (bonussalary) {
     const configWithToken = await auth.authenticate();
-    const response = await axios.post(`${auth.baseUrl}/api/v1/employee/${bonussalary.id}/bonussalary?
-    value=${bonussalary.value}&year=${bonussalary.year}`, configWithToken);
+    const body = qs.stringify({
+        value: bonussalary.value,
+        year: bonussalary.year,
+    });
+    const response = await axios.post(`${auth.baseUrl}/api/v1/employee/${bonussalary.employee_id}/bonussalary`, body,  configWithToken);
     if (response.data.error) {
         throw Error(response.data.error);
     } else {
-        console.log(response.data);
+        return response.data.success;
     }
 }
 exports.delete = async function (id, year) {
     const configWithToken = await auth.authenticate();
-    const response = await axios.post(`${auth.baseUrl}/api/v1/employee/${id}/bonussalary?year=${year}`, configWithToken);
+    configWithToken["data"] = qs.stringify({year: year});
+    console.log(configWithToken);
+    const response = await axios.delete(`${auth.baseUrl}/api/v1/employee/${id}/bonussalary`, configWithToken);
+    console.log(response);
     if (response.data.error) {
         throw Error(response.data.error);
     } else {
-        console.log(response.data);
+        return response.data.success;
     }
 }

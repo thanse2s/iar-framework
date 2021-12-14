@@ -13,7 +13,7 @@ exports.authenticate = async function () {
         client_id: 'api_oauth_id',
         client_secret: 'oauth_secret',
         grant_type: 'password',
-        username: 'Busse',
+        username: 'Behringer',
         password: '*Safb02da42Demo$'
     });
     const config = {
@@ -27,7 +27,6 @@ exports.authenticate = async function () {
         throw Error(response.data.error);
     }
     accessToken = response.data['access_token'];
-    console.log(accessToken);
     return {
         headers: {
             'Authorization': `Bearer ${accessToken}`,
