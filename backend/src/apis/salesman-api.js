@@ -19,12 +19,10 @@ exports.getOne  = function (req, res){
 
 exports.getAll = function (req,res){
     const db = req.app.get('db');
-    salesmanservice.get(db,'').then(Salesman=>
+    salesmanservice.getAll(db).then(Salesman=>
         res.json(Salesman)
     ).catch(_=> {res.status(401).send('No Salesman found');
     });
-
-
 }
 
 exports.addSalesMan = function (req, res){
