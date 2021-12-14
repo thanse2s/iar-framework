@@ -1,11 +1,11 @@
 const bonussalarywrapper = require('../wrapper/orangehrm/bonussalary-wrapper');
-const {Bonussalary} = require('../wrapper/orangehrm/BonusSalary');
+const BonusSalary = require('../wrapper/orangehrm/BonusSalary');
 
 exports.post = function (req, res) {
-    let bonussalary = new Bonussalary(
-        req.params.id,
-        req.params.year,
-        req.params.value
+    let bonussalary = new BonusSalary(
+        parseInt(req.params.id),
+        parseInt(req.query.year),
+        parseInt(req.query.value)
     );
     bonussalarywrapper.post(bonussalary)
         .then(_=> res.status(200).send('Bonus salary was updated!'))
@@ -18,10 +18,10 @@ exports.get = function (req, res) {
         .catch(_=> res.status(401).send(`Error: Could not find bonus salary's of Employee with id=${req.params.id}!`))
 }
 exports.delete = function (req, res) {
-    bonussalarywrapper.delete(
-        req.params.id,
-        req.params.year
-    )
-        .then(_=> res.status(200).send(`Bonus salary of Employee with id=${req.params.id} from year ${req.params.year} has been deleted!`))
-        .catch(_=> res.status(401).send(`Error: Could not delete Salary of Employee with id=${req.params.id} from year ${req.params.year}!`));
+    console.log(req.query.year);
+    let id = parseInt(req.params.id);
+    let year = parseInt(req.query.year);
+    bonussalarywrapper.delete(id, year)
+        .then(_=> res.status(200).send(`Bonus salary of Employee with id=${id} from year ${year} has been deleted!`))
+        .catch(_=> res.status(401).send(`Error: Could not delete Salary of Employee with id=${id} from year ${year}!`));
 }

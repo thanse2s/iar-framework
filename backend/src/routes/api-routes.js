@@ -34,5 +34,5 @@ router.get('/opencrx',openCrXApi.getContact);
 // OrangeHRM
 const bonusSalaryApi = require('../apis/bonussalary-api');
 router.get('/bonussalary/:id', bonusSalaryApi.get)
-router.post('/bonussalary', bonusSalaryApi.post)
-router.delete('/bonussalary', bonusSalaryApi.delete)
+router.post('/bonussalary/:id', bonusSalaryApi.post)
+router.delete('/bonussalary/:id', bonusSalaryApi.delete)
