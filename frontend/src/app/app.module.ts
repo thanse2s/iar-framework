@@ -18,6 +18,10 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { ExamplePageComponent } from './pages/example-page/example-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
+//Own
+import {SalesmanListComponent} from './pages/salesman-list-page/salesman-list-page.component';
+import {MessagesComponent} from './components/message/messages.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +30,9 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
     LandingPageComponent,
     MenuBarComponent,
     ExamplePageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    SalesmanListComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

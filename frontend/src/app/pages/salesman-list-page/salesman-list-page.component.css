@@ -1,0 +1,18 @@
+table {
+  border: 1px solid black;
+  width: 100%;
+}
+th,
+td,
+tr {
+  padding: 5px;
+  border: 1px solid black;
+}
+
+#empoly_id {
+  background-color: blue;
+  font-size: large;
+  color: white;
+  padding: 5px;
+  border-radius: 5px 5px 5px 5px;
+}

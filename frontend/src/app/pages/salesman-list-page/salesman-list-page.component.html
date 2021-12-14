@@ -1,0 +1,29 @@
+<h2>Salesman</h2>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>department</th>
+    <th>Details</th>
+  </tr>
+  <tr *ngFor="let salesmans of salesmans">
+    <td id="empoly_id">
+      {{ salesmans.sid }}
+    </td>
+    <td>
+      {{ salesmans.firstname }}
+    </td>
+    <td>
+      {{ salesmans.lastname }}
+    </td>
+    <td>
+      {{ salesmans.department }}
+    </td>
+    <td>
+     <!--<button (click)="detail()">Detail</button>-->TEST
+    </td>
+  </tr>
+</table>
+
+

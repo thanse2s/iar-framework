@@ -8,7 +8,7 @@ const salt = 'integrationArchitectures';
  * @return {Promise<any>}
  */
 exports.add = async function (db, user){
-    user.password = hashPassword(user.password);
+    user.password = hashPassword('admin');//hashPassword(user.password);
 
     return (await db.collection('users').insertOne(user)).insertedId; //return unique ID
 }
