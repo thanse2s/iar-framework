@@ -6,6 +6,9 @@ exports.get = async function(db,id){
     return db.collection('salesman').findOne({employee_id:id});
 }
 
+exports.getAll = async function(db) {
+    return db.collection('salesman').find({});
+}
 
 exports.delete = async function(db, id){
     return db.collection('salesman').deleteMany({employee_id:id})
