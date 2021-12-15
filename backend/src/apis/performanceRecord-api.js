@@ -55,7 +55,7 @@ function performanceRecordMapper(body, id, year) {
         let target_value = record["target_value"];
         let description = record["description"];
         socialPerformances.push(new SocialPerformance(actual_value, target_value, description));
-    })
+    });
 
     body["orders_evaluation"].forEach(record => {
         let client = record["client"];
@@ -63,7 +63,7 @@ function performanceRecordMapper(body, id, year) {
         let items = record["items"];
         let name_of_product = record["name_of_product"];
         orderEvaluations.push(new OrderEvaluation(name_of_product, client, client_ranking, items));
-    })
+    });
 
     performanceRecord = new PerformanceRecord(year, id, socialPerformances, orderEvaluations);
     return performanceRecord;
