@@ -1,9 +1,11 @@
 import {Socialperformance} from './Socialperformance';
 import {Orderevaluation} from './Orderevaluation';
 
-export interface Evaluationrecord {
-  year: number;
-  employeeid: number;
-  socialperformance: Socialperformance;
-  orderevaluation: Orderevaluation;
+export class Evaluationrecord {
+  constructor (
+  public year: number,
+  public employeeid: number,
+  public socialperformance: Socialperformance[],
+  public orderevaluation: Orderevaluation[]
+  ) { }
 }

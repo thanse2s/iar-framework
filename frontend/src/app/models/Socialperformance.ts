@@ -1,5 +1,7 @@
-export interface Socialperformance {
-  actual_value: number;
-  target_value: number;
-  description: string;
+export class Socialperformance {
+  constructor(
+    public actual_value: number,
+    public target_value: number,
+    public description: string
+  ) { }
 }

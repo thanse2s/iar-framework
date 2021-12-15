@@ -1,6 +1,6 @@
-<div *ngIf="evaluationRecord">
+<div>
 
-  <table id="orderTable" *ngIf="orderevaluation">
+  <table id="orderTable">
     <tr>
       <th>Name of Product:</th>
       <th>Client:</th>
@@ -9,7 +9,7 @@
       <th>Bonus:</th>
       <th>Comment:</th>
     </tr>
-    <tr *ngFor="orderevaluation.length">
+    <tr *ngFor="let orderevaluation of orderevaluation">
       <td>{{orderevaluation.name_of_product}}</td>
       <td>{{orderevaluation.client}}</td>
       <td>{{orderevaluation.client_ranking}}</td>
@@ -19,7 +19,7 @@
     </tr>
   </table>
 
-  <table id="socialpTable" *ngIf="socialperformance">
+  <table id="socialpTable">
     <tr>
       <th>Skill/Competence:</th>
       <th>Target Value:</th>
@@ -27,7 +27,7 @@
       <th>Bonus:</th>
       <th>Comment:</th>
     </tr>
-    <tr *ngFor="socialperformance.length">
+    <tr *ngFor="let socialperformance of socialperformance">
       <td>{{socialperformance.description}}</td>
       <td>{{socialperformance.target_value}}</td>
       <td>{{socialperformance.actual_value}}</td>

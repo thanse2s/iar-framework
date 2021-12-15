@@ -1,6 +1,9 @@
-export interface Orderevaluation{
-  name_of_product: string;
-  client: string;
-  client_ranking: string;
-  items: number;
+export class Orderevaluation  {
+  constructor(
+    public name_of_product: string,
+    public client: string,
+    public client_ranking: string,
+    public items: number
+  ) {
+  }
 }
