@@ -2,9 +2,12 @@ exports.add = async function (db, performancerecord){
     return (await db.collection('performance_records').insertOne(performancerecord)).insertedId;
 }
 
-exports.get = async function(db,employee_id,year){
-    console.log(await db.collection('performance_records').findOne({employee_id:66, year:2021}));
-    return await db.collection('performance_records').findOne({employee_id:employee_id, year:year});
+exports.get = async function(db, employee_id, year){
+    if(!isNaN(year)) {
+        return await db.collection('performance_records').findOne({employee_id:employee_id, year:year});
+    } else {
+        return await db.collection('performance_records').findOne({employee_id:employee_id});
+    }
 }
 
 exports.update = async function(db, performancerecord){
