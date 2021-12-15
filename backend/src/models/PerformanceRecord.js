@@ -13,5 +13,6 @@ class PerformanceRecord {
         this.social_performance = social_performance;
         this.orders_evaluation = orders_evaluation;
     }
+
 }
 module.exports = PerformanceRecord;
