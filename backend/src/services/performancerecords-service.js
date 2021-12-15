@@ -12,7 +12,11 @@ exports.get = async function(db, employee_id, year){
 
 exports.update = async function(db, performancerecord){
     return await db.collection('performance_records').updateOne(
-        {employee_id:performancerecord.employee_id, year:performancerecord.year}, performancerecord);
+        {employee_id:performancerecord.employee_id, year:performancerecord.year},
+        {
+            $set: {social_performance: performancerecord.social_performance,
+                orders_evaluation: performancerecord.orders_evaluation}
+        });
 }
 
 exports.delete = async function(db, employee_id, year){

@@ -5,7 +5,7 @@ const OrderEvaluation = require("../models/OrderEvaluation");
 
 exports.add = function (req, res){
     const db = req.app.get('db');
-    let id = parseInt(req.params.id);
+    let id = parseInt(req.query.id);
     let year = parseInt(req.query.year);
     let performanceRecord = performanceRecordMapper(req.body, id, year);
     performanceService.add(db,performanceRecord)
@@ -26,13 +26,10 @@ exports.update = function (req, res){
     const db = req.app.get('db');
     let id = parseInt(req.params.id);
     let year = parseInt(req.query.year);
-    let social_performance = req.body["social_performance"];
-    let orders_evaluation = req.body["orders_evaluation"];
-    //let performanceRecord = new performanceRecord(year, id, social_performance,orders_evaluation);
-    console.log(social_performance);
+    let performanceRecord = performanceRecordMapper(req.body, id, year);
     performanceService.update(db, performanceRecord)
-        .then( _=> res.status(200).send("Performance Record has been updated!")).
-        catch( _=> res.status(401).send(`Error. No Performance Record could be updated with id: ${id} and year: ${year}`));
+        .then( _=> res.status(200).send("Performance Record has been updated!"))
+        .catch( _=> res.status(401).send(`Error. No Performance Record could be updated with id: ${id} and year: ${year}`));
 }
 
 exports.delete = function (req, res){

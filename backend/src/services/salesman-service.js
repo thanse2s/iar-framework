@@ -15,5 +15,13 @@ exports.delete = async function(db, id){
 }
 
 exports.update = async function(db, salesman){
-    return db.collection('salesman').updateOne({employee_id:salesman.employee_id},salesman).insertedId;
+    return db.collection('salesman').updateOne({employee_id:salesman.employee_id},
+        {
+            $set: {
+                employee_id: salesman.employee_id,
+                firstname: salesman.firstname,
+                lastname: salesman.lastname,
+                department: salesman.department
+            }
+        }).insertedId;
 }
