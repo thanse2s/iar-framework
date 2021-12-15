@@ -3,6 +3,7 @@ exports.add = async function (db, performancerecord){
 }
 
 exports.get = async function(db,employee_id,year){
+    console.log(await db.collection('performance_records').findOne({employee_id:66, year:2021}));
     return await db.collection('performance_records').findOne({employee_id:employee_id, year:year});
 }
 

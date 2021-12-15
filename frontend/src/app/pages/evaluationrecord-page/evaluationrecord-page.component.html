@@ -1,6 +1,6 @@
 <div>
 
-  <table id="orderTable">
+  <table *ngIf = "orderevaluation" class="output_table">
     <tr>
       <th>Name of Product:</th>
       <th>Client:</th>
@@ -19,7 +19,7 @@
     </tr>
   </table>
 
-  <table id="socialpTable">
+  <table id="socialpTable" class="output_table">
     <tr>
       <th>Skill/Competence:</th>
       <th>Target Value:</th>

@@ -16,16 +16,17 @@ router.get('/user', checkAuthorization(), userApi.getSelf);
 
 
 const salesmanApi = require('../apis/salesman-api');
-router.get('/salesman/:id',salesmanApi.getOne);
-router.post('/salesman',salesmanApi.addSalesMan);
-router.delete('/salesman/:id',salesmanApi.deleteSalesMan);
-router.get('/salesman',salesmanApi.getAll);
+router.get('/salesman/:id', salesmanApi.getOne);
+router.post('/salesman', salesmanApi.addSalesMan);
+router.delete('/salesman/:id', salesmanApi.deleteSalesMan);
+router.get('/salesman', salesmanApi.getAll);
 
 
 const performanceApi = require('../apis/performanceRecord-api');
-router.get('/performance/:id/:year',performanceApi.get);
-router.post('/performance',performanceApi.add);
-router.delete('/performance',performanceApi.delete);
+router.get('/performance/:id', performanceApi.get);
+router.post('/performance/:id', performanceApi.update)
+router.post('/performance/:id', performanceApi.add);
+router.delete('/performance/:id', performanceApi.delete);
 module.exports = router;
 
 const openCrXApi = require('../apis/opencrx-api');
