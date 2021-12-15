@@ -19,3 +19,25 @@ code{
   border-radius: 4px;
   padding: 3px;
 }
+
+.output_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.output_table td, .output_table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.output_table tr:nth-child(even) {background-color: #f2f2f2;}
+
+.output_table tr:hover {background-color: #ddd;}
+
+.output_table th {
+  font-weight: normal;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #333333;
+  color: white;
+}
+
