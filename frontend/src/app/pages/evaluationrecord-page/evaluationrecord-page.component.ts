@@ -27,12 +27,19 @@ export class EvaluationrecordPageComponent implements OnInit {
 
   getEvaluationRecord(): void {
     this.evalService.getEvaluationrecord(66)
-      .subscribe(evalrecord => {
-        this.evaluationRecord[0] = evalrecord;
-        this.orderevaluation = evalrecord.orders_evaluation;
-        this.socialperformance = evalrecord.social_performance;
+      .subscribe(records => {
+        records.forEach(evalrecord => {
+          this.evaluationRecord.push(evalrecord);
+          evalrecord.orders_evaluation.forEach(order => {
+            this.orderevaluation.push(order);
+          });
+          evalrecord.social_performance.forEach(social => {
+            this.socialperformance.push(social);
+          });
+          console.log(evalrecord);
+        });
       });
-    console.log(this.evaluationRecord);
+
   }
 
   ngOnInit(): void {

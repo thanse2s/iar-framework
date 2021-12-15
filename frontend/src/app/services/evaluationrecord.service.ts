@@ -17,11 +17,11 @@ export class EvaluationrecordService {
 
   constructor(private https: HttpClient, private messageService: MessageService) {  }
 
-  public getEvaluationrecord(id: number): Observable<Evaluationrecord> {
+  public getEvaluationrecord(id: number): Observable<Evaluationrecord[]> {
     const url = `${this.EvalrecURL}/${id}`;
-    return this.https.get<Evaluationrecord>(url).pipe(
+    return this.https.get<Evaluationrecord[]>(url).pipe(
       tap(_ => this.log(`No EvaluationRecord with id: ${id}`)),
-      catchError(this.handleError<Evaluationrecord>(`get EvaluationRecord id: ${id}`))
+      catchError(this.handleError<Evaluationrecord[]>(`get EvaluationRecord id: ${id}`))
     );
   }
 
