@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { Salesman } from '../../models/Salesman';
 import {SalesmanService} from '../../services/salesman.service';
-import {MessageService} from "../../services/message.service";
+import {MessageService} from '../../services/message.service';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class SalesmanListComponent implements OnInit {
   private salesmanService: SalesmanService;
   salesmans: Salesman[] = [];
 
-  constructor(salesmanService: SalesmanService,private messageService: MessageService) {
+  constructor(salesmanService: SalesmanService, private messageService: MessageService) {
     this.salesmanService = salesmanService;
   }
 

@@ -7,7 +7,7 @@ import {catchError, map, tap} from 'rxjs/operators';
 
 
 import {MessageService} from './message.service';
-import {User} from "../models/User";
+import {User} from '../models/User';
 
 /**
  * handles backend communication regarding user accounts
@@ -48,11 +48,11 @@ export class SalesmanService {
   }
 
 
-  private log(message: string) {
+  private log(message: string): void {
     this.messageService.add(`SalesmanService: ${message}`);
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T): any {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
