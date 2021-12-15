@@ -13,7 +13,7 @@ import {error} from 'protractor';
 
 export class EvaluationrecordService {
 
-  private EvalrecURL = '/api/evaluationrecord';
+  private EvalrecURL = `/api/performance`;
 
   constructor(private https: HttpClient, private messageService: MessageService) {  }
 

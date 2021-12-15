@@ -4,8 +4,6 @@ import {Salesman} from '../models/Salesman';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 
-
-
 import {MessageService} from './message.service';
 import {User} from '../models/User';
 
@@ -20,7 +18,6 @@ import {User} from '../models/User';
 export class SalesmanService {
 
   private SalesmanUrl = `/api/salesman`;
-
 
   constructor(private https: HttpClient, private messageService: MessageService) { }
 

@@ -15,28 +15,24 @@ export class EvaluationrecordPageComponent implements OnInit {
 
   private evalService: EvaluationrecordService;
 
-  evaluationRecord: Evaluationrecord;
+  evaluationRecord: Evaluationrecord[] = [];
 
-  orderevaluation: Orderevaluation[];
+  orderevaluation: Orderevaluation[] = [];
 
-  socialperformance: Socialperformance[];
+  socialperformance: Socialperformance[] = [];
 
   constructor(evalService: EvaluationrecordService, private messageService: MessageService) {
     this.evalService = evalService;
   }
 
   getEvaluationRecord(): void {
-    // this.evalService.getEvaluationrecord(66)
-    // .subscribe(evalrecord => this.evaluationRecord = evalrecord);
-
-    const testOE = new Orderevaluation('SmartHoover', 'HBRS', 'excellent', 20);
-    const LeaderShipTestSP = new Socialperformance(4, 4, 'Leadership Competence');
-    const SoCoTestSP = new Socialperformance(5, 4, 'Social Competence');
-    this.orderevaluation.push(testOE);
-    this.socialperformance.push(LeaderShipTestSP);
-    this.socialperformance.push(SoCoTestSP);
-    this.evaluationRecord = new Evaluationrecord(2021, 66, this.socialperformance, this.orderevaluation);
-
+    this.evalService.getEvaluationrecord(66)
+      .subscribe(evalrecord => {
+        this.evaluationRecord[0] = evalrecord;
+        this.orderevaluation = evalrecord.orders_evaluation;
+        this.socialperformance = evalrecord.social_performance;
+      });
+    console.log(this.evaluationRecord);
   }
 
   ngOnInit(): void {
