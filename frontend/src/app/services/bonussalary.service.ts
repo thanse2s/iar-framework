@@ -20,7 +20,6 @@ export class BonusSalaryService {
   public getBonusSalary(id: number): Observable<BonusSalary[]> {
     const url = `${this.bonusSalaryURL}/${id}`;
     return this.https.get<BonusSalary[]>(url).pipe(
-      tap(_ => this.log(`No BonusSalary with id: ${id}`)),
       catchError(this.handleError<BonusSalary[]>(`get BonusSalary id: ${id}`))
     );
   }
