@@ -7,7 +7,7 @@ exports.get = async function(db,id){
 }
 
 exports.getAll = async function(db) {
-    return db.collection('salesman').find().toArray();
+    return db.collection('salesman').find({});
 }
 
 exports.delete = async function(db, id){
