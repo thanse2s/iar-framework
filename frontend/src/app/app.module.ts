@@ -18,10 +18,11 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { ExamplePageComponent } from './pages/example-page/example-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
-//Own
+// Own
 import {SalesmanListComponent} from './pages/salesman-list-page/salesman-list-page.component';
 import {MessagesComponent} from './components/message/messages.component';
 import {EvaluationrecordPageComponent} from './pages/evaluationrecord-page/evaluationrecord-page.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -36,18 +37,19 @@ import {EvaluationrecordPageComponent} from './pages/evaluationrecord-page/evalu
     MessagesComponent,
     EvaluationrecordPageComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRouting,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRouting,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatExpansionModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

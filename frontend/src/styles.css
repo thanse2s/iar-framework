@@ -23,6 +23,7 @@ code{
 .output_table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 8px;
 }
 .output_table td, .output_table th {
   border: 1px solid #ddd;

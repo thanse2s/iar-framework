@@ -36,7 +36,6 @@ export class EvaluationrecordPageComponent implements OnInit {
           evalrecord.social_performance.forEach(social => {
             this.socialperformance.push(social);
           });
-          console.log(evalrecord);
         });
       });
 

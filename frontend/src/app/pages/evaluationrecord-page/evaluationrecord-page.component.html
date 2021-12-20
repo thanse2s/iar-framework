@@ -1,39 +1,53 @@
 <div>
 
-  <table *ngIf = "orderevaluation" class="output_table">
-    <tr>
-      <th>Name of Product:</th>
-      <th>Client:</th>
-      <th>Client Ranking:</th>
-      <th>Items:</th>
-      <th>Bonus:</th>
-      <th>Comment:</th>
-    </tr>
-    <tr *ngFor="let orderevaluation of orderevaluation">
-      <td>{{orderevaluation.name_of_product}}</td>
-      <td>{{orderevaluation.client}}</td>
-      <td>{{orderevaluation.client_ranking}}</td>
-      <td>{{orderevaluation.items}}</td>
-      <td><input id="bonus"></td>
-      <td><input id="comment"></td>
-    </tr>
-  </table>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecord">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Your Records of the year {{evaluationRecord.year}}
+        </mat-panel-title>
+        <mat-panel-description>
+          Maybe some general salary informations
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <table *ngIf = "evaluationRecord.orders_evaluation" class="output_table">
+        <tr>
+          <th>Name of Product:</th>
+          <th>Client:</th>
+          <th>Client Ranking:</th>
+          <th>Items:</th>
+          <th>Bonus:</th>
+          <th>Comment:</th>
+        </tr>
+        <tr *ngFor="let orderevaluation of evaluationRecord.orders_evaluation">
+          <td>{{orderevaluation.name_of_product}}</td>
+          <td>{{orderevaluation.client}}</td>
+          <td>{{orderevaluation.client_ranking}}</td>
+          <td>{{orderevaluation.items}}</td>
+          <td><input id="bonus"></td>
+          <td><input id="comment"></td>
+        </tr>
+      </table>
 
-  <table id="socialpTable" class="output_table">
-    <tr>
-      <th>Skill/Competence:</th>
-      <th>Target Value:</th>
-      <th>Actual Value:</th>
-      <th>Bonus:</th>
-      <th>Comment:</th>
-    </tr>
-    <tr *ngFor="let socialperformance of socialperformance">
-      <td>{{socialperformance.description}}</td>
-      <td>{{socialperformance.target_value}}</td>
-      <td>{{socialperformance.actual_value}}</td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
+      <table id="socialpTable" class="output_table">
+        <tr>
+          <th>Skill/Competence:</th>
+          <th>Target Value:</th>
+          <th>Actual Value:</th>
+          <th>Bonus:</th>
+          <th>Comment:</th>
+        </tr>
+        <tr *ngFor="let socialperformance of evaluationRecord.social_performance">
+          <td>{{socialperformance.description}}</td>
+          <td>{{socialperformance.target_value}}</td>
+          <td>{{socialperformance.actual_value}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </mat-expansion-panel>
+  </mat-accordion>
 
 </div>
+
+
