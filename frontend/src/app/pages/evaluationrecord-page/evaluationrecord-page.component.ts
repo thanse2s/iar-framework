@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {MessageService} from '../../services/message.service';
 import {EvaluationrecordService} from '../../services/evaluationrecord.service';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
-import {Orderevaluation} from '../../models/Orderevaluation';
-import {Socialperformance} from '../../models/Socialperformance';
+import {BonusSalaryService} from '../../services/bonussalary.service';
+import {BonusSalary} from '../../models/BonusSalary';
 
 @Component({
   selector: 'app-evaluationrecord-page',
@@ -14,34 +14,42 @@ import {Socialperformance} from '../../models/Socialperformance';
 export class EvaluationrecordPageComponent implements OnInit {
 
   private evalService: EvaluationrecordService;
+  private bonusSalaryService: BonusSalaryService;
+  private id: number;
 
   evaluationRecord: Evaluationrecord[] = [];
+  bonusSalaries: BonusSalary[] = [];
 
-  orderevaluation: Orderevaluation[] = [];
-
-  socialperformance: Socialperformance[] = [];
-
-  constructor(evalService: EvaluationrecordService, private messageService: MessageService) {
+  constructor(evalService: EvaluationrecordService, bonusSalaryService: BonusSalaryService, private messageService: MessageService) {
     this.evalService = evalService;
+    this.bonusSalaryService = bonusSalaryService;
   }
 
   getEvaluationRecord(): void {
-    this.evalService.getEvaluationrecord(66)
+    this.evalService.getEvaluationrecord(this.id)
       .subscribe(records => {
         records.forEach(evalrecord => {
           this.evaluationRecord.push(evalrecord);
-          evalrecord.orders_evaluation.forEach(order => {
-            this.orderevaluation.push(order);
-          });
-          evalrecord.social_performance.forEach(social => {
-            this.socialperformance.push(social);
-          });
         });
       });
-
+  }
+  getBonusSalary(): void {
+    // TODO is hardcoded
+    this.bonusSalaryService.getBonusSalary(5)
+      .subscribe(salaries => {
+        salaries.forEach(salary => {
+          this.bonusSalaries.push(salary);
+        });
+      });
+  }
+  findBonusSalaryByYear(year: number): number {
+    const salary = this.bonusSalaries.find(el => el.year === year);
+    return salary !== undefined ? salary.value : 0;
   }
 
   ngOnInit(): void {
+    this.id = 66;
     this.getEvaluationRecord();
+    this.getBonusSalary();
   }
 }

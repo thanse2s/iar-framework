@@ -7,7 +7,7 @@
           Your Records of the year {{evaluationRecord.year}}
         </mat-panel-title>
         <mat-panel-description>
-          Maybe some general salary informations
+          Total Bonus-Salary of this year: {{findBonusSalaryByYear(evaluationRecord.year)}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <table *ngIf = "evaluationRecord.orders_evaluation" class="output_table">
