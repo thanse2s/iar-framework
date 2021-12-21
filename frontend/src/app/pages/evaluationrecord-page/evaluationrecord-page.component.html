@@ -1,7 +1,7 @@
 <div>
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecord">
+    <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecord" [disabled]="editMode">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Your Records of the year {{evaluationRecord.year}}
@@ -14,10 +14,10 @@
         <button mat-icon-button aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode">
           <mat-icon>undo</mat-icon>
         </button>
-        <button mat-icon-button aria-label="Save" color="primary" id="save-button" [disabled]="!editMode">
+        <button mat-icon-button aria-label="Save" color="primary" id="save-button" [disabled]="!editMode" (click)="editMode=false">
           <mat-icon>save</mat-icon>
         </button>
-        <button mat-icon-button aria-label="Edit" color="primary" id="edit-button" (click)="editMode = !editMode">
+        <button mat-icon-button aria-label="Edit" color="primary" id="edit-button" (click)="editMode = true" [disabled]="editMode">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
