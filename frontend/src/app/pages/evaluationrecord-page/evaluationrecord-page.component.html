@@ -10,6 +10,17 @@
           Total Bonus-Salary of this year: {{findBonusSalaryByYear(evaluationRecord.year)}}
         </mat-panel-description>
       </mat-expansion-panel-header>
+      <div class="button-panel">
+        <button mat-icon-button aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode">
+          <mat-icon>undo</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Save" color="primary" id="save-button" [disabled]="!editMode">
+          <mat-icon>save</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Edit" color="primary" id="edit-button" (click)="editMode = !editMode">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
       <table *ngIf = "evaluationRecord.orders_evaluation" class="output_table">
         <tr>
           <th>Name of Product:</th>
@@ -24,8 +35,22 @@
           <td>{{orderevaluation.client}}</td>
           <td>{{orderevaluation.client_ranking}}</td>
           <td>{{orderevaluation.items}}</td>
-          <td><input id="bonus"></td>
-          <td><input id="comment"></td>
+          <td>
+            <form>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Bonus</mat-label>
+                <input matInput placeholder="$" value="e.g. 500$" [disabled]="!editMode">
+              </mat-form-field>
+            </form>
+          </td>
+          <td>
+            <form>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Leave a comment</mat-label>
+                <textarea matInput placeholder="Ex. Goodjob!" [disabled]="!editMode"></textarea>
+              </mat-form-field>
+            </form>
+          </td>
         </tr>
       </table>
 
@@ -41,8 +66,22 @@
           <td>{{socialperformance.description}}</td>
           <td>{{socialperformance.target_value}}</td>
           <td>{{socialperformance.actual_value}}</td>
-          <td></td>
-          <td></td>
+          <td>
+            <form>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Bonus</mat-label>
+                <input matInput placeholder="$" value="e.g. 500$" [disabled]="!editMode">
+              </mat-form-field>
+            </form>
+          </td>
+          <td>
+            <form>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Leave a comment</mat-label>
+                <textarea matInput placeholder="Ex. Goodjob!" [disabled]="!editMode"></textarea>
+              </mat-form-field>
+            </form>
+          </td>
         </tr>
       </table>
     </mat-expansion-panel>

@@ -16,6 +16,7 @@ export class EvaluationrecordPageComponent implements OnInit {
   private evalService: EvaluationrecordService;
   private bonusSalaryService: BonusSalaryService;
   private id: number;
+  editMode: boolean;
 
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
@@ -23,6 +24,7 @@ export class EvaluationrecordPageComponent implements OnInit {
   constructor(evalService: EvaluationrecordService, bonusSalaryService: BonusSalaryService, private messageService: MessageService) {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
+    this.editMode = false;
   }
 
   getEvaluationRecord(): void {
