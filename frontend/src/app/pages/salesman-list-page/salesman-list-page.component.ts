@@ -21,8 +21,8 @@ export class SalesmanListComponent implements OnInit {
   }
 
   getSaleman(): void {
-      this.salesmanService.getSalesman(66)
-        .subscribe(salesmans =>  this.salesmans[0] = salesmans);
+      this.salesmanService.getSalesmans()
+        .subscribe(salesmans =>  this.salesmans = salesmans);
   }
 
 
@@ -30,5 +30,8 @@ export class SalesmanListComponent implements OnInit {
     this.getSaleman();
   }
 
+  public detail(event, salesman){
+    alert('Open ' + salesman.employee_id);
+  }
 
 }
