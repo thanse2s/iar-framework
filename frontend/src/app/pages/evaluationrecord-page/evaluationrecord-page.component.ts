@@ -28,11 +28,9 @@ export class EvaluationrecordPageComponent implements OnInit {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
-  }
-
-  getRouting(): void {
     this.route.params.subscribe(params => this.id = parseInt(params.id));
   }
+
   getEvaluationRecord(): void {
     this.evalService.getEvaluationrecord(this.id)
       .subscribe(records => {
