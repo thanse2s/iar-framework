@@ -4,6 +4,7 @@ import {EvaluationrecordService} from '../../services/evaluationrecord.service';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
 import {BonusSalaryService} from '../../services/bonussalary.service';
 import {BonusSalary} from '../../models/BonusSalary';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-evaluationrecord-page',
@@ -21,10 +22,15 @@ export class EvaluationrecordPageComponent implements OnInit {
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
 
-  constructor(evalService: EvaluationrecordService, bonusSalaryService: BonusSalaryService, private messageService: MessageService) {
+  constructor(evalService: EvaluationrecordService,
+              bonusSalaryService: BonusSalaryService,
+              private messageService: MessageService,
+              private route: ActivatedRoute) {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
+    this.route.params.subscribe(params => this.id = parseInt(params.id));
+    console.log(this.id);
   }
 
   getEvaluationRecord(): void {
@@ -50,7 +56,6 @@ export class EvaluationrecordPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = 66;
     this.getEvaluationRecord();
     this.getBonusSalary();
   }
