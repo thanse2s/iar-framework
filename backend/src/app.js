@@ -65,16 +65,6 @@ async function initDb(db){
         await salesmanService.add(db,new salesman(66,"Tobias","Hansen","REST"));
 
         //Mock Performance-Record
-        const performanceRecordService = require("./services/performancerecords-service");
-        const performanceRecord = require("./models/PerformanceRecord");
-        const social_performance = require("./models/SocialPerformance");
-        const orders_evaluation = require("./models/OrderEvaluation");
-
-        let testOE = new orders_evaluation("SmartHoover","HBRS", "excellent",20);
-        let LeaderShipTestSP = new social_performance(4,4,"Leadership Competence");
-        let testPR = new performanceRecord(2021,66,LeaderShipTestSP,testOE);
-        await performanceRecordService.add(db,testPR);
-
         const adminPassword = crypto.randomBytes(8).toString('base64');
         await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
 
