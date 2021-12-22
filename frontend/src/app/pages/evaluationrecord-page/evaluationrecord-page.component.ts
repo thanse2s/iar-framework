@@ -37,10 +37,21 @@ export class EvaluationrecordPageComponent implements OnInit {
     this.evalService.getEvaluationrecord(this.id)
       .subscribe(records => {
         records.forEach(evalrecord => {
-          this.evaluationRecord.push(evalrecord);
+          this.addRecord(evalrecord);
           this.getBonusSalary(evalrecord.employee_id);
         });
       });
+  }
+  addRecord(el: Evaluationrecord): void {
+    this.evaluationRecord.splice(this.findLoc(el, this.evaluationRecord) + 1, 0, el);
+  }
+  findLoc(el: Evaluationrecord, arr: Evaluationrecord[]): number {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].year > el.year && arr[i].employee_id === el.employee_id) {
+        return i - 1;
+      }
+    }
+    return arr.length;
   }
   getBonusSalary(id: number): void {
     if (!this.bonusSalaries.find(salary => salary.employee_id = id)) {
