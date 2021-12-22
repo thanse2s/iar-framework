@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { Salesman } from '../../models/Salesman';
+import {Router} from "@angular/router";
 import {SalesmanService} from '../../services/salesman.service';
 import {MessageService} from '../../services/message.service';
 
@@ -16,7 +17,7 @@ export class SalesmanListComponent implements OnInit {
   private salesmanService: SalesmanService;
   salesmenList: Salesman[] = [];
 
-  constructor(salesmanService: SalesmanService, private messageService: MessageService) {
+  constructor(salesmanService: SalesmanService, private messageService: MessageService, private router: Router) {
     this.salesmanService = salesmanService;
   }
 
@@ -31,7 +32,7 @@ export class SalesmanListComponent implements OnInit {
   }
 
   public detail(event, salesman){
-    alert('Open ' + salesman.employee_id);
+    this.router.navigate([`evaluationrecord/${salesman.employee_id}`]);
   }
 
 }
