@@ -21,10 +21,8 @@ export class SalesmanService {
 
   constructor(private https: HttpClient, private messageService: MessageService) { }
 
-  /**
-   * retrieves userdata of currently authenticated user
-   */
-  public getSalesmans(): Observable<Salesman[]>{
+
+  public getSalesmenList(): Observable<Salesman[]>{
     return this.https.get<Salesman[]>(this.SalesmanUrl,)
       .pipe(
         tap(_ => this.log('no Salesman Found')),
@@ -40,9 +38,9 @@ export class SalesmanService {
       );
   }
 
-  testgetSalesman(id: number): Observable<Salesman>{
+  /*testgetSalesman(id: number): Observable<Salesman>{
     return this.https.get<Salesman>('/api/user');
-  }
+  }*/
 
 
   private log(message: string): void {

@@ -1,13 +1,13 @@
 <h2>Salesman</h2>
-<table *ngIf = "salesmans" class="output_table">
+<table *ngIf = "salesmenList" class="output_table">
   <tr class="top">
     <th>ID</th>
     <th>Firstname</th>
     <th>Lastname</th>
     <th>department</th>
   </tr>
-  <tr *ngFor="let salesman of salesmans" (click)="detail($event,salesman)">
-    <td id="empoly_id">
+  <tr *ngFor="let salesman of salesmenList" (click)="detail($event,salesman)">
+    <td id="employee_id">
       {{ salesman.employee_id }}
     </td>
     <td>

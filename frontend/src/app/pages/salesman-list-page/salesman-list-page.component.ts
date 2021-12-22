@@ -14,20 +14,20 @@ import {MessageService} from '../../services/message.service';
 export class SalesmanListComponent implements OnInit {
 
   private salesmanService: SalesmanService;
-  salesmans: Salesman[] = [];
+  salesmenList: Salesman[] = [];
 
   constructor(salesmanService: SalesmanService, private messageService: MessageService) {
     this.salesmanService = salesmanService;
   }
 
-  getSaleman(): void {
-      this.salesmanService.getSalesmans()
-        .subscribe(salesmans =>  this.salesmans = salesmans);
+  getSalesman(): void {
+      this.salesmanService.getSalesmenList()
+        .subscribe(salesmenList =>  this.salesmenList = salesmenList);
   }
 
 
   ngOnInit(): void {
-    this.getSaleman();
+    this.getSalesman();
   }
 
   public detail(event, salesman){
