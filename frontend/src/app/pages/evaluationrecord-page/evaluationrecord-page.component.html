@@ -4,7 +4,7 @@
     <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecord" [disabled]="editMode">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Your Records of the year {{evaluationRecord.year}}
+          Records of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
         </mat-panel-title>
         <mat-panel-description>
           Total Bonus-Salary of this year: {{findBonusSalaryByIDAndYear(evaluationRecord.employee_id, evaluationRecord.year)}}
