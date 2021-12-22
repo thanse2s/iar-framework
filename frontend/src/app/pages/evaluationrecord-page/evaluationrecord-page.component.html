@@ -7,7 +7,7 @@
           Your Records of the year {{evaluationRecord.year}}
         </mat-panel-title>
         <mat-panel-description>
-          Total Bonus-Salary of this year: {{findBonusSalaryByYear(evaluationRecord.year)}}
+          Total Bonus-Salary of this year: {{findBonusSalaryByIDAndYear(evaluationRecord.employee_id, evaluationRecord.year)}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div class="button-panel">

@@ -12,7 +12,7 @@ exports.get = async function (id) {
         let result = [];
         response.data.data.forEach(item => {
             result.push(new BonusSalary(
-                id,
+                parseInt(id),
                 parseInt(item.year),
                 parseInt(item.value)
             ));

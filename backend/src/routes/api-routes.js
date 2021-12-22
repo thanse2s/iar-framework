@@ -24,6 +24,7 @@ router.get('/salesman', salesmanApi.getAll);
 
 const performanceApi = require('../apis/performanceRecord-api');
 router.get('/performance/:id', performanceApi.get);
+router.get('/performance', performanceApi.get);
 router.post('/performance/:id', performanceApi.update)
 router.post('/performance', performanceApi.add);
 router.delete('/performance/:id', performanceApi.delete);

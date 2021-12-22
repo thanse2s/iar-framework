@@ -3,10 +3,18 @@ exports.add = async function (db, performancerecord){
 }
 
 exports.get = async function(db, employee_id, year){
-    if(!isNaN(year)) {
-        return await db.collection('performance_records').findOne({employee_id:employee_id, year:year});
+    if(!isNaN(employee_id)) {
+        if(!isNaN(year)) {
+            return await db.collection('performance_records').findOne({employee_id:employee_id, year:year});
+        } else {
+            return await db.collection('performance_records').find({employee_id:employee_id}).toArray();
+        }
     } else {
-        return await db.collection('performance_records').find({employee_id:employee_id}).toArray();
+        if(!isNaN(year)) {
+            return await db.collection('performance_records').find({year:year}).toArray();
+        } else {
+            return await db.collection('performance_records').find().toArray();
+        }
     }
 }
 
