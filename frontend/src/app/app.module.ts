@@ -23,6 +23,8 @@ import {SalesmanListComponent} from './pages/salesman-list-page/salesman-list-pa
 import {MessagesComponent} from './components/message/messages.component';
 import {EvaluationrecordPageComponent} from './pages/evaluationrecord-page/evaluationrecord-page.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -38,11 +40,13 @@ import {MatExpansionModule} from '@angular/material/expansion';
     EvaluationrecordPageComponent
   ],
     imports: [
+        ReactiveFormsModule,
         BrowserModule,
         AppRouting,
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
         MatCardModule,

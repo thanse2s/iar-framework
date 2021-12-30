@@ -5,6 +5,7 @@ import {Evaluationrecord} from '../../models/Evaluationrecord';
 import {BonusSalaryService} from '../../services/bonussalary.service';
 import {BonusSalary} from '../../models/BonusSalary';
 import {ActivatedRoute} from '@angular/router';
+import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
 
 @Component({
   selector: 'app-evaluationrecord-page',
@@ -20,11 +21,13 @@ export class EvaluationrecordPageComponent implements OnInit {
   editMode: boolean;
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
+  bonusForm: FormGroup;
 
   constructor(evalService: EvaluationrecordService,
               bonusSalaryService: BonusSalaryService,
               private messageService: MessageService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private fb: FormBuilder) {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
@@ -37,6 +40,7 @@ export class EvaluationrecordPageComponent implements OnInit {
         records.forEach(evalrecord => {
           this.addRecord(evalrecord);
           this.getBonusSalary(evalrecord.employee_id);
+          this.createFormFields(evalrecord);
         });
       });
   }
@@ -61,12 +65,34 @@ export class EvaluationrecordPageComponent implements OnInit {
         });
     }
   }
+  createFormFields(record: Evaluationrecord): void {
+    const orders: FormArray = this.fb.array([], Validators.required);
+    const socials: FormArray = this.fb.array([], Validators.required);
+    record.orders_evaluation.forEach(order => {
+      orders.push(this.createBonusAndCommentField(order.bonus, order.comment));
+    });
+    record.social_performance.forEach(social => {
+      socials.push(this.createBonusAndCommentField(social.bonus, social.comment));
+    });
+    (this.bonusForm.get('orderbonusfields') as FormArray).push(orders);
+    (this.bonusForm.get('socialbonusfields') as FormArray).push(socials);
+  }
+  createBonusAndCommentField(bonus: number, comment: string): FormGroup {
+    return this.fb.group({
+      bonus: [bonus, Validators.required],
+      comment: [comment, Validators.required]
+    });
+  }
   findBonusSalaryByIDAndYear(id: number, year: number): number {
     const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
     return salary !== undefined ? salary.value : 0;
   }
 
   ngOnInit(): void {
+    this.bonusForm = this.fb.group({
+      orderbonusfields: this.fb.array([]),
+      socialbonusfields: this.fb.array([])
+    });
     this.getEvaluationRecord();
   }
 }

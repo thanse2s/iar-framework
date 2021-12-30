@@ -1,7 +1,8 @@
 <div>
 
+  <form [formGroup]="bonusForm">
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecord" [disabled]="editMode">
+    <mat-expansion-panel formArrayName="orderbonusfields" *ngFor="let evaluationRecord of evaluationRecord; let i = index" [disabled]="editMode">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Records of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
@@ -30,24 +31,22 @@
           <th>Bonus:</th>
           <th>Comment:</th>
         </tr>
-        <tr *ngFor="let orderevaluation of evaluationRecord.orders_evaluation">
+        <tr formArrayName="{{i}}" id="{{'orderbonusfields'+i}}" *ngFor="let orderevaluation of evaluationRecord.orders_evaluation; let j = index">
           <td>{{orderevaluation.name_of_product}}</td>
           <td>{{orderevaluation.client}}</td>
           <td>{{orderevaluation.client_ranking}}</td>
           <td>{{orderevaluation.items}}</td>
           <td>
-            <form>
-              <mat-form-field class="example-full-width" appearance="fill">
-                <mat-label>Bonus</mat-label>
-                <input matInput placeholder="$" value="e.g. 500$" [disabled]="!editMode">
-              </mat-form-field>
-            </form>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Bonus</mat-label>
+              <input id="{{'bonus'+j}}" placeholder="$" value="e.g. 500$" [disabled]="!editMode">
+            </mat-form-field>
           </td>
           <td>
             <form>
               <mat-form-field class="example-full-width" appearance="fill">
                 <mat-label>Leave a comment</mat-label>
-                <textarea matInput placeholder="Ex. Goodjob!" [disabled]="!editMode"></textarea>
+                <textarea id="{{'comment'+j}}" matInput placeholder="Ex. Goodjob!" [disabled]="!editMode"></textarea>
               </mat-form-field>
             </form>
           </td>
@@ -62,13 +61,13 @@
           <th>Bonus:</th>
           <th>Comment:</th>
         </tr>
-        <tr *ngFor="let socialperformance of evaluationRecord.social_performance">
+        <tr formArrayName="socialbonusfields" *ngFor="let socialperformance of evaluationRecord.social_performance; let j = index">
           <td>{{socialperformance.description}}</td>
           <td>{{socialperformance.target_value}}</td>
           <td>{{socialperformance.actual_value}}</td>
           <td>
             <form>
-              <mat-form-field class="example-full-width" appearance="fill">
+              <mat-form-field formControlName="bonus" id="{{'bonus'+i+j+'s'}}" class="example-full-width" appearance="fill">
                 <mat-label>Bonus</mat-label>
                 <input matInput placeholder="$" value="e.g. 500$" [disabled]="!editMode">
               </mat-form-field>
@@ -76,7 +75,7 @@
           </td>
           <td>
             <form>
-              <mat-form-field class="example-full-width" appearance="fill">
+              <mat-form-field formControlName="comment" id="{{'comment'+i+j+'s'}}" class="example-full-width" appearance="fill">
                 <mat-label>Leave a comment</mat-label>
                 <textarea matInput placeholder="Ex. Goodjob!" [disabled]="!editMode"></textarea>
               </mat-form-field>
@@ -86,6 +85,7 @@
       </table>
     </mat-expansion-panel>
   </mat-accordion>
+  </form>
 
 </div>
 
