@@ -39,14 +39,14 @@
           <td>
             <mat-form-field class="example-full-width" appearance="fill">
               <mat-label>Bonus</mat-label>
-              <input id="{{'bonus'+j}}" placeholder="$" value="e.g. 500$" [disabled]="!editMode">
+              <input matInput id="{{'bonus'+j}}" placeholder="$" value="e.g. 500$" [disabled]="!editMode">
             </mat-form-field>
           </td>
           <td>
             <form>
               <mat-form-field class="example-full-width" appearance="fill">
                 <mat-label>Leave a comment</mat-label>
-                <textarea id="{{'comment'+j}}" matInput placeholder="Ex. Goodjob!" [disabled]="!editMode"></textarea>
+                <textarea matInput id="{{'comment'+j}}" placeholder="Ex. Goodjob!" [disabled]="!editMode"></textarea>
               </mat-form-field>
             </form>
           </td>
