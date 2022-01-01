@@ -5,7 +5,7 @@ import {Evaluationrecord} from '../../models/Evaluationrecord';
 import {BonusSalaryService} from '../../services/bonussalary.service';
 import {BonusSalary} from '../../models/BonusSalary';
 import {ActivatedRoute} from '@angular/router';
-import {FormGroup, FormBuilder, Validators, FormArray, FormControl, Form} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
 
 @Component({
   selector: 'app-evaluationrecord-page',
@@ -19,6 +19,7 @@ export class EvaluationrecordPageComponent implements OnInit {
   private bonusSalaryService: BonusSalaryService;
   private id: number;
   editMode: boolean;
+  editingRecord: number;
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
   bonusForm: FormGroup;
@@ -82,22 +83,39 @@ export class EvaluationrecordPageComponent implements OnInit {
   }
   createBonusAndCommentField(bonus: number, comment: string): FormGroup {
     return this.fb.group({
-      bonus: [{value: bonus, disabled: !this.editMode}, Validators.required],
+      bonus: [{value: bonus, disabled: !this.editMode}, [Validators.required, Validators.min(0), Validators.max(100000000)]],
       comment: [{value: comment, disabled: !this.editMode}, Validators.required]
     });
   }
-  findFieldsInBonusForm(i: number, j: number): FormGroup {
+  findOrderFieldsInBonusForm(i: number, j: number): FormGroup {
     return this.bonusForm.get(`formsOfRecords.${i}.orderForm.${j}`) as FormGroup;
+  }
+  findSocialFieldsInBonusForm(i: number, j: number): FormGroup {
+    return this.bonusForm.get(`formsOfRecords.${i}.socialForm.${j}`) as FormGroup;
   }
   findBonusSalaryByIDAndYear(id: number, year: number): number {
     const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
     return salary !== undefined ? salary.value : 0;
   }
-  switchEditMode(): void {
+  switchEditMode(editRecord: number): void {
     if (!this.editMode) {
+      this.editingRecord = editRecord;
       this.bonusForm.enable();
       this.editMode = !this.editMode;
     } else {
+      if (this.bonusForm.get(`formsOfRecords.${this.editingRecord}`).touched) {
+        const record = this.evaluationRecord[this.editingRecord];
+        for (let j = 0; j < this.evaluationRecord[this.editingRecord].orders_evaluation.length; j++) {
+          record.orders_evaluation[j].bonus = this.findOrderFieldsInBonusForm(this.editingRecord, j).value.bonus;
+          record.orders_evaluation[j].comment = this.findOrderFieldsInBonusForm(this.editingRecord, j).value.comment;
+        }
+        for (let j = 0; j < this.evaluationRecord[this.editingRecord].social_performance.length; j++) {
+          record.social_performance[j].bonus = this.findSocialFieldsInBonusForm(this.editingRecord, j).value.bonus;
+          record.social_performance[j].comment = this.findSocialFieldsInBonusForm(this.editingRecord, j).value.comment;
+        }
+        this.evalService.updateEvaluationRecord(record);
+      }
+      console.log(this.evaluationRecord);
       this.bonusForm.disable();
       this.editMode = !this.editMode;
     }

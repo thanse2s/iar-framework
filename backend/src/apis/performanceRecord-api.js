@@ -23,6 +23,7 @@ exports.get = function (req, res){
 }
 
 exports.update = function (req, res){
+    console.log("updating...");
     const db = req.app.get('db');
     let id = parseInt(req.params.id);
     let year = parseInt(req.query.year);

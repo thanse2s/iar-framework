@@ -24,6 +24,16 @@ export class EvaluationrecordService {
       catchError(this.handleError<Evaluationrecord[]>(`get EvaluationRecord id: ${id}`))
     );
   }
+  public updateEvaluationRecord(record: Evaluationrecord): void {
+    console.log(`${this.EvalrecURL}/${record.employee_id}?year=${record.year}`);
+    this.https.post(
+      `${this.EvalrecURL}/${record.employee_id}?year=${record.year}`,
+      {orders_evaluation: record.orders_evaluation, social_performance: record.social_performance},
+      {observe: 'response', responseType: 'text'}).pipe(
+        tap(_ => this.log(`Updating Record of Employee with ID: ${record.employee_id}`)),
+        catchError(this.handleError('update EvaluationRecord'))
+    );
+  }
 
   private log(message: string): void {
     this.messageService.add(`SalesmanService: ${message}`);
