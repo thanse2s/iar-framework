@@ -5,7 +5,7 @@ import {Evaluationrecord} from '../../models/Evaluationrecord';
 import {BonusSalaryService} from '../../services/bonussalary.service';
 import {BonusSalary} from '../../models/BonusSalary';
 import {ActivatedRoute} from '@angular/router';
-import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormArray, FormControl, Form} from '@angular/forms';
 
 @Component({
   selector: 'app-evaluationrecord-page',
@@ -66,32 +66,46 @@ export class EvaluationrecordPageComponent implements OnInit {
     }
   }
   createFormFields(record: Evaluationrecord): void {
-    const orders: FormArray = this.fb.array([], Validators.required);
-    const socials: FormArray = this.fb.array([], Validators.required);
+    const orderFormArray: FormArray = this.fb.array([], Validators.required);
+    const socialFormArray: FormArray = this.fb.array([], Validators.required);
     record.orders_evaluation.forEach(order => {
-      orders.push(this.createBonusAndCommentField(order.bonus, order.comment));
+      orderFormArray.push(this.createBonusAndCommentField(order.bonus, order.comment));
     });
     record.social_performance.forEach(social => {
-      socials.push(this.createBonusAndCommentField(social.bonus, social.comment));
+      socialFormArray.push(this.createBonusAndCommentField(social.bonus, social.comment));
     });
-    (this.bonusForm.get('orderbonusfields') as FormArray).push(orders);
-    (this.bonusForm.get('socialbonusfields') as FormArray).push(socials);
+    (this.bonusForm.get('formsOfRecords') as FormArray).push(this.fb.group({
+      orderForm: orderFormArray,
+      socialForm: socialFormArray
+    }));
+    console.log(this.bonusForm);
   }
   createBonusAndCommentField(bonus: number, comment: string): FormGroup {
     return this.fb.group({
-      bonus: [bonus, Validators.required],
-      comment: [comment, Validators.required]
+      bonus: [{value: bonus, disabled: !this.editMode}, Validators.required],
+      comment: [{value: comment, disabled: !this.editMode}, Validators.required]
     });
+  }
+  findFieldsInBonusForm(i: number, j: number): FormGroup {
+    return this.bonusForm.get(`formsOfRecords.${i}.orderForm.${j}`) as FormGroup;
   }
   findBonusSalaryByIDAndYear(id: number, year: number): number {
     const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
     return salary !== undefined ? salary.value : 0;
   }
+  switchEditMode(): void {
+    if (!this.editMode) {
+      this.bonusForm.enable();
+      this.editMode = !this.editMode;
+    } else {
+      this.bonusForm.disable();
+      this.editMode = !this.editMode;
+    }
+  }
 
   ngOnInit(): void {
     this.bonusForm = this.fb.group({
-      orderbonusfields: this.fb.array([]),
-      socialbonusfields: this.fb.array([])
+      formsOfRecords: this.fb.array([])
     });
     this.getEvaluationRecord();
   }
