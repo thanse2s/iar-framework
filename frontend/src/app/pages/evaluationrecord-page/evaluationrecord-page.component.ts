@@ -113,7 +113,7 @@ export class EvaluationrecordPageComponent implements OnInit {
           record.social_performance[j].bonus = this.findSocialFieldsInBonusForm(this.editingRecord, j).value.bonus;
           record.social_performance[j].comment = this.findSocialFieldsInBonusForm(this.editingRecord, j).value.comment;
         }
-        this.evalService.updateEvaluationRecord(record);
+        this.evalService.updateEvaluationRecord(record).subscribe();
       }
       console.log(this.evaluationRecord);
       this.bonusForm.disable();

@@ -37,9 +37,10 @@
           <td>{{orderevaluation.client_ranking}}</td>
           <td>{{orderevaluation.items}}</td>
           <td>
-            <mat-form-field [formGroup]="findOrderFieldsInBonusForm(i, j)" class="example-full-width" appearance="fill">
+            <mat-form-field [formGroup]="findOrderFieldsInBonusForm(i, j)" class="example-full-width" appearance="fill" >
               <mat-label>Bonus</mat-label>
-              <input matInput formControlName="bonus" placeholder="$" value="e.g. 500$">
+              <input matInput type="number" formControlName="bonus" placeholder="0">
+              <span matPrefix>€&nbsp;</span>
             </mat-form-field>
           </td>
           <td>
@@ -69,7 +70,8 @@
             <form>
               <mat-form-field [formGroup]="findSocialFieldsInBonusForm(i, j)" class="example-full-width" appearance="fill">
                 <mat-label>Bonus</mat-label>
-                <input matInput formControlName="bonus" placeholder="$" value="e.g. 500$">
+                <input matInput type="number" formControlName="bonus" placeholder="0">
+                <span matPrefix>€&nbsp;</span>
               </mat-form-field>
             </form>
           </td>

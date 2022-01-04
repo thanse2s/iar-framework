@@ -20,16 +20,15 @@ export class EvaluationrecordService {
   public getEvaluationrecord(id: number): Observable<Evaluationrecord[]> {
     const url = `${this.EvalrecURL}/${id}`;
     return this.https.get<Evaluationrecord[]>(url).pipe(
-      tap(_ => this.log(`No EvaluationRecord with id: ${id}`)),
+      tap(_ => console.log(`No EvaluationRecord with id: ${id}`)),
       catchError(this.handleError<Evaluationrecord[]>(`get EvaluationRecord id: ${id}`))
     );
   }
-  public updateEvaluationRecord(record: Evaluationrecord): void {
+  public updateEvaluationRecord(record: Evaluationrecord): Observable<HttpResponse<any>> {
     console.log(`${this.EvalrecURL}/${record.employee_id}?year=${record.year}`);
-    this.https.post(
+    return this.https.post(
       `${this.EvalrecURL}/${record.employee_id}?year=${record.year}`,
-      {orders_evaluation: record.orders_evaluation, social_performance: record.social_performance},
-      {observe: 'response', responseType: 'text'}).pipe(
+      {orders_evaluation: record.orders_evaluation, social_performance: record.social_performance}).pipe(
         tap(_ => this.log(`Updating Record of Employee with ID: ${record.employee_id}`)),
         catchError(this.handleError('update EvaluationRecord'))
     );

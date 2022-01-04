@@ -57,7 +57,7 @@ export class AuthService {
   /**
    * retrieves the login state from backend
    */
-  checkLogin():Observable<HttpResponse<{loggedIn: boolean}>>{
+  checkLogin(): Observable<HttpResponse<{loggedIn: boolean}>>{
     return this.http.get<{loggedIn: boolean}>('/api/login', {observe: 'response'});
   }
 
@@ -65,7 +65,7 @@ export class AuthService {
    * authenticates a user with credentials against backend
    * @param credentials consisting of username and password
    */
-  login(credentials: Credentials):Observable<HttpResponse<any>>{
+  login(credentials: Credentials): Observable<HttpResponse<any>>{
     return this.http.post('/api/login', credentials, {observe: 'response', responseType: 'text'})
       .pipe(
         tap(response => {
@@ -80,7 +80,7 @@ export class AuthService {
   /**
    *
    */
-  logout():Observable<HttpResponse<any>>{
+  logout(): Observable<HttpResponse<any>>{
     return this.http.delete('/api/login', {observe: 'response', responseType: 'text'}).pipe(
       tap(response => {
         if(response.status === 200){
