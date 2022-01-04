@@ -10,12 +10,12 @@
   background-color: #3f51b5;
   color: white;
 }
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
+.bonus-field {
+  min-width: 80px;
+  max-width: 150px;
+  margin-bottom: 0;
 }
-.example-full-width {
+.comment-field {
   width: 100%;
   margin-bottom: 0;
 }

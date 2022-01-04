@@ -37,15 +37,15 @@
           <td>{{orderevaluation.client_ranking}}</td>
           <td>{{orderevaluation.items}}</td>
           <td>
-            <mat-form-field [formGroup]="findOrderFieldsInBonusForm(i, j)" class="example-full-width" appearance="outline" >
+            <mat-form-field [formGroup]="findOrderFieldsInBonusForm(i, j)" class="bonus-field" appearance="outline" >
               <mat-label>Bonus</mat-label>
-              <input matInput type="number" formControlName="bonus" placeholder="0">
+              <input matInput type="number" formControlName="bonus" placeholder="0" min ="0">
               <mat-icon matPrefix color="primary">euro</mat-icon>
             </mat-form-field>
           </td>
           <td>
             <form>
-              <mat-form-field [formGroup]="findOrderFieldsInBonusForm(i, j)" class="example-full-width" appearance="outline">
+              <mat-form-field [formGroup]="findOrderFieldsInBonusForm(i, j)" class="comment-field" appearance="outline">
                 <mat-label>Leave a comment</mat-label>
                 <textarea matInput formControlName="comment" placeholder="Ex. Goodjob!"></textarea>
               </mat-form-field>
@@ -68,16 +68,16 @@
           <td>{{socialperformance.actual_value}}</td>
           <td>
             <form>
-              <mat-form-field [formGroup]="findSocialFieldsInBonusForm(i, j)" class="example-full-width" appearance="outline">
+              <mat-form-field [formGroup]="findSocialFieldsInBonusForm(i, j)" class="bonus-field" appearance="outline">
                 <mat-label>Bonus</mat-label>
-                <input matInput type="number" formControlName="bonus" placeholder="0">
+                <input matInput type="number" formControlName="bonus" placeholder="0" min="0">
                 <span matPrefix>€&nbsp;</span>
               </mat-form-field>
             </form>
           </td>
           <td>
             <form>
-              <mat-form-field [formGroup]="findSocialFieldsInBonusForm(i, j)" class="example-full-width" appearance="outline">
+              <mat-form-field [formGroup]="findSocialFieldsInBonusForm(i, j)" class="comment-field" appearance="outline">
                 <mat-label>Leave a comment</mat-label>
                 <textarea matInput formControlName="comment" placeholder="Ex. Goodjob!"></textarea>
               </mat-form-field>
