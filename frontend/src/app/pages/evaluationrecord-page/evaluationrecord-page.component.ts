@@ -97,6 +97,16 @@ export class EvaluationrecordPageComponent implements OnInit {
     const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
     return salary !== undefined ? salary.value : 0;
   }
+  calculateTotalBonusSalary(record: Evaluationrecord): number {
+    let bonusSalary = 0;
+    record.orders_evaluation.forEach(order => {
+      bonusSalary += order.bonus;
+    });
+    record.social_performance.forEach(social => {
+      bonusSalary += social.bonus;
+    });
+    return bonusSalary;
+  }
   switchEditMode(editRecord: number): void {
     if (!this.editMode) {
       this.editingRecord = editRecord;
