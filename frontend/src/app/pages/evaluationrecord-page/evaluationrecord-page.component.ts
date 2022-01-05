@@ -36,7 +36,7 @@ export class EvaluationrecordPageComponent implements OnInit {
   }
 
   getEvaluationRecord(): void {
-    this.evalService.getEvaluationrecord(this.id)
+    this.evalService.getEvaluationRecord(this.id)
       .subscribe(records => {
         records.forEach(evalrecord => {
           this.addRecord(evalrecord);

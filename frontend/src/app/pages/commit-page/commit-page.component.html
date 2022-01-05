@@ -3,3 +3,54 @@
   The shown Dashboard is needed to commit the bonus salaries to OrangeHRM. <br>
   They will only be updated and paid if they are committed by an authorised HR-Manager!
 </p>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecord; let i = index">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Records of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
+      </mat-panel-title>
+      <mat-panel-description>
+        Total Bonus-Salary of this year: {{this.calculateTotalBonusSalary(evaluationRecord)}}€, Already Committed: {{findBonusSalaryByIDAndYear(evaluationRecord.employee_id, evaluationRecord.year)}}€
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <table *ngIf = "evaluationRecord.orders_evaluation" class="output_table">
+      <tr>
+        <th>Name of Product:</th>
+        <th>Client:</th>
+        <th>Client Ranking:</th>
+        <th>Items:</th>
+        <th>Bonus:</th>
+        <th>Comment:</th>
+      </tr>
+      <tr *ngFor="let orderevaluation of evaluationRecord.orders_evaluation">
+        <td>{{orderevaluation.name_of_product}}</td>
+        <td>{{orderevaluation.client}}</td>
+        <td>{{orderevaluation.client_ranking}}</td>
+        <td>{{orderevaluation.items}}</td>
+        <td>{{orderevaluation.bonus}}</td>
+        <td>{{orderevaluation.comment}}</td>
+      </tr>
+    </table>
+
+    <table id="socialpTable" class="output_table">
+      <tr>
+        <th>Skill/Competence:</th>
+        <th>Target Value:</th>
+        <th>Actual Value:</th>
+        <th>Bonus:</th>
+        <th>Comment:</th>
+      </tr>
+      <tr *ngFor="let socialperformance of evaluationRecord.social_performance">
+        <td>{{socialperformance.description}}</td>
+        <td>{{socialperformance.target_value}}</td>
+        <td>{{socialperformance.actual_value}}</td>
+        <td>{{socialperformance.bonus}}</td>
+        <td>{{socialperformance.comment}}</td>
+      </tr>
+    </table>
+    <mat-action-row>
+      <button mat-button color="primary" (click)="commitBonus(evaluationRecord)">Commit</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

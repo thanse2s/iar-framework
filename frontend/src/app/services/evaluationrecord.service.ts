@@ -17,20 +17,33 @@ export class EvaluationrecordService {
 
   constructor(private https: HttpClient, private messageService: MessageService) {  }
 
-  public getEvaluationrecord(id: number): Observable<Evaluationrecord[]> {
+  public getEvaluationRecord(id: number): Observable<Evaluationrecord[]> {
     const url = `${this.EvalrecURL}/${id}`;
     return this.https.get<Evaluationrecord[]>(url).pipe(
       tap(_ => console.log(`No EvaluationRecord with id: ${id}`)),
       catchError(this.handleError<Evaluationrecord[]>(`get EvaluationRecord id: ${id}`))
     );
   }
+  public getUncommittedEvaluationRecords(): Observable<Evaluationrecord[]> {
+    const url = `${this.EvalrecURL}/uncommitted`;
+    return this.https.get<Evaluationrecord[]>(url).pipe(
+      tap(_ => console.log(`No EvaluationRecord with id:`)),
+      catchError(this.handleError<Evaluationrecord[]>(`get uncommitted EvaluationRecords`))
+    );
+  }
   public updateEvaluationRecord(record: Evaluationrecord): Observable<HttpResponse<any>> {
-    console.log(`${this.EvalrecURL}/${record.employee_id}?year=${record.year}`);
     return this.https.post(
       `${this.EvalrecURL}/${record.employee_id}?year=${record.year}`,
       {orders_evaluation: record.orders_evaluation, social_performance: record.social_performance}).pipe(
         tap(_ => this.log(`Updating Record of Employee with ID: ${record.employee_id}`)),
         catchError(this.handleError('update EvaluationRecord'))
+    );
+  }
+  public commitBonus(employeeId: number, year: number, value: number): Observable<HttpResponse<any>> {
+    return this.https.post(
+      `${this.EvalrecURL}/commit/${employeeId}?year=${year}&value=${value}`, {}).pipe(
+      tap(_ => this.log(`Committing Record of Employee with ID: ${employeeId}`)),
+      catchError(this.handleError('commit EvaluationRecord'))
     );
   }
 

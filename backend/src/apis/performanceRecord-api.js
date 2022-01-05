@@ -42,6 +42,23 @@ exports.delete = function (req, res){
         .catch( _=> res.status(400).send(`Error. Couldn't delete Performance Record with id: ${id} and year: ${year}!`));
 }
 
+exports.commit = function (req, res){
+    console.log("cjelc");
+    const db = req.app.get('db');
+    let id = parseInt(req.params.id);
+    let year = parseInt(req.query.year);
+    performanceService.commit(db,id,year)
+        .then( _=> res.status(200).send(`Performance Record with id: ${id} and year: ${year} has been committed to OrangeHRM!`))
+        .catch( _=> res.status(400).send(`Error. Couldn't commit Performance Record with id: ${id} and year: ${year}!`));
+}
+
+exports.getCommitted = function (req, res){
+    const db = req.app.get('db');
+    performanceService.getCommitted(db)
+        .then(performanceRecords => res.status(200).json(performanceRecords))
+        .catch( _=> res.status(400).send(`Error while trying to find committed Performance Records!`));
+}
+
 function performanceRecordMapper(body, id, year) {
 
     let socialPerformances = [];
@@ -69,7 +86,6 @@ function performanceRecordMapper(body, id, year) {
     });
 
     performanceRecord = new PerformanceRecord(year, id, socialPerformances, orderEvaluations);
-    console.log(performanceRecord);
     return performanceRecord;
 
 }

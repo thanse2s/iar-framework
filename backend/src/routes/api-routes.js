@@ -21,10 +21,17 @@ router.post('/salesman', salesmanApi.addSalesMan);
 router.delete('/salesman/:id', salesmanApi.deleteSalesMan);
 router.get('/salesman', salesmanApi.getAll);
 
+// OrangeHRM
+const bonusSalaryApi = require('../apis/bonussalary-api');
+router.get('/bonussalary/:id', bonusSalaryApi.get)
+router.post('/bonussalary/:id', bonusSalaryApi.post)
+router.delete('/bonussalary/:id', bonusSalaryApi.delete)
 
 const performanceApi = require('../apis/performanceRecord-api');
 router.get('/performance/:id', performanceApi.get);
 router.get('/performance', performanceApi.get);
+router.get('/performance/uncommitted', performanceApi.getCommitted);
+router.post('/performance/commit/:id', performanceApi.commit, bonusSalaryApi.post)
 router.post('/performance/:id', performanceApi.update)
 router.post('/performance', performanceApi.add);
 router.delete('/performance/:id', performanceApi.delete);
@@ -32,9 +39,3 @@ module.exports = router;
 
 const openCrXApi = require('../apis/opencrx-api');
 router.get('/opencrx',openCrXApi.getContact);
-
-// OrangeHRM
-const bonusSalaryApi = require('../apis/bonussalary-api');
-router.get('/bonussalary/:id', bonusSalaryApi.get)
-router.post('/bonussalary/:id', bonusSalaryApi.post)
-router.delete('/bonussalary/:id', bonusSalaryApi.delete)
