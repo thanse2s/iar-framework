@@ -15,6 +15,7 @@ export class CommitPageComponent implements OnInit {
   private bonusSalaryService: BonusSalaryService;
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
+  open = 0;
 
   constructor(evalService: EvaluationrecordService,
               bonusSalaryService: BonusSalaryService) {
@@ -66,7 +67,9 @@ export class CommitPageComponent implements OnInit {
     });
     return bonusSalary;
   }
-  commitBonus(record): void {
+  commitBonus(record: Evaluationrecord): void {
+    this.open++;
+    record.is_committed = true;
     this.evalService.commitBonus(record.employee_id, record.year, this.calculateTotalBonusSalary(record)).subscribe();
   }
 
