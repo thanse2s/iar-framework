@@ -79,7 +79,6 @@ export class EvaluationrecordPageComponent implements OnInit {
       orderForm: orderFormArray,
       socialForm: socialFormArray
     }));
-    console.log(this.bonusForm);
   }
   createBonusAndCommentField(bonus: number, comment: string): FormGroup {
     return this.fb.group({
@@ -125,7 +124,6 @@ export class EvaluationrecordPageComponent implements OnInit {
         }
         this.evalService.updateEvaluationRecord(record).subscribe();
       }
-      console.log(this.evaluationRecord);
       this.bonusForm.disable();
       this.editMode = !this.editMode;
     }

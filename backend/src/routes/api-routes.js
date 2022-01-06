@@ -28,11 +28,16 @@ router.post('/bonussalary/:id', bonusSalaryApi.post)
 router.delete('/bonussalary/:id', bonusSalaryApi.delete)
 
 const performanceApi = require('../apis/performanceRecord-api');
+router.get('/performance/uncommitted', performanceApi.getCommitted);
 router.get('/performance/:id', performanceApi.get);
 router.get('/performance', performanceApi.get);
-router.get('/performance/uncommitted', performanceApi.getCommitted);
-router.post('/performance/commit/:id', performanceApi.commit, bonusSalaryApi.post)
-router.post('/performance/:id', performanceApi.update)
+router.post('/performance/commit/:id', function(req, res, next) {
+    bonusSalaryApi.post(req, res);
+    next();
+}, function(req, res) {
+    performanceApi.commit(req, res);
+});
+router.post('/performance/:id', performanceApi.update);
 router.post('/performance', performanceApi.add);
 router.delete('/performance/:id', performanceApi.delete);
 module.exports = router;

@@ -23,7 +23,6 @@ exports.get = function (req, res){
 }
 
 exports.update = function (req, res){
-    console.log("updating...");
     const db = req.app.get('db');
     let id = parseInt(req.params.id);
     let year = parseInt(req.query.year);
@@ -43,20 +42,19 @@ exports.delete = function (req, res){
 }
 
 exports.commit = function (req, res){
-    console.log("cjelc");
     const db = req.app.get('db');
     let id = parseInt(req.params.id);
     let year = parseInt(req.query.year);
     performanceService.commit(db,id,year)
-        .then( _=> res.status(200).send(`Performance Record with id: ${id} and year: ${year} has been committed to OrangeHRM!`))
-        .catch( _=> res.status(400).send(`Error. Couldn't commit Performance Record with id: ${id} and year: ${year}!`));
+        .then( _=> res.status(200).append(`Performance Record with id: ${id} and year: ${year} has been committed to OrangeHRM!`))
+        .catch( _=> res.status(400).append('Error', 'Error while committing a bonus: Something went wrong trying to update in Database!'));
 }
 
 exports.getCommitted = function (req, res){
     const db = req.app.get('db');
     performanceService.getCommitted(db)
         .then(performanceRecords => res.status(200).json(performanceRecords))
-        .catch( _=> res.status(400).send(`Error while trying to find committed Performance Records!`));
+        .catch( _=> res.status(400).send('Error', 'Hi'));
 }
 
 function performanceRecordMapper(body, id, year) {

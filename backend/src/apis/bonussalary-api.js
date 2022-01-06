@@ -18,7 +18,6 @@ exports.get = function (req, res) {
         .catch(_=> res.status(401).send(`Error: Could not find bonus salary's of Employee with id=${req.params.id}!`))
 }
 exports.delete = function (req, res) {
-    console.log(req.query.year);
     let id = parseInt(req.params.id);
     let year = parseInt(req.query.year);
     bonussalarywrapper.delete(id, year)

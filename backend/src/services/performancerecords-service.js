@@ -23,7 +23,8 @@ exports.update = async function(db, performancerecord){
         {employee_id:performancerecord.employee_id, year:performancerecord.year},
         {
             $set: {social_performance: performancerecord.social_performance,
-                orders_evaluation: performancerecord.orders_evaluation}
+                orders_evaluation: performancerecord.orders_evaluation,
+                is_committed: false}
         });
 }
 
