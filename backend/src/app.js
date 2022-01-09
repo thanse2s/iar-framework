@@ -62,7 +62,7 @@ async function initDb(db){
         //Eigene Collection
         const salesmanService =  require('./services/salesman-service')
         const salesman = require("./models/Salesman");
-        await salesmanService.add(db,new salesman(66,"Tobias","Hansen","REST"));
+        await salesmanService.add(db,new salesman(22,"Tobias","Hansen","REST"));
 
         //Mock Performance-Record
         const adminPassword = crypto.randomBytes(8).toString('base64');

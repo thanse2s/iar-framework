@@ -1,5 +1,5 @@
 <h2>Salesman</h2>
-<table *ngIf = "salesmenList" class="output_table">
+<!-- <table *ngIf = "salesmenList" class="output_table">
   <tr class="top">
     <th>ID</th>
     <th>Firstname</th>
@@ -20,6 +20,24 @@
       {{ salesman.department }}
     </td>
   </tr>
+
+  <app-evaluationrecord-page></app-evaluationrecord-page>
 </table>
 
+-->
+<div>
+  <mat-accordion>
+      <mat-expansion-panel *ngFor="let salesman of salesmenList;  let i = index" >
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                ID: {{salesman.employee_id}}
+                Name: {{ salesman.firstname }} {{ salesman.lastname }}
+                Department: {{ salesman.department }}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
 
+        <app-evaluationrecord-page [paraempliyerID]= salesman.employee_id></app-evaluationrecord-page>
+
+      </mat-expansion-panel>
+  </mat-accordion>
+</div>

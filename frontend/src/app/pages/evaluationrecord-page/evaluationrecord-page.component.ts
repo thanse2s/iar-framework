@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MessageService} from '../../services/message.service';
 import {EvaluationrecordService} from '../../services/evaluationrecord.service';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
@@ -23,6 +23,9 @@ export class EvaluationrecordPageComponent implements OnInit {
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
   bonusForm: FormGroup;
+
+  @Input() paraempliyerID: number;
+
 
   constructor(evalService: EvaluationrecordService,
               bonusSalaryService: BonusSalaryService,
