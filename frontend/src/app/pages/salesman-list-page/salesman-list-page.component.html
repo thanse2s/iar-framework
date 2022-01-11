@@ -29,15 +29,17 @@
   <mat-accordion>
       <mat-expansion-panel *ngFor="let salesman of salesmenList;  let i = index" >
         <mat-expansion-panel-header>
-            <mat-panel-title>
-                ID: {{salesman.employee_id}}
-                Name: {{ salesman.firstname }} {{ salesman.lastname }}
-                Department: {{ salesman.department }}
-            </mat-panel-title>
+          <mat-panel-title>
+            {{ salesman.firstname }} {{ salesman.lastname }}
+          </mat-panel-title>
+          <mat-panel-description>
+            Employee ID: {{salesman.employee_id}},
+            Department: {{ salesman.department }}
+          </mat-panel-description>
         </mat-expansion-panel-header>
-
-        <app-evaluation-record [paraempliyerID]= salesman.employee_id></app-evaluation-record>
-
+        <div class="offset-top">
+          <app-evaluation-record [paraempliyerID]= salesman.employee_id></app-evaluation-record>
+        </div>
       </mat-expansion-panel>
   </mat-accordion>
 </div>

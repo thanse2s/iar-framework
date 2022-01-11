@@ -1,3 +1,6 @@
+.mat-expansion-panel-header-title {
+  font-size: large;
+}
 .mat-expanded .mat-expansion-panel-header mat-panel-title {
   background-color: #3f51b5;
   color: white;
@@ -9,4 +12,7 @@
 .mat-expanded .mat-expansion-panel-header {
   background-color: #3f51b5;
   color: white;
+}
+.offset-top {
+  margin-top: 20px;
 }
