@@ -19,10 +19,11 @@ export class EvaluationrecordPageComponent implements OnInit {
   private bonusSalaryService: BonusSalaryService;
   private id: number;
   editMode: boolean;
-  editingRecord: number;
+  editingRecord: Evaluationrecord;
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
-  bonusForm: FormGroup;
+  relation: Fields[] = [];
+  recordRelation: AllFields[] = [];
 
   @Input() paraempliyerID: number;
 
@@ -35,7 +36,7 @@ export class EvaluationrecordPageComponent implements OnInit {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
-    this.route.params.subscribe(params => this.id = parseInt(params.id));
+    this.route.params.subscribe(params => this.id = parseInt(params.id, 10));
   }
 
   getEvaluationRecord(): void {
@@ -70,30 +71,30 @@ export class EvaluationrecordPageComponent implements OnInit {
     }
   }
   createFormFields(record: Evaluationrecord): void {
-    const orderFormArray: FormArray = this.fb.array([], Validators.required);
-    const socialFormArray: FormArray = this.fb.array([], Validators.required);
     record.orders_evaluation.forEach(order => {
-      orderFormArray.push(this.createBonusAndCommentField(order.bonus, order.comment));
+      this.createBonusAndCommentField(order, record);
     });
     record.social_performance.forEach(social => {
-      socialFormArray.push(this.createBonusAndCommentField(social.bonus, social.comment));
-    });
-    (this.bonusForm.get('formsOfRecords') as FormArray).push(this.fb.group({
-      orderForm: orderFormArray,
-      socialForm: socialFormArray
-    }));
-  }
-  createBonusAndCommentField(bonus: number, comment: string): FormGroup {
-    return this.fb.group({
-      bonus: [{value: bonus, disabled: !this.editMode}, [Validators.required, Validators.min(0), Validators.max(100000000)]],
-      comment: [{value: comment, disabled: !this.editMode}, Validators.required]
+      this.createBonusAndCommentField(social, record);
     });
   }
-  findOrderFieldsInBonusForm(i: number, j: number): FormGroup {
-    return this.bonusForm.get(`formsOfRecords.${i}.orderForm.${j}`) as FormGroup;
+  createBonusAndCommentField(socialOrOrder, record): void {
+    const newFormGroup = this.fb.group({
+      bonus: [{value: socialOrOrder.bonus, disabled: !this.editMode}, [Validators.required, Validators.min(0), Validators.max(100000000)]],
+      comment: [{value: socialOrOrder.comment, disabled: !this.editMode}, Validators.required]
+    });
+    this.relation.push(new Fields(newFormGroup, socialOrOrder));
+    if (this.findFieldsInRecordRelation(record) === undefined) {
+      this.recordRelation.push(new AllFields(this.fb.array([newFormGroup]), record));
+    } else {
+      this.findFieldsInRecordRelation(record).fields.push(newFormGroup);
+    }
   }
-  findSocialFieldsInBonusForm(i: number, j: number): FormGroup {
-    return this.bonusForm.get(`formsOfRecords.${i}.socialForm.${j}`) as FormGroup;
+  findFieldsInRelation(content): Fields {
+    return this.relation.find(el => el.content === content) as Fields;
+  }
+  findFieldsInRecordRelation(record: Evaluationrecord): AllFields {
+    return this.recordRelation.find(el => el.content === record) as AllFields;
   }
   findBonusSalaryByIDAndYear(id: number, year: number): number {
     const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
@@ -109,33 +110,45 @@ export class EvaluationrecordPageComponent implements OnInit {
     });
     return bonusSalary;
   }
-  switchEditMode(editRecord: number): void {
+  switchEditMode(editRecord: Evaluationrecord): void {
     if (!this.editMode) {
       this.editingRecord = editRecord;
-      this.bonusForm.enable();
+      this.findFieldsInRecordRelation(this.editingRecord).fields.enable();
       this.editMode = !this.editMode;
     } else {
-      if (this.bonusForm.get(`formsOfRecords.${this.editingRecord}`).touched) {
-        const record = this.evaluationRecord[this.editingRecord];
-        for (let j = 0; j < this.evaluationRecord[this.editingRecord].orders_evaluation.length; j++) {
-          record.orders_evaluation[j].bonus = this.findOrderFieldsInBonusForm(this.editingRecord, j).value.bonus;
-          record.orders_evaluation[j].comment = this.findOrderFieldsInBonusForm(this.editingRecord, j).value.comment;
-        }
-        for (let j = 0; j < this.evaluationRecord[this.editingRecord].social_performance.length; j++) {
-          record.social_performance[j].bonus = this.findSocialFieldsInBonusForm(this.editingRecord, j).value.bonus;
-          record.social_performance[j].comment = this.findSocialFieldsInBonusForm(this.editingRecord, j).value.comment;
-        }
-        this.evalService.updateEvaluationRecord(record).subscribe();
+      if (this.findFieldsInRecordRelation(this.editingRecord).fields.touched) {
+        this.editingRecord.orders_evaluation.forEach(order => {
+          order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
+          order.comment = this.findFieldsInRelation(order).fields.value.comment;
+        });
+        this.editingRecord.social_performance.forEach(social => {
+          social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
+          social.comment = this.findFieldsInRelation(social).fields.value.comment;
+        });
+        this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
       }
-      this.bonusForm.disable();
+      this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
       this.editMode = !this.editMode;
     }
   }
 
   ngOnInit(): void {
-    this.bonusForm = this.fb.group({
-      formsOfRecords: this.fb.array([])
-    });
     this.getEvaluationRecord();
+  }
+}
+class Fields {
+  fields: FormGroup;
+  content: any;
+  constructor(fields: FormGroup, content) {
+    this.fields = fields;
+    this.content = content;
+  }
+}
+class AllFields {
+  fields: FormArray;
+  content: Evaluationrecord;
+  constructor(fields: FormArray, content: Evaluationrecord) {
+    this.fields = fields;
+    this.content = content;
   }
 }
