@@ -26,6 +26,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {CommitPageComponent} from './pages/commit-page/commit-page.component';
+import {EvaluationrecordComponent} from "./components/evaluation-record/evaluation-record.component";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {CommitPageComponent} from './pages/commit-page/commit-page.component';
     SalesmanListComponent,
     CommitPageComponent,
     MessagesComponent,
-    EvaluationrecordPageComponent
+    EvaluationrecordPageComponent,
+    EvaluationrecordComponent
   ],
     imports: [
         ReactiveFormsModule,
