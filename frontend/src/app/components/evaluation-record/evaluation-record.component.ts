@@ -25,7 +25,7 @@ export class EvaluationrecordComponent implements OnInit {
   relation: Fields[] = [];
   recordRelation: AllFields[] = [];
 
-  @Input() paraempliyerID: number;
+  @Input() para_employee_id?: number;
 
 
   constructor(evalService: EvaluationrecordService,
@@ -36,7 +36,8 @@ export class EvaluationrecordComponent implements OnInit {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
-    this.route.params.subscribe(params => this.id = parseInt(params.id, 10));
+    //this.route.params.subscribe(params => this.id = parseInt(params.id, 10));
+    this.id = this.para_employee_id;
   }
 
   getEvaluationRecord(): void {
@@ -133,6 +134,7 @@ export class EvaluationrecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.id = this.para_employee_id;
     this.getEvaluationRecord();
   }
 }
