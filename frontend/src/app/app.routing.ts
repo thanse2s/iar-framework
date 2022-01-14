@@ -3,7 +3,6 @@ import { Routes, RouterModule} from '@angular/router';
 import {LoginPageComponent} from './pages/login-page/login-page.component';
 import {LandingPageComponent} from './pages/landing-page/landing-page.component';
 import {AuthGuardService} from './services/auth-guard.service';
-import {ExamplePageComponent} from './pages/example-page/example-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
 
 
@@ -23,7 +22,6 @@ import {CommitPageComponent} from './pages/commit-page/commit-page.component';
  */
 const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
-  {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
   {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
   {path: 'salesman', component: SalesmanListComponent, canActivate: [AuthGuardService]},
   {path: 'evaluationrecord', component: EvaluationrecordPageComponent, canActivate: [AuthGuardService]},
