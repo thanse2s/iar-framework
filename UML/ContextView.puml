@@ -6,20 +6,6 @@ actor Manager
 actor HR
 
 package Application {
-    package backend
-        {
-            api
-            middlewares
-            models
-            routes
-            services
-        }
-    package frontend
-        {
-            app
-            assets
-            environments
-        }
 }
 
 package OrangeHRM {
