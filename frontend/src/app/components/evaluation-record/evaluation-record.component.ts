@@ -6,13 +6,48 @@ import {BonusSalaryService} from '../../services/bonussalary.service';
 import {BonusSalary} from '../../models/BonusSalary';
 import {ActivatedRoute} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
+import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-evaluation-record',
   templateUrl: './evaluation-record.component.html',
   styleUrls: ['./evaluation-record.component.css'],
+  animations: [
+    trigger('hideButtons', [
+      state('editing', style({
+        opacity: 1
+      })),
+      state('hide', style({
+        opacity: 0
+      })),
+      transition('editing => hide', query('button', animate('400ms ease-out', style({
+        transform: 'translateX(500%)'
+      })))),
+      transition('hide => editing', [
+        style({opacity: 1}),
+        query('button', style({
+          transform: 'translateX(500%)'
+        })),
+        query('button',
+          stagger('300ms', [
+            animate('200ms', style({
+              transform: 'translateX(0%)'
+            }))
+          ]))
+      ])
+    ])
+  ]
 })
-
+/*
+state('editing', style({
+        opacity: 1
+      })),
+      state('hide', style({
+        opacity: 0
+      })),
+      transition('editing => hide', animate('600ms ease-out')),
+      transition('hide => editing', animate('600ms ease-out'))
+ */
 export class EvaluationrecordComponent implements OnInit {
 
   private evalService: EvaluationrecordService;
@@ -109,6 +144,9 @@ export class EvaluationrecordComponent implements OnInit {
       bonusSalary += social.bonus;
     });
     return bonusSalary;
+  }
+  getEditMode(): string {
+    return this.editMode ? 'editing' : 'hide';
   }
   switchEditMode(editRecord: Evaluationrecord): void {
     if (!this.editMode) {

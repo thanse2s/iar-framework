@@ -8,18 +8,6 @@
         Total Bonus-Salary of this year: {{this.calculateTotalBonusSalary(evaluationRecord)}}€, Already Committed: {{findBonusSalaryByIDAndYear(evaluationRecord.employee_id, evaluationRecord.year)}}€
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="button-panel">
-      <button mat-icon-button aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode">
-        <mat-icon>undo</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Save" color="primary" id="save-button" [disabled]="!editMode" (click)="this.switchEditMode(evaluationRecord)">
-        <mat-icon>save</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Edit" color="primary" id="edit-button" (click)="this.switchEditMode(evaluationRecord)" [disabled]="editMode">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-
     <table *ngIf = "evaluationRecord.orders_evaluation" class="output_table">
       <tr>
         <th>Name of Product:</th>
@@ -69,7 +57,7 @@
             <mat-form-field [formGroup]="findFieldsInRelation(socialperformance).fields" class="bonus-field" appearance="outline">
               <mat-label>Bonus</mat-label>
               <input matInput type="number" formControlName="bonus" placeholder="0" min="0">
-              <span matPrefix>€&nbsp;</span>
+              <mat-icon matPrefix color="primary">euro</mat-icon>
             </mat-form-field>
           </form>
         </td>
@@ -83,5 +71,23 @@
         </td>
       </tr>
     </table>
+    <mat-action-row>
+      <div class="button-panel">
+        <span [@hideButtons]="this.getEditMode()">
+          <button mat-fab aria-label="Add" color="primary" id="add-button" [disabled]="!editMode">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-fab aria-label="Save" color="primary" id="save-button" [disabled]="!editMode" (click)="this.switchEditMode(evaluationRecord)">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-fab aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode">
+            <mat-icon>undo</mat-icon>
+          </button>
+        </span>
+        <button mat-fab aria-label="Edit" color="primary" id="edit-button" [disabled]="editMode" (click)="this.switchEditMode(evaluationRecord)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
