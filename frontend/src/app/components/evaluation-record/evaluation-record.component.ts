@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MessageService} from '../../services/message.service';
 import {EvaluationrecordService} from '../../services/evaluationrecord.service';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
+import {Socialperformance} from '../../models/Socialperformance';
 import {BonusSalaryService} from '../../services/bonussalary.service';
 import {BonusSalary} from '../../models/BonusSalary';
 import {ActivatedRoute} from '@angular/router';
@@ -20,18 +21,32 @@ import { trigger, state, style, animate, transition, query, stagger } from '@ang
       state('hide', style({
         opacity: 0
       })),
-      transition('editing => hide', query('button', animate('400ms ease-out', style({
-        transform: 'translateX(500%)'
-      })))),
+      transition('editing => hide', [
+        query('mat-form-field', animate('300ms ease-out', style({
+          opacity: 0
+        }))),
+        query('button', animate('400ms ease-out', style({
+          transform: 'translateX(500%)'
+        })))
+      ]),
       transition('hide => editing', [
         style({opacity: 1}),
         query('button', style({
           transform: 'translateX(500%)'
         })),
+        query('mat-form-field', style({
+          opacity: 0
+        })),
         query('button',
-          stagger('300ms', [
+          stagger('100ms', [
             animate('200ms', style({
               transform: 'translateX(0%)'
+            }))
+          ])),
+        query('mat-form-field',
+          stagger('50ms', [
+            animate('300ms ease-out', style({
+              opacity: 1
             }))
           ]))
       ])
@@ -44,8 +59,11 @@ export class EvaluationrecordComponent implements OnInit {
   private evalService: EvaluationrecordService;
   private bonusSalaryService: BonusSalaryService;
   private id: number;
+
   editMode: boolean;
   editingRecord: Evaluationrecord;
+  addedSocialPerformances: Socialperformance[] = [];
+
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
   relation: Fields[] = [];
@@ -97,6 +115,15 @@ export class EvaluationrecordComponent implements OnInit {
     }
   }
   createFormFields(record: Evaluationrecord): void {
+    this.recordRelation.push(new AllFields(
+      this.fb.array([]),
+      this.fb.group({
+        skill: [null, Validators.required],
+        target: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
+        actual: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
+        bonus: [null, [Validators.min(0), Validators.max(100000000)]],
+        comment: [null, Validators.required]
+      }), record));
     record.orders_evaluation.forEach(order => {
       this.createBonusAndCommentField(order, record);
     });
@@ -110,11 +137,7 @@ export class EvaluationrecordComponent implements OnInit {
       comment: [{value: socialOrOrder.comment, disabled: !this.editMode}, Validators.required]
     });
     this.relation.push(new Fields(newFormGroup, socialOrOrder));
-    if (this.findFieldsInRecordRelation(record) === undefined) {
-      this.recordRelation.push(new AllFields(this.fb.array([newFormGroup]), record));
-    } else {
-      this.findFieldsInRecordRelation(record).fields.push(newFormGroup);
-    }
+    this.findFieldsInRecordRelation(record).fields.push(newFormGroup);
   }
   findFieldsInRelation(content): Fields {
     return this.relation.find(el => el.content === content) as Fields;
@@ -139,6 +162,20 @@ export class EvaluationrecordComponent implements OnInit {
   getEditMode(): string {
     return this.editMode ? 'editing' : 'hide';
   }
+  addSocialPerformance(record: Evaluationrecord): void {
+    const form = this.findFieldsInRecordRelation(record).addSocial;
+    const newSocialPerformance = new Socialperformance(
+      form.value.actual,
+      form.value.target,
+      form.value.skill,
+      form.value.bonus,
+      form.value.comment
+    );
+    record.social_performance.push(newSocialPerformance);
+    this.addedSocialPerformances.push(newSocialPerformance);
+    this.createBonusAndCommentField(newSocialPerformance, record);
+    form.patchValue({skill: null, target: 5});
+  }
   enterEditMode(editRecord: Evaluationrecord): void {
     if (!this.editMode) {
       this.editingRecord = editRecord;
@@ -148,7 +185,9 @@ export class EvaluationrecordComponent implements OnInit {
   }
   saveChanges(): void {
     if (this.editMode) {
-      if (this.findFieldsInRecordRelation(this.editingRecord).fields.touched) {
+      // some fields were changed but no new social performance was added
+      const touched = this.findFieldsInRecordRelation(this.editingRecord).fields.touched;
+      if (touched) {
         this.editingRecord.orders_evaluation.forEach(order => {
           order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
           order.comment = this.findFieldsInRelation(order).fields.value.comment;
@@ -157,7 +196,11 @@ export class EvaluationrecordComponent implements OnInit {
             social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
             social.comment = this.findFieldsInRelation(social).fields.value.comment;
         });
+      }
+      // Any changes occurred that need to be updated
+      if (touched || this.addedSocialPerformances.length > 0) {
         this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
+        this.addedSocialPerformances = [];
       }
       this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
       this.editMode = !this.editMode;
@@ -165,6 +208,14 @@ export class EvaluationrecordComponent implements OnInit {
   }
   undoChanges(): void {
     if (this.editMode) {
+      // reset social performances
+      if (this.addedSocialPerformances.length > 0) {
+        this.addedSocialPerformances.forEach(_ => {
+          this.editingRecord.social_performance.pop();
+          this.relation.pop();
+        });
+      }
+      // reset all fields if any was touched
       if (this.findFieldsInRecordRelation(this.editingRecord).fields.touched) {
         this.editingRecord.orders_evaluation.forEach(order => {
           this.findFieldsInRelation(order).fields.patchValue({
@@ -179,6 +230,7 @@ export class EvaluationrecordComponent implements OnInit {
           });
         });
       }
+      // leave edit-mode
       this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
       this.editMode = !this.editMode;
     }
@@ -200,9 +252,11 @@ class Fields {
 }
 class AllFields {
   fields: FormArray;
+  addSocial: FormGroup;
   content: Evaluationrecord;
-  constructor(fields: FormArray, content: Evaluationrecord) {
+  constructor(fields: FormArray, addSocial: FormGroup, content: Evaluationrecord) {
     this.fields = fields;
+    this.addSocial = addSocial;
     this.content = content;
   }
 }
