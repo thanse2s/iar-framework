@@ -77,14 +77,14 @@
           <button mat-fab aria-label="Add" color="primary" id="add-button" [disabled]="!editMode">
             <mat-icon>add</mat-icon>
           </button>
-          <button mat-fab aria-label="Save" color="primary" id="save-button" [disabled]="!editMode" (click)="this.switchEditMode(evaluationRecord)">
+          <button mat-fab aria-label="Save" color="primary" id="save-button" [disabled]="!editMode" (click)="this.saveChanges()">
             <mat-icon>save</mat-icon>
           </button>
-          <button mat-fab aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode">
+          <button mat-fab aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode" (click)="this.undoChanges()">
             <mat-icon>undo</mat-icon>
           </button>
         </span>
-        <button mat-fab aria-label="Edit" color="primary" id="edit-button" [disabled]="editMode" (click)="this.switchEditMode(evaluationRecord)">
+        <button mat-fab aria-label="Edit" color="primary" id="edit-button" [disabled]="editMode" (click)="this.enterEditMode(evaluationRecord)">
           <mat-icon>edit</mat-icon>
         </button>
       </div>

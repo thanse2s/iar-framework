@@ -38,16 +38,7 @@ import { trigger, state, style, animate, transition, query, stagger } from '@ang
     ])
   ]
 })
-/*
-state('editing', style({
-        opacity: 1
-      })),
-      state('hide', style({
-        opacity: 0
-      })),
-      transition('editing => hide', animate('600ms ease-out')),
-      transition('hide => editing', animate('600ms ease-out'))
- */
+
 export class EvaluationrecordComponent implements OnInit {
 
   private evalService: EvaluationrecordService;
@@ -148,22 +139,45 @@ export class EvaluationrecordComponent implements OnInit {
   getEditMode(): string {
     return this.editMode ? 'editing' : 'hide';
   }
-  switchEditMode(editRecord: Evaluationrecord): void {
+  enterEditMode(editRecord: Evaluationrecord): void {
     if (!this.editMode) {
       this.editingRecord = editRecord;
       this.findFieldsInRecordRelation(this.editingRecord).fields.enable();
       this.editMode = !this.editMode;
-    } else {
+    }
+  }
+  saveChanges(): void {
+    if (this.editMode) {
       if (this.findFieldsInRecordRelation(this.editingRecord).fields.touched) {
         this.editingRecord.orders_evaluation.forEach(order => {
           order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
           order.comment = this.findFieldsInRelation(order).fields.value.comment;
         });
         this.editingRecord.social_performance.forEach(social => {
-          social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
-          social.comment = this.findFieldsInRelation(social).fields.value.comment;
+            social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
+            social.comment = this.findFieldsInRelation(social).fields.value.comment;
         });
         this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
+      }
+      this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
+      this.editMode = !this.editMode;
+    }
+  }
+  undoChanges(): void {
+    if (this.editMode) {
+      if (this.findFieldsInRecordRelation(this.editingRecord).fields.touched) {
+        this.editingRecord.orders_evaluation.forEach(order => {
+          this.findFieldsInRelation(order).fields.patchValue({
+            bonus: order.bonus,
+            comment: order.comment
+          });
+        });
+        this.editingRecord.social_performance.forEach(social => {
+          this.findFieldsInRelation(social).fields.patchValue({
+            bonus: social.bonus,
+            comment: social.comment
+          });
+        });
       }
       this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
       this.editMode = !this.editMode;
@@ -174,6 +188,8 @@ export class EvaluationrecordComponent implements OnInit {
     this.getEvaluationRecord();
   }
 }
+
+
 class Fields {
   fields: FormGroup;
   content: any;
