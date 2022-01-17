@@ -122,7 +122,7 @@ export class EvaluationrecordComponent implements OnInit {
         target: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
         actual: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
         bonus: [null, [Validators.min(0), Validators.max(100000000)]],
-        comment: [null, Validators.required]
+        comment: null
       }), record));
     record.orders_evaluation.forEach(order => {
       this.createBonusAndCommentField(order, record);
@@ -134,7 +134,7 @@ export class EvaluationrecordComponent implements OnInit {
   createBonusAndCommentField(socialOrOrder, record): void {
     const newFormGroup = this.fb.group({
       bonus: [{value: socialOrOrder.bonus, disabled: !this.editMode}, [Validators.required, Validators.min(0), Validators.max(100000000)]],
-      comment: [{value: socialOrOrder.comment, disabled: !this.editMode}, Validators.required]
+      comment: [{value: socialOrOrder.comment, disabled: !this.editMode}]
     });
     this.relation.push(new Fields(newFormGroup, socialOrOrder));
     this.findFieldsInRecordRelation(record).fields.push(newFormGroup);
@@ -164,17 +164,19 @@ export class EvaluationrecordComponent implements OnInit {
   }
   addSocialPerformance(record: Evaluationrecord): void {
     const form = this.findFieldsInRecordRelation(record).addSocial;
-    const newSocialPerformance = new Socialperformance(
-      form.value.actual,
-      form.value.target,
-      form.value.skill,
-      form.value.bonus,
-      form.value.comment
-    );
-    record.social_performance.push(newSocialPerformance);
-    this.addedSocialPerformances.push(newSocialPerformance);
-    this.createBonusAndCommentField(newSocialPerformance, record);
-    form.patchValue({skill: null, target: 5});
+    if (!form.invalid) {
+      const newSocialPerformance = new Socialperformance(
+        form.value.actual,
+        form.value.target,
+        form.value.skill,
+        form.value.bonus,
+        form.value.comment
+      );
+      record.social_performance.push(newSocialPerformance);
+      this.addedSocialPerformances.push(newSocialPerformance);
+      this.createBonusAndCommentField(newSocialPerformance, record);
+      form.patchValue({skill: null, target: 5, actual: 5, bonus: null, comment: null});
+    }
   }
   enterEditMode(editRecord: Evaluationrecord): void {
     if (!this.editMode) {
@@ -185,25 +187,28 @@ export class EvaluationrecordComponent implements OnInit {
   }
   saveChanges(): void {
     if (this.editMode) {
-      // some fields were changed but no new social performance was added
-      const touched = this.findFieldsInRecordRelation(this.editingRecord).fields.touched;
-      if (touched) {
-        this.editingRecord.orders_evaluation.forEach(order => {
-          order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
-          order.comment = this.findFieldsInRelation(order).fields.value.comment;
-        });
-        this.editingRecord.social_performance.forEach(social => {
+      const fields = this.findFieldsInRecordRelation(this.editingRecord).fields;
+      if (!fields.invalid) {
+        // some fields were changed but no new social performance was added
+        const touched = fields.touched;
+        if (touched) {
+          this.editingRecord.orders_evaluation.forEach(order => {
+            order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
+            order.comment = this.findFieldsInRelation(order).fields.value.comment;
+          });
+          this.editingRecord.social_performance.forEach(social => {
             social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
             social.comment = this.findFieldsInRelation(social).fields.value.comment;
-        });
+          });
+        }
+        // Any changes occurred that need to be updated
+        if (touched || this.addedSocialPerformances.length > 0) {
+          this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
+          this.addedSocialPerformances = [];
+        }
+        fields.disable();
+        this.editMode = !this.editMode;
       }
-      // Any changes occurred that need to be updated
-      if (touched || this.addedSocialPerformances.length > 0) {
-        this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
-        this.addedSocialPerformances = [];
-      }
-      this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
-      this.editMode = !this.editMode;
     }
   }
   undoChanges(): void {
