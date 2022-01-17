@@ -70,6 +70,7 @@ function performanceRecordMapper(body, id, year) {
         let description = record["description"];
         let bonus = record["bonus"];
         let comment = record["comment"];
+        console.log(new SocialPerformance(actual_value, target_value, description, bonus, comment));
         socialPerformances.push(new SocialPerformance(actual_value, target_value, description, bonus, comment));
     });
 

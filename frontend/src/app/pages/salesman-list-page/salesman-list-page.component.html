@@ -1,30 +1,4 @@
 <h2>Salesman</h2>
-<!-- <table *ngIf = "salesmenList" class="output_table">
-  <tr class="top">
-    <th>ID</th>
-    <th>Firstname</th>
-    <th>Lastname</th>
-    <th>department</th>
-  </tr>
-  <tr *ngFor="let salesman of salesmenList" (click)="detail($event,salesman)">
-    <td id="employee_id">
-      {{ salesman.employee_id }}
-    </td>
-    <td>
-      {{ salesman.firstname }}
-    </td>
-    <td>
-      {{ salesman.lastname }}
-    </td>
-    <td>
-      {{ salesman.department }}
-    </td>
-  </tr>
-
-  <app-evaluationrecord-page></app-evaluationrecord-page>
-</table>
-
--->
 <div>
   <mat-accordion>
       <mat-expansion-panel *ngFor="let salesman of salesmenList;  let i = index" >
@@ -38,7 +12,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="offset-top">
-          <app-evaluation-record [paraempliyerID]= salesman.employee_id></app-evaluation-record>
+          <app-evaluation-record [paramEmployeeID]="salesman.employee_id"></app-evaluation-record>
         </div>
       </mat-expansion-panel>
   </mat-accordion>

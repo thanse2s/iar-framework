@@ -1,12 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MessageService} from '../../services/message.service';
-import {EvaluationrecordService} from '../../services/evaluationrecord.service';
-import {Evaluationrecord} from '../../models/Evaluationrecord';
-import {Socialperformance} from '../../models/Socialperformance';
-import {BonusSalaryService} from '../../services/bonussalary.service';
-import {BonusSalary} from '../../models/BonusSalary';
-import {ActivatedRoute} from '@angular/router';
-import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { MessageService } from '../../services/message.service';
+import { EvaluationrecordService } from '../../services/evaluationrecord.service';
+import { Evaluationrecord } from '../../models/Evaluationrecord';
+import { Socialperformance } from '../../models/Socialperformance';
+import { BonusSalaryService } from '../../services/bonussalary.service';
+import { BonusSalary } from '../../models/BonusSalary';
+import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
 
 @Component({
@@ -54,11 +54,11 @@ import { trigger, state, style, animate, transition, query, stagger } from '@ang
   ]
 })
 
-export class EvaluationrecordComponent implements OnInit {
+export class EvaluationRecordComponent implements OnInit {
 
+  @Input() paramEmployeeID: number;
   private evalService: EvaluationrecordService;
   private bonusSalaryService: BonusSalaryService;
-  private id: number;
 
   editMode: boolean;
   editingRecord: Evaluationrecord;
@@ -69,9 +69,6 @@ export class EvaluationrecordComponent implements OnInit {
   relation: Fields[] = [];
   recordRelation: AllFields[] = [];
 
-  @Input() paraempliyerID: number;
-
-
   constructor(evalService: EvaluationrecordService,
               bonusSalaryService: BonusSalaryService,
               private messageService: MessageService,
@@ -80,16 +77,15 @@ export class EvaluationrecordComponent implements OnInit {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
-    this.route.params.subscribe(params => this.id = parseInt(params.id, 10));
   }
 
   getEvaluationRecord(): void {
-    this.evalService.getEvaluationRecord(this.id)
+    this.evalService.getEvaluationRecord(this.paramEmployeeID)
       .subscribe(records => {
-        records.forEach(evalrecord => {
-          this.addRecord(evalrecord);
-          this.getBonusSalary(evalrecord.employee_id);
-          this.createFormFields(evalrecord);
+        records.forEach(record => {
+          this.addRecord(record);
+          this.getBonusSalary(record.employee_id);
+          this.createFormFields(record);
         });
       });
   }
