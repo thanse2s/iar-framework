@@ -24,6 +24,17 @@ exports.get = async function (db, username){
 }
 
 /**
+ * retrieves user role from database by its username
+ * @param db source database
+ * @param {string} username
+ * @return {Promise<role>}
+ */
+
+exports.get = async function(db,username){
+    return db.collection('users').findOne({username: username});
+}
+
+/**
  * verifies provided credentials against a database
  * @param db source database
  * @param {Credentials} credentials credentials to verify

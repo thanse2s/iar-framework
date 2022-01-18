@@ -13,6 +13,8 @@ import {map} from "rxjs/operators";
 })
 export class AuthGuardService implements CanActivate{
 
+  active: boolean;
+
   constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(): Observable<boolean> {
@@ -25,4 +27,5 @@ export class AuthGuardService implements CanActivate{
         })
       );
   }
+
 }

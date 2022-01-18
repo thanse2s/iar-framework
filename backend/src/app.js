@@ -33,7 +33,9 @@ app.use(session({
     }
 }));
 
-const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
+const apiRouter = require('./routes/api-routes');
+const userService = require("./services/user-service");
+const User = require("./models/User"); //get api-router from routes/api
 app.use('/api', apiRouter); //mount api-router at path "/api"
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
@@ -65,8 +67,12 @@ async function initDb(db){
         await salesmanService.add(db,new salesman(22,"Tobias","Hansen","REST"));
 
         //Mock Performance-Record
-        const adminPassword = crypto.randomBytes(8).toString('base64');
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
+        //const adminPassword = crypto.randomBytes(8).toString('base64');
+        const adminPassword = 'admin';
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true,''));
+        await userService.add(db,new User('salesman','','salesman','','salesman',false,'salesman'));
+        await userService.add(db,new User('HR','','HR','','HR',false,'HR'));
+
 
         console.log('created admin user with password: '+adminPassword);
     }

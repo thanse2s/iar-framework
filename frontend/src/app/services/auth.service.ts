@@ -38,6 +38,10 @@ export class AuthService {
     });
   }
 
+
+  /** checkt role from user **/
+
+
   /**
    * subscribe to changes of the login state
    * @param callback
@@ -90,4 +94,6 @@ export class AuthService {
       })
     );
   }
+
+
 }

@@ -23,7 +23,7 @@ import {CommitPageComponent} from './pages/commit-page/commit-page.component';
  */
 const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
-  {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
+  //{path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
   {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
   {path: 'salesman', component: SalesmanListComponent, canActivate: [AuthGuardService]},
   {path: 'evaluationrecord', component: EvaluationrecordPageComponent, canActivate: [AuthGuardService]},

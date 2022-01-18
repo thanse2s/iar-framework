@@ -13,7 +13,7 @@ exports.authenticate = async function () {
         client_id: 'api_oauth_id',
         client_secret: 'oauth_secret',
         grant_type: 'password',
-        username: 'Behringer',
+        username: 'Hansen',
         password: '*Safb02da42Demo$'
     });
     const config = {

@@ -12,7 +12,6 @@ export class LoginComponent implements OnInit {
 
   //object for input-binding
   credentials: Credentials;
-
   loginError: string;
 
   constructor(private authService: AuthService, private router: Router) { }
