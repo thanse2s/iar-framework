@@ -26,6 +26,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {CommitPageComponent} from './pages/commit-page/commit-page.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {EvaluationRecordComponent} from './components/evaluation-record/evaluati
         MatCardModule,
         MatToolbarModule,
         MatIconModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatTooltipModule
     ],
   providers: [],
   bootstrap: [AppComponent]

@@ -30,10 +30,10 @@ router.delete('/bonussalary/:id', bonusSalaryApi.delete)
 const performanceApi = require('../apis/performanceRecord-api');
 const {postBonusSalary, commit, correctBonusInBody} = require('../middlewares/performance-middleware')
 router.get('/performance/uncommitted', performanceApi.getCommitted);
-router.get('performance/calculatebonus/:id', correctBonusInBody, performanceApi.sendBack)
 router.get('/performance/:id', performanceApi.get);
 router.get('/performance', performanceApi.get);
 router.post('/performance/commit/:id', postBonusSalary, commit);
+router.post('/performance/calculatebonus/:id', correctBonusInBody, performanceApi.sendBack);
 router.post('/performance/:id', correctBonusInBody, performanceApi.update);
 router.post('/performance', correctBonusInBody, performanceApi.add);
 router.delete('/performance/:id', performanceApi.delete);

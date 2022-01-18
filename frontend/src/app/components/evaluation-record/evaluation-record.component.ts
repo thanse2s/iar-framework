@@ -161,17 +161,19 @@ export class EvaluationRecordComponent implements OnInit {
   addSocialPerformance(record: Evaluationrecord): void {
     const form = this.findFieldsInRecordRelation(record).addSocial;
     if (!form.invalid) {
-      const newSocialPerformance = new Socialperformance(
+      this.evalService.getCorrectBonusFromNull(record.employee_id, record.year, new Socialperformance(
         form.value.actual,
         form.value.target,
         form.value.skill,
         form.value.bonus,
         form.value.comment
-      );
-      record.social_performance.push(newSocialPerformance);
-      this.addedSocialPerformances.push(newSocialPerformance);
-      this.createBonusAndCommentField(newSocialPerformance, record);
-      form.patchValue({skill: null, target: 5, actual: 5, bonus: null, comment: null});
+      )).subscribe(evaluationRecord => {
+        const newSocialPerformance = evaluationRecord.social_performance[0];
+        record.social_performance.push(newSocialPerformance);
+        this.addedSocialPerformances.push(newSocialPerformance);
+        this.createBonusAndCommentField(newSocialPerformance, record);
+        form.patchValue({skill: null, target: 5, actual: 5, bonus: null, comment: null});
+      });
     }
   }
   enterEditMode(editRecord: Evaluationrecord): void {

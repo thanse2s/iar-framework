@@ -6,6 +6,7 @@ import {catchError, map, tap} from 'rxjs/operators';
 
 import {MessageService} from './message.service';
 import {error} from 'protractor';
+import {Socialperformance} from "../models/Socialperformance";
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,15 @@ export class EvaluationrecordService {
     return this.https.get<Evaluationrecord[]>(url).pipe(
       tap(_ => this.log(`No EvaluationRecord with id: ${id}`)),
       catchError(this.handleError<Evaluationrecord[]>(`get EvaluationRecord id: ${id}`))
+    );
+  }
+  public getCorrectBonusFromNull(employeeId: number, year: number, social: Socialperformance): Observable<Evaluationrecord> {
+    return this.https.post(
+      `${this.EvalrecURL}/calculatebonus/${employeeId}?year=${year}`,
+      {orders_evaluation: [], social_performance: [social]},
+      {responseType: 'json'}).pipe(
+      tap(_ => this.log(`Fetching correct Bonus for Record of Employee: ${employeeId}`)),
+      catchError(this.handleError('fetching new Bonus'))
     );
   }
   public getUncommittedEvaluationRecords(): Observable<Evaluationrecord[]> {
