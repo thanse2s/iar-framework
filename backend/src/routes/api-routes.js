@@ -8,11 +8,11 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
 
 const authApi = require('../apis/auth-api'); //api-endpoints are loaded from separate files
 router.post('/login', authApi.login); //the function decides which request type should be accepted
-router.delete('/login', checkAuthorization(),authApi.logout); //middlewares can be defined in parameters
+router.delete('/login', checkAuthorization, authApi.logout); //middlewares can be defined in parameters
 router.get('/login', authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
 
 const userApi = require('../apis/user-api');
-router.get('/user', checkAuthorization(), userApi.getSelf);
+router.get('/user', checkAuthorization, userApi.getSelf);
 
 
 const salesmanApi = require('../apis/salesman-api');
@@ -28,17 +28,14 @@ router.post('/bonussalary/:id', bonusSalaryApi.post)
 router.delete('/bonussalary/:id', bonusSalaryApi.delete)
 
 const performanceApi = require('../apis/performanceRecord-api');
+const {postBonusSalary, commit, correctBonusInBody} = require('../middlewares/performance-middleware')
 router.get('/performance/uncommitted', performanceApi.getCommitted);
+router.get('performance/calculatebonus/:id', correctBonusInBody, performanceApi.sendBack)
 router.get('/performance/:id', performanceApi.get);
 router.get('/performance', performanceApi.get);
-router.post('/performance/commit/:id', function(req, res, next) {
-    bonusSalaryApi.post(req, res);
-    next();
-}, function(req, res) {
-    performanceApi.commit(req, res);
-});
-router.post('/performance/:id', performanceApi.update);
-router.post('/performance', performanceApi.add);
+router.post('/performance/commit/:id', postBonusSalary, commit);
+router.post('/performance/:id', correctBonusInBody, performanceApi.update);
+router.post('/performance', correctBonusInBody, performanceApi.add);
 router.delete('/performance/:id', performanceApi.delete);
 module.exports = router;
 

@@ -57,6 +57,12 @@ exports.getCommitted = function (req, res){
         .catch( _=> res.status(400).send('Error', 'Hi'));
 }
 
+exports.sendBack = function (req, res){
+    let id = parseInt(req.params.id);
+    let year = parseInt(req.query.year);
+    res.status(200).json(performanceRecordMapper(req.body, id, year));
+}
+
 function performanceRecordMapper(body, id, year) {
 
     let socialPerformances = [];
@@ -70,7 +76,6 @@ function performanceRecordMapper(body, id, year) {
         let description = record["description"];
         let bonus = record["bonus"];
         let comment = record["comment"];
-        console.log(new SocialPerformance(actual_value, target_value, description, bonus, comment));
         socialPerformances.push(new SocialPerformance(actual_value, target_value, description, bonus, comment));
     });
 
