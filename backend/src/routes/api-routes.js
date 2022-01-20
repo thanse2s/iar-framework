@@ -39,5 +39,6 @@ router.post('/performance', correctBonusInBody, performanceApi.add);
 router.delete('/performance/:id', performanceApi.delete);
 module.exports = router;
 
-const openCrXApi = require('../apis/opencrx-api');
-router.get('/opencrx',openCrXApi.getContact);
+const openCRXApi = require('../apis/opencrx-api');
+router.get('/opencrx/account', openCRXApi.getAllContacts);
+router.get('/opencrx/account/:id', openCRXApi.getContactByID);

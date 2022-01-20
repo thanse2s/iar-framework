@@ -10,16 +10,29 @@ const config = {
     },
     auth: credentials,
 };
-const queryString = `${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/`;
 
 //const contacts =  await axios.get(`${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account`, config);
-
 //const customers = contacts.data.objects;
 
-exports.getContact = function (req, res){
-        axios.get(queryString,config).then(customers =>
-            res.json(customers.data.objects)
+const queryContacts = `${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/`;
+
+const queryProducts = `${baseUrl}`
+
+exports.getAllContacts = function (req, res){
+        axios.get(queryContacts,config).then(accounts =>
+            res.json(accounts.data.objects)
 
         ).catch(_=> {res.status(401).send('No Contracts found');
     })
+}
+
+exports.getContactByID = function (req, res) {
+    let id = req.params.id;
+    console.log(id);
+    let queryIDContact = `${queryContacts}${id}`
+    console.log(queryIDContact);
+    axios.get(queryIDContact, config).then(account => {
+            res.json(account.data);
+        }
+    ).catch(_=> res.status(401).send(`No Contact with id ${id} found`));
 }
