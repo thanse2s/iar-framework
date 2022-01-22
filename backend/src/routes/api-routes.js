@@ -42,3 +42,4 @@ module.exports = router;
 const openCRXApi = require('../apis/opencrx-api');
 router.get('/opencrx/account', openCRXApi.getAllContacts);
 router.get('/opencrx/account/:id', openCRXApi.getContactByID);
+router.post('opencrx/update', openCRXApi.updateAllOrderEvaluation);

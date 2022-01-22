@@ -16,23 +16,43 @@ const config = {
 
 const queryContacts = `${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/`;
 
-const queryProducts = `${baseUrl}`
+const queryProducts = `${baseUrl}`;
 
-exports.getAllContacts = function (req, res){
-        axios.get(queryContacts,config).then(accounts =>
-            res.json(accounts.data.objects)
+exports.updateAllOrderEvaluation = async function (req, res) {
+    await axios.get(queryContacts, config).then(accounts => {
+        accounts.data.objects.forEach(account => {
+            let UID = account.identity.split("/").pop();
+            console.log(UID);
+            let name = account.fullName;
+            console.log(name);
+        });
 
-        ).catch(_=> {res.status(401).send('No Contracts found');
+    }).catch(_=> res.status(401).send(`Failed to update Database`));
+}
+
+exports.getAllContacts = async function (req, res){
+        await axios.get(queryContacts,config).then(accounts => {
+                accounts.data.objects.forEach(account => {
+                    let UID = account.identity.split("/").pop();
+                    console.log(UID);
+                    let name = account.fullName;
+                    console.log(name);
+                    let costumerRating = account.accountRating;
+                    console.log(costumerRating);
+                });
+                res.json(accounts.data.objects);
+            }
+        ).catch(_=> {res.status(401).send('No Contacts found');
     })
 }
 
 exports.getContactByID = function (req, res) {
     let id = req.params.id;
-    console.log(id);
-    let queryIDContact = `${queryContacts}${id}`
+    let queryIDContact = `${queryContacts}${id}`;
     console.log(queryIDContact);
     axios.get(queryIDContact, config).then(account => {
             res.json(account.data);
         }
     ).catch(_=> res.status(401).send(`No Contact with id ${id} found`));
 }
+
