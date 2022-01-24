@@ -15,3 +15,20 @@ exports.checkAuthorization = (beAdmin) => {
         res.status(401).send(); //intercept request
     }
 }
+
+
+/**@param {boolean} haveRole
+ */
+
+exports.haveRole(role :String) = (haveRole) =>{
+    return(req,res,next) =>{
+        if(req.session.authenticated){
+            if(role == req.session.user.role){
+                next();
+                return;
+            }
+        }
+        res.status(401).send();
+    }
+
+}

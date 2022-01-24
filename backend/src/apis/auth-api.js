@@ -42,3 +42,11 @@ exports.isLoggedIn = function (req, res){
         res.send({loggedIn: false});
     }
 }
+
+exports.isRole = function (req,res){
+    if(authService.isAuthenticated(req.status)){
+        res.send(res.user.role);
+    }else{
+        res.send({null});
+    }
+}
