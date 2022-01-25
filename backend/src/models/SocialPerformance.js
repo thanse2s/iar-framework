@@ -12,11 +12,7 @@ class SocialPerformance {
         this.actual_value = actual_value;
         this.target_value = target_value;
         this.description = description;
-        if (bonus === undefined) {
-            this.bonus = actual_value / target_value * 100;
-        } else {
-            this.bonus = bonus;
-        }
+        this.bonus = bonus;
         this.comment = comment;
     }
 }

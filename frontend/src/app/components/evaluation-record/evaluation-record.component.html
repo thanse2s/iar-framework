@@ -8,18 +8,6 @@
         Total Bonus-Salary of this year: {{this.calculateTotalBonusSalary(evaluationRecord)}}€, Already Committed: {{findBonusSalaryByIDAndYear(evaluationRecord.employee_id, evaluationRecord.year)}}€
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="button-panel">
-      <button mat-icon-button aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode">
-        <mat-icon>undo</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Save" color="primary" id="save-button" [disabled]="!editMode" (click)="this.switchEditMode(evaluationRecord)">
-        <mat-icon>save</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Edit" color="primary" id="edit-button" (click)="this.switchEditMode(evaluationRecord)" [disabled]="editMode">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-
     <table *ngIf = "evaluationRecord.orders_evaluation" class="output_table">
       <tr>
         <th>Name of Product:</th>
@@ -29,13 +17,13 @@
         <th>Bonus:</th>
         <th>Comment:</th>
       </tr>
-      <tr *ngFor="let orderevaluation of evaluationRecord.orders_evaluation; let j = index">
-        <td>{{orderevaluation.name_of_product}}</td>
-        <td>{{orderevaluation.client}}</td>
-        <td>{{orderevaluation.client_ranking}}</td>
-        <td>{{orderevaluation.items}}</td>
+      <tr *ngFor="let orderEvaluation of evaluationRecord.orders_evaluation; let j = index">
+        <td>{{orderEvaluation.name_of_product}}</td>
+        <td>{{orderEvaluation.client}}</td>
+        <td>{{orderEvaluation.client_ranking}}</td>
+        <td>{{orderEvaluation.items}}</td>
         <td>
-          <mat-form-field [formGroup]="findFieldsInRelation(orderevaluation).fields" class="bonus-field" appearance="outline" >
+          <mat-form-field [formGroup]="findFieldsInRelation(orderEvaluation).fields" class="bonus-field" appearance="outline" >
             <mat-label>Bonus</mat-label>
             <input matInput type="number" formControlName="bonus" placeholder="0" min ="0">
             <mat-icon matPrefix color="primary">euro</mat-icon>
@@ -43,9 +31,9 @@
         </td>
         <td>
           <form>
-            <mat-form-field [formGroup]="findFieldsInRelation(orderevaluation).fields" class="comment-field" appearance="outline">
+            <mat-form-field [formGroup]="findFieldsInRelation(orderEvaluation).fields" class="comment-field" appearance="outline">
               <mat-label>Leave a comment</mat-label>
-              <textarea matInput formControlName="comment" placeholder="Ex. Goodjob!"></textarea>
+              <textarea matInput formControlName="comment" placeholder="Ex. nice one!"></textarea>
             </mat-form-field>
           </form>
         </td>
@@ -60,28 +48,67 @@
         <th>Bonus:</th>
         <th>Comment:</th>
       </tr>
-      <tr *ngFor="let socialperformance of evaluationRecord.social_performance; let j = index">
-        <td>{{socialperformance.description}}</td>
-        <td>{{socialperformance.target_value}}</td>
-        <td>{{socialperformance.actual_value}}</td>
+      <tr *ngFor="let socialPerformance of evaluationRecord.social_performance; let j = index">
+        <td>{{socialPerformance.description}}</td>
+        <td>{{socialPerformance.target_value}}</td>
+        <td>{{socialPerformance.actual_value}}</td>
         <td>
           <form>
-            <mat-form-field [formGroup]="findFieldsInRelation(socialperformance).fields" class="bonus-field" appearance="outline">
+            <mat-form-field [formGroup]="findFieldsInRelation(socialPerformance).fields" class="bonus-field" appearance="outline">
               <mat-label>Bonus</mat-label>
               <input matInput type="number" formControlName="bonus" placeholder="0" min="0">
-              <span matPrefix>€&nbsp;</span>
+              <mat-icon matPrefix color="primary">euro</mat-icon>
             </mat-form-field>
           </form>
         </td>
         <td>
           <form>
-            <mat-form-field [formGroup]="findFieldsInRelation(socialperformance).fields" class="comment-field" appearance="outline">
+            <mat-form-field [formGroup]="findFieldsInRelation(socialPerformance).fields" class="comment-field" appearance="outline">
               <mat-label>Leave a comment</mat-label>
-              <textarea matInput formControlName="comment" placeholder="Ex. Goodjob!"></textarea>
+              <textarea matInput formControlName="comment" placeholder="Ex. good job!"></textarea>
             </mat-form-field>
           </form>
         </td>
       </tr>
     </table>
+    <mat-action-row>
+      <div class="button-panel">
+        <span [@hideButtons]="this.getEditMode()" [formGroup]="this.findFieldsInRecordRelation(evaluationRecord).addSocial">
+          <mat-form-field appearance="outline" style="margin-right: 10px">
+            <mat-label>Skill/Competence</mat-label>
+            <input matInput type="text" formControlName="skill" placeholder="Openness to Employees">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Target Value</mat-label>
+            <input matInput type="number" formControlName="target" placeholder="5" min="0" max="10">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Actual Value</mat-label>
+            <input matInput type="number" formControlName="actual" placeholder="5" min="0" max="10">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Bonus</mat-label>
+            <input matInput type="number" formControlName="bonus" matTooltip="leave it empty for autogeneration" placeholder="0" min="0">
+            <mat-icon matPrefix color="primary">euro</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Leave a comment</mat-label>
+            <textarea matInput formControlName="comment" placeholder="Leave a helpful comment :)" matTextareaAutosize matAutosizeMinRows=1 matAutosizeMaxRows=5></textarea>
+          </mat-form-field>
+          <button mat-fab aria-label="Add" color="primary" id="add-button" [disabled]="!editMode" (click)="this.addSocialPerformance(evaluationRecord)">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-fab aria-label="Save" color="primary" id="save-button" [disabled]="!editMode" (click)="this.saveChanges()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-fab aria-label="Undo" color="warn" id="undo-button" [disabled]="!editMode" (click)="this.undoChanges()">
+            <mat-icon>undo</mat-icon>
+          </button>
+        </span>
+        <button mat-fab aria-label="Edit" color="primary" id="edit-button" [disabled]="editMode" (click)="this.enterEditMode(evaluationRecord)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

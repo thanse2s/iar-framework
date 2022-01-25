@@ -1,32 +1,73 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MessageService} from '../../services/message.service';
-import {EvaluationrecordService} from '../../services/evaluationrecord.service';
-import {Evaluationrecord} from '../../models/Evaluationrecord';
-import {BonusSalaryService} from '../../services/bonussalary.service';
-import {BonusSalary} from '../../models/BonusSalary';
-import {ActivatedRoute} from '@angular/router';
-import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { MessageService } from '../../services/message.service';
+import { EvaluationrecordService } from '../../services/evaluationrecord.service';
+import { Evaluationrecord } from '../../models/Evaluationrecord';
+import { Socialperformance } from '../../models/Socialperformance';
+import { BonusSalaryService } from '../../services/bonussalary.service';
+import { BonusSalary } from '../../models/BonusSalary';
+import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-evaluation-record',
   templateUrl: './evaluation-record.component.html',
   styleUrls: ['./evaluation-record.component.css'],
+  animations: [
+    trigger('hideButtons', [
+      state('editing', style({
+        opacity: 1
+      })),
+      state('hide', style({
+        opacity: 0
+      })),
+      transition('editing => hide', [
+        query('mat-form-field', animate('300ms ease-out', style({
+          opacity: 0
+        }))),
+        query('button', animate('400ms ease-out', style({
+          transform: 'translateX(500%)'
+        })))
+      ]),
+      transition('hide => editing', [
+        style({opacity: 1}),
+        query('button', style({
+          transform: 'translateX(500%)'
+        })),
+        query('mat-form-field', style({
+          opacity: 0
+        })),
+        query('button',
+          stagger('100ms', [
+            animate('200ms', style({
+              transform: 'translateX(0%)'
+            }))
+          ])),
+        query('mat-form-field',
+          stagger('50ms', [
+            animate('300ms ease-out', style({
+              opacity: 1
+            }))
+          ]))
+      ])
+    ])
+  ]
 })
 
-export class EvaluationrecordComponent implements OnInit {
+export class EvaluationRecordComponent implements OnInit {
 
+  @Input() paramEmployeeID: number;
   private evalService: EvaluationrecordService;
   private bonusSalaryService: BonusSalaryService;
-  private id: number;
+
   editMode: boolean;
   editingRecord: Evaluationrecord;
+  addedSocialPerformances: Socialperformance[] = [];
+
   evaluationRecord: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
   relation: Fields[] = [];
   recordRelation: AllFields[] = [];
-
-  @Input() para_employee_id?: number;
-
 
   constructor(evalService: EvaluationrecordService,
               bonusSalaryService: BonusSalaryService,
@@ -36,17 +77,15 @@ export class EvaluationrecordComponent implements OnInit {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
-    //this.route.params.subscribe(params => this.id = parseInt(params.id, 10));
-    this.id = this.para_employee_id;
   }
 
   getEvaluationRecord(): void {
-    this.evalService.getEvaluationRecord(this.id)
+    this.evalService.getEvaluationRecord(this.paramEmployeeID)
       .subscribe(records => {
-        records.forEach(evalrecord => {
-          this.addRecord(evalrecord);
-          this.getBonusSalary(evalrecord.employee_id);
-          this.createFormFields(evalrecord);
+        records.forEach(record => {
+          this.addRecord(record);
+          this.getBonusSalary(record.employee_id);
+          this.createFormFields(record);
         });
       });
   }
@@ -72,6 +111,15 @@ export class EvaluationrecordComponent implements OnInit {
     }
   }
   createFormFields(record: Evaluationrecord): void {
+    this.recordRelation.push(new AllFields(
+      this.fb.array([]),
+      this.fb.group({
+        skill: [null, Validators.required],
+        target: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
+        actual: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
+        bonus: [null, [Validators.min(0), Validators.max(100000000)]],
+        comment: null
+      }), record));
     record.orders_evaluation.forEach(order => {
       this.createBonusAndCommentField(order, record);
     });
@@ -82,14 +130,10 @@ export class EvaluationrecordComponent implements OnInit {
   createBonusAndCommentField(socialOrOrder, record): void {
     const newFormGroup = this.fb.group({
       bonus: [{value: socialOrOrder.bonus, disabled: !this.editMode}, [Validators.required, Validators.min(0), Validators.max(100000000)]],
-      comment: [{value: socialOrOrder.comment, disabled: !this.editMode}, Validators.required]
+      comment: [{value: socialOrOrder.comment, disabled: !this.editMode}]
     });
     this.relation.push(new Fields(newFormGroup, socialOrOrder));
-    if (this.findFieldsInRecordRelation(record) === undefined) {
-      this.recordRelation.push(new AllFields(this.fb.array([newFormGroup]), record));
-    } else {
-      this.findFieldsInRecordRelation(record).fields.push(newFormGroup);
-    }
+    this.findFieldsInRecordRelation(record).fields.push(newFormGroup);
   }
   findFieldsInRelation(content): Fields {
     return this.relation.find(el => el.content === content) as Fields;
@@ -111,33 +155,96 @@ export class EvaluationrecordComponent implements OnInit {
     });
     return bonusSalary;
   }
-  switchEditMode(editRecord: Evaluationrecord): void {
+  getEditMode(): string {
+    return this.editMode ? 'editing' : 'hide';
+  }
+  addSocialPerformance(record: Evaluationrecord): void {
+    const form = this.findFieldsInRecordRelation(record).addSocial;
+    if (!form.invalid) {
+      this.evalService.getCorrectBonusFromNull(record.employee_id, record.year, new Socialperformance(
+        form.value.actual,
+        form.value.target,
+        form.value.skill,
+        form.value.bonus,
+        form.value.comment
+      )).subscribe(evaluationRecord => {
+        const newSocialPerformance = evaluationRecord.social_performance[0];
+        record.social_performance.push(newSocialPerformance);
+        this.addedSocialPerformances.push(newSocialPerformance);
+        this.createBonusAndCommentField(newSocialPerformance, record);
+        form.patchValue({skill: null, target: 5, actual: 5, bonus: null, comment: null});
+      });
+    }
+  }
+  enterEditMode(editRecord: Evaluationrecord): void {
     if (!this.editMode) {
       this.editingRecord = editRecord;
       this.findFieldsInRecordRelation(this.editingRecord).fields.enable();
       this.editMode = !this.editMode;
-    } else {
+    }
+  }
+  saveChanges(): void {
+    if (this.editMode) {
+      const fields = this.findFieldsInRecordRelation(this.editingRecord).fields;
+      if (!fields.invalid) {
+        // some fields were changed but no new social performance was added
+        const touched = fields.touched;
+        if (touched) {
+          this.editingRecord.orders_evaluation.forEach(order => {
+            order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
+            order.comment = this.findFieldsInRelation(order).fields.value.comment;
+          });
+          this.editingRecord.social_performance.forEach(social => {
+            social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
+            social.comment = this.findFieldsInRelation(social).fields.value.comment;
+          });
+        }
+        // Any changes occurred that need to be updated
+        if (touched || this.addedSocialPerformances.length > 0) {
+          this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
+          this.addedSocialPerformances = [];
+        }
+        fields.disable();
+        this.editMode = !this.editMode;
+      }
+    }
+  }
+  undoChanges(): void {
+    if (this.editMode) {
+      // reset social performances
+      if (this.addedSocialPerformances.length > 0) {
+        this.addedSocialPerformances.forEach(_ => {
+          this.editingRecord.social_performance.pop();
+          this.relation.pop();
+        });
+      }
+      // reset all fields if any was touched
       if (this.findFieldsInRecordRelation(this.editingRecord).fields.touched) {
         this.editingRecord.orders_evaluation.forEach(order => {
-          order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
-          order.comment = this.findFieldsInRelation(order).fields.value.comment;
+          this.findFieldsInRelation(order).fields.patchValue({
+            bonus: order.bonus,
+            comment: order.comment
+          });
         });
         this.editingRecord.social_performance.forEach(social => {
-          social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
-          social.comment = this.findFieldsInRelation(social).fields.value.comment;
+          this.findFieldsInRelation(social).fields.patchValue({
+            bonus: social.bonus,
+            comment: social.comment
+          });
         });
-        this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
       }
+      // leave edit-mode
       this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
       this.editMode = !this.editMode;
     }
   }
 
   ngOnInit(): void {
-    this.id = this.para_employee_id;
     this.getEvaluationRecord();
   }
 }
+
+
 class Fields {
   fields: FormGroup;
   content: any;
@@ -148,9 +255,11 @@ class Fields {
 }
 class AllFields {
   fields: FormArray;
+  addSocial: FormGroup;
   content: Evaluationrecord;
-  constructor(fields: FormArray, content: Evaluationrecord) {
+  constructor(fields: FormArray, addSocial: FormGroup, content: Evaluationrecord) {
     this.fields = fields;
+    this.addSocial = addSocial;
     this.content = content;
   }
 }
