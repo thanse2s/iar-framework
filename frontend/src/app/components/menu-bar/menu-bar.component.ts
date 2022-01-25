@@ -36,7 +36,7 @@ export class MenuBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   // this.fetchUser();
+    this.fetchUser();
     this.navigate();
   }
 
@@ -57,32 +57,27 @@ export class MenuBarComponent implements OnInit {
     });
   }
 
-  fetchRole(): string{
+
+  navigate(): void {
+    this.buttons = [];
+
     this.userService.getOwnUser().subscribe(user => {
-      console.log(user.role);
-      return user.role;
-    });
-    return 'admin';
-  }
-
-  navigate(): void{
-      this.buttons = [];
-
-      switch (this.fetchRole()){
-        case 'Salesman':
-          this.buttons = [  {title: 'Evaluation Record', routerLink: 'evaluationrecord'}];
+      switch (user.role.toLocaleUpperCase()) {
+        case 'SALESMAN':
+          this.buttons = [{title: 'Evaluation Record', routerLink: 'evaluationrecord'}];
           break;
         case 'HR':
-            this.buttons = [{title: 'Commit Dashboard', routerLink: 'commit'}];
+          this.buttons = [{title: 'Commit Dashboard', routerLink: 'commit'}];
           break;
-        case 'Manager':
+        case 'MANAGER':
           this.buttons = [{title: 'Salesman', routerLink: 'salesman'}];
           break;
         default:
-          this.buttons = [ {title: 'Salesman', routerLink: 'salesman'},
+          this.buttons = [{title: 'Salesman', routerLink: 'salesman'},
             {title: 'Evaluation Record', routerLink: 'evaluationrecord'},
             {title: 'Commit Dashboard', routerLink: 'commit'}];
           break;
       }
-    }
+    });
+  }
 }

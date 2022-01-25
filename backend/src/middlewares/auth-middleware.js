@@ -20,10 +20,10 @@ exports.checkAuthorization = (beAdmin) => {
 /**@param {boolean} haveRole
  */
 
-exports.haveRole(role :String) = (haveRole) =>{
+exports.haveRole = (haveRole) =>{
     return(req,res,next) =>{
         if(req.session.authenticated){
-            if(role == req.session.user.role){
+            if(haveRole === req.session.user.role || req.session.user.isAdmin){
                 next();
                 return;
             }

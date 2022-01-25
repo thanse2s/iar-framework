@@ -3,6 +3,7 @@
  * @param session current session
  * @param {User} user information about the current user
  */
+const {isAuthenticated} = require("./auth-service");
 exports.authenticate = function (session, user){
     session.authenticated = true;
     delete user.password;
@@ -27,4 +28,9 @@ exports.deAuthenticate = function (session){
     session.authenticated = false;
     session.user = undefined;
     session.destroy();
+}
+
+exports.isRole = function(session){
+    session.authenticated = isAuthenticated(session);
+    return session.user.role;
 }
