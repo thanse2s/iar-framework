@@ -39,16 +39,5 @@ router.post('/performance', checkAuthorizationByRole("manager"), correctBonusInB
 router.delete('/performance/:id', checkAuthorizationByRole("manager"), performanceApi.delete);
 module.exports = router;
 
-router.post('/performance/:id', checkAuthorizationByRole("manager"), performanceApi.update);
-router.post('/performance', checkAuthorizationByRole("manager"), performanceApi.add);
-router.delete('/performance/:id', checkAuthorizationByRole("manager"), performanceApi.delete);
-module.exports = router;
-
 const openCRXApi = require('../apis/opencrx-api');
-router.get('/opencrx/account', openCRXApi.getAllContacts);
-router.get('/opencrx/account/:id', openCRXApi.getContactByID);
-router.get('/opencrx/order', openCRXApi.getAllSalesOrders);
-router.get('/opencrx/order/:id', openCRXApi.getSalesOrderById);
-router.get('/opencrx/product', openCRXApi.getAllProducts);
-router.get('/opencrx/product/:id', openCRXApi.getProductById);
-router.get('/opencrx/update', openCRXApi.updateAllOrderEvaluation);
+router.get('/opencrx/update', openCRXApi.updateAllOrderEvaluation, correctBonusInBody, performanceApi.addMissingOrderEvaluations);

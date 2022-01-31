@@ -63,6 +63,10 @@ exports.sendBack = function (req, res){
     res.status(200).json(performanceRecordMapper(req.body, id, year));
 }
 
+exports.addMissingOrderEvaluations = function (req, res) {
+    console.log(req.body.orders_evaluation);
+}
+
 function performanceRecordMapper(body, id, year) {
 
     let socialPerformances = [];
