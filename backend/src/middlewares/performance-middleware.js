@@ -20,6 +20,9 @@ exports.commit = async (req, res, next) => {
 }
 // This Array maps the client_ranking of an order evaluation to a number
 const rankingMap = ["bad", "mediocre", "good", "very good", "excellent"];
+exports.getRanking = () => {
+    return rankingMap;
+}
 // Enriches bonus salary
 exports.correctBonusInBody = (req, res, next) => {
     let body = req.body;
