@@ -21,42 +21,28 @@ const querySalesOrders = `${baseUrl}/org.opencrx.kernel.contract1/provider/CRX/s
 const queryProducts = `${baseUrl}/org.opencrx.kernel.product1/provider/CRX/segment/Standard/product/`
 
 exports.updateAllOrderEvaluation = async function (req, res) {
-    await axios.get(queryContacts, config).then(accounts => {
-        accounts.data.objects.forEach(account => {
-            let UID = account.identity.split("/").pop();
-            console.log(UID);
-            let name = account.fullName;
-            console.log(name);
-            let costumerRating = account.accountRating;
-            /*
-            CostumerRating dient als Metrik um Account als Firmen-Account zu identifizieren
-            => Gibt es einen besseren weg? TODO: Metrik überprüfen
-             */
-            if (costumerRating !== 0) {
-                let products = getProducts();
-                console.log(products);
-                let orders = getSalesOrders(name);
-                console.log(orders);
-            }
+    await axios.get(querySalesOrders, config).then(salesOrders => {
+        salesOrders.data.forEach(salesOrder => {
+            let orderEvaluation = {"client":salesOrder.customer.split("/").pop()};
+            console.log(orderEvaluation);
         });
-
     }).catch(_=> res.status(401).send(`Failed to update Database`));
 }
 
 exports.getAllContacts = async function (req, res){
         await axios.get(queryContacts,config).then(accounts => {
-                accounts.data.objects.forEach(account => {
+                accounts.data.objects.forEach( account => {
                     let UID = account.identity.split("/").pop();
-                    console.log(UID);
+                    //console.log(UID);
                     let name = account.fullName;
-                    console.log(name);
+                    //console.log(name);
                     let costumerRating = account.accountRating;
-                    console.log(costumerRating);
+                    //console.log(costumerRating);
                     if (costumerRating !== 0) {
-                        let products = getProducts(name);
+                        //let products = getProducts(name);
                         //console.log(products);
                         let orders = getSalesOrders(name);
-                        //console.log(orders);
+                        console.log(orders);
                     }
                 });
                 res.json(accounts.data.objects);
@@ -80,27 +66,29 @@ async function getProducts() {
     await axios.get(queryProducts, config).then(allproducts => {
         allproducts.data.objects.forEach(product => {
            products.push(product.name);
-           console.log(product.name);
+           //console.log(product.name);
         });
     });
     return products;
 }
 
-async function getSalesOrders(name) {
+function getSalesOrders(name) {
     let sales = [];
-    await axios.get(querySalesOrders, config).then(orders => {
+    axios.get(querySalesOrders, config).then(orders => {
         orders.data.objects.forEach(order => {
            let salesRepID = order.salesRep.$.split("/").pop();
-           console.log(salesRepID);
+           //console.log(salesRepID);
+            sales.push(salesRepID);
            let salesRep = getAccountnameByID(salesRepID);
-           console.log(salesRep);
+           //console.log(salesRep);
            let customerID = order.customer.$.split("/").pop();
-           console.log(customerID);
+            console.log(customerID);
+            sales.push(customerID);
            let customer = getAccountnameByID(customerID);
-           console.log(customer);
-
+           //console.log(customer);
         });
     });
+    return sales;
 }
 
 function getAccountnameByID(id) {
@@ -114,7 +102,7 @@ function getAccountnameByID(id) {
 
 exports.getAllProducts = async function(req, res) {
     await axios.get(queryProducts, config).then(products => {
-        res.json(products);
+        res.json(products.data);
     });
 };
 
@@ -128,14 +116,14 @@ exports.getProductById = async function(req, res) {
 
 exports.getAllSalesOrders = async function(req, res) {
     await axios.get(querySalesOrders, config).then(salesOrders => {
-        res.json(salesOrders);
+        res.json(salesOrders.data);
     });
 };
 
 exports.getSalesOrderById = async function(req, res) {
     let id = req.params.id;
     let queryIDSalesOrders = `${querySalesOrders}${id}`;
-    await axiot.get(queryIDSalesOrders, config).then(salesOrder => {
+    await axios.get(queryIDSalesOrders, config).then(salesOrder => {
         res.json(salesOrder);
     });
 };
