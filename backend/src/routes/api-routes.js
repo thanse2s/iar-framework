@@ -46,4 +46,4 @@ router.get('/opencrx/order', openCRXApi.getAllSalesOrders);
 router.get('/opencrx/order/:id', openCRXApi.getSalesOrderById);
 router.get('/opencrx/product', openCRXApi.getAllProducts);
 router.get('/opencrx/product/:id', openCRXApi.getProductById);
-router.post('opencrx/update', openCRXApi.updateAllOrderEvaluation);
+router.post('/opencrx/update', openCRXApi.updateAllOrderEvaluation);
