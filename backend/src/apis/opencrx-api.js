@@ -1,4 +1,5 @@
 const axios = require('axios');
+const OrderEvaluation = require('../models/OrderEvaluation');
 const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX';
 const credentials = {
     username: 'guest',
@@ -22,11 +23,35 @@ const queryProducts = `${baseUrl}/org.opencrx.kernel.product1/provider/CRX/segme
 
 exports.updateAllOrderEvaluation = async function (req, res) {
     await axios.get(querySalesOrders, config).then(salesOrders => {
-        salesOrders.data.forEach(salesOrder => {
-            let orderEvaluation = {"client":salesOrder.customer.split("/").pop()};
-            console.log(orderEvaluation);
+        //axios.get(querySalesOrders + '/L6K69EO6Y3ZS9H2MA4T2TYJFL/position', config).then(a => console.log(a.data.objects));
+        salesOrders.data.objects.forEach(async function (salesOrder) {
+            let orderEvaluations = [];
+            let basicOrderEvaluation = {};
+            await getRequestFromOpenCRX(salesOrder.salesRep['@href']).then(salesman => basicOrderEvaluation.salesman = salesman.data.fullName);
+            await getRequestFromOpenCRX(salesOrder.customer['@href']).then(client => basicOrderEvaluation.client = client.data.fullName);
+            basicOrderEvaluation.year = parseInt(salesOrder.createdAt.slice(0,4));
+            let id = salesOrder.identity.split("/").pop();
+            let position = await getRequestFromOpenCRX(salesOrder['@href']+'/position');
+            console.log(position);
+            position.data.objects.forEach(position => {
+                let nameOfProduct;
+                getRequestFromOpenCRX(position.product['@href']).then(res => nameOfProduct = res.data.objects.name);
+                let orderEvaluation = new OrderEvaluation(
+                    nameOfProduct,
+                    basicOrderEvaluation.client,
+                    0,
+                    parseInt(position.quantity),
+                    null,
+                    null);
+                console.log(orderEvaluation);
+            });
+            console.log(basicOrderEvaluation);
         });
     }).catch(_=> res.status(401).send(`Failed to update Database`));
+}
+
+async function getRequestFromOpenCRX(req) {
+    return await axios.get(req, config);
 }
 
 exports.getAllContacts = async function (req, res){
