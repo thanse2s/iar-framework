@@ -65,6 +65,8 @@ exports.sendBack = function (req, res){
 
 exports.addMissingOrderEvaluations = function (req, res) {
     console.log(req.body.orders_evaluation);
+    for (const orderEvaluation of req.body.orders_evaluation) {
+    }
 }
 
 function performanceRecordMapper(body, id, year) {

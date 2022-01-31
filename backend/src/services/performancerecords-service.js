@@ -44,3 +44,10 @@ exports.commit = async function(db, employee_id, year){
 exports.getCommitted = async function(db){
     return await db.collection('performance_records').find({is_committed: false}).toArray();
 }
+
+exports.checkOrderEvaluationIsPresent= async function (db, employee_id, year, orderEvaluation) {
+    let result = await db.collection('performance_records').findOne({
+        employee_id: employee_id, year: year, orders_evaluation: orderEvaluation
+    });
+    return result !== undefined;
+}
