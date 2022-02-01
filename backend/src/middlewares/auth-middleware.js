@@ -16,10 +16,10 @@ exports.checkAuthorizationForAllRoles = (req, res, next) => {
  * @param {string} requiredRole
  * @return {(function(*, *, *): void)|*}
  */
-exports.checkAuthorizationByRole = (requiredRole) =>{
+exports.checkAuthorizationByRole = (requiredRole) => {
     return(req,res,next) =>{
         if(req.session.authenticated){
-            if(requiredRole === req.session.user.role || req.session.user.isAdmin){
+            if(requiredRole === req.session.user.role || 'admin' === req.session.user.role){
                 next();
                 return;
             }
