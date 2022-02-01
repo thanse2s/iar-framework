@@ -40,4 +40,10 @@ router.delete('/performance/:id', checkAuthorizationByRole("manager"), performan
 module.exports = router;
 
 const openCRXApi = require('../apis/opencrx-api');
-router.get('/opencrx/update', openCRXApi.updateAllOrderEvaluation, correctBonusInBody, performanceApi.addMissingOrderEvaluations);
+const {mapNamesToEmployeeIds} = require('../middlewares/salesman-middleware')
+router.get('/opencrx/update',
+    checkAuthorizationByRole('manager'),
+    openCRXApi.updateAllOrderEvaluation,
+    correctBonusInBody,
+    mapNamesToEmployeeIds,
+    performanceApi.addMissingOrderEvaluations);

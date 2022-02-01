@@ -8,18 +8,17 @@ const s1 = require("../models/Salesman");
  * @return {Promise<void>}
  */
 exports.getOne  = function (req, res){
-    console.log(`I Called ${req.params.id}`);
     const db = req.app.get('db');
         salesmanservice.get(db,parseInt(req.params.id))
             .then(Salesman => res.json(Salesman))
-            .catch(_=> {res.status(401).send('No Salesman found');});
+            .catch(_=> {res.status(404).send('No Salesman found');});
 }
 
 exports.getAll = function (req,res){
     const db = req.app.get('db');
     salesmanservice.getAll(db)
         .then(Salesman => res.json(Salesman))
-        .catch(_=> {res.status(401).send('No Salesman found');});
+        .catch(_=> {res.status(404).send('No Salesman found');});
 }
 
 exports.addSalesMan = function (req, res){
@@ -30,7 +29,7 @@ exports.addSalesMan = function (req, res){
         req.body.lastname,
         req.body.department))
         .then(res.send("Salesman added"))
-        .catch(_=> {res.status(401).send('No Salesman found');
+        .catch(_=> {res.status(404).send('No Salesman found');
     });
 }
 
@@ -39,5 +38,5 @@ exports.deleteSalesMan = function (req,res){
     const id = parseInt(req.params.id)
     salesmanservice.delete(db, id)
         .then(res.send("Salesman deleted"))
-        .catch(_=> {res.status(401).send('No Salesman found');});
+        .catch(_=> {res.status(404).send('No Salesman found');});
 }

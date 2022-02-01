@@ -63,10 +63,32 @@ exports.sendBack = function (req, res){
     res.status(200).json(performanceRecordMapper(req.body, id, year));
 }
 
-exports.addMissingOrderEvaluations = function (req, res) {
-    console.log(req.body.orders_evaluation);
+exports.addMissingOrderEvaluations = async function (req, res) {
+    const db = req.app.get('db');
     for (const orderEvaluation of req.body.orders_evaluation) {
+        const reducedOrderEvaluation = new OrderEvaluation(
+            orderEvaluation.name_of_product,
+            orderEvaluation.client,
+            orderEvaluation.client_ranking,
+            orderEvaluation.items,
+            orderEvaluation.bonus,
+            orderEvaluation.comment);
+        const isPresent = await performanceService.checkOrderEvaluationIsPresent(
+            db,
+            orderEvaluation.salesmanId,
+            orderEvaluation.year,
+            reducedOrderEvaluation
+        )
+        if (!isPresent) {
+            let performanceRecord = await performanceService.get(db, orderEvaluation.salesmanId, orderEvaluation.year);
+            if (performanceRecord === null) {
+                performanceRecord = new PerformanceRecord(orderEvaluation.year, orderEvaluation.salesmanId, [], []);
+            }
+            performanceRecord.orders_evaluation.push(reducedOrderEvaluation);
+            await performanceService.update(db, performanceRecord);
+        }
     }
+    res.status(200).send('Fetched all Data from OpenCRX!');
 }
 
 function performanceRecordMapper(body, id, year) {

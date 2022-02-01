@@ -25,7 +25,8 @@ exports.update = async function(db, performancerecord){
             $set: {social_performance: performancerecord.social_performance,
                 orders_evaluation: performancerecord.orders_evaluation,
                 is_committed: false}
-        });
+        },
+        {upsert: true});
 }
 
 exports.delete = async function(db, employee_id, year){
@@ -49,5 +50,5 @@ exports.checkOrderEvaluationIsPresent= async function (db, employee_id, year, or
     let result = await db.collection('performance_records').findOne({
         employee_id: employee_id, year: year, orders_evaluation: orderEvaluation
     });
-    return result !== undefined;
+    return result !== null;
 }

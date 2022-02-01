@@ -61,7 +61,7 @@ async function getRequestFromOpenCRX(req) {
     return await axios.get(req, config);
 }
 
-/*
+/*3
  * Maps an accountRating from OpenCRX to a textural Representation
  */
 const rankingMap = getRanking();

@@ -6,6 +6,11 @@ exports.get = async function(db,id){
     return db.collection('salesman').findOne({employee_id:id});
 }
 
+exports.getIdByName = async function(db, firstname, surname){
+    const salesman = await db.collection('salesman').findOne({firstname:firstname, lastname: surname});
+    return salesman !== null ? salesman.employee_id : -1;
+}
+
 exports.getAll = async function(db) {
     return db.collection('salesman').find({}).toArray();
 }
