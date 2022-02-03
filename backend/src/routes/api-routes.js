@@ -31,7 +31,6 @@ const performanceApi = require('../apis/performanceRecord-api');
 const {postBonusSalary, commit, correctBonusInBody} = require('../middlewares/performance-middleware')
 router.get('/performance/uncommitted', checkAuthorizationForAllRoles, performanceApi.getCommitted);
 router.get('/performance/:id', checkAuthorizationForAllRoles, performanceApi.get);
-router.get('/performance', checkAuthorizationForAllRoles, performanceApi.get);
 router.post('/performance/commit/:id',checkAuthorizationByRole("HR"), postBonusSalary, commit);
 router.post('/performance/calculatebonus/:id', checkAuthorizationByRole("manager"), correctBonusInBody, performanceApi.sendBack);
 router.post('/performance/:id', checkAuthorizationByRole("manager"), correctBonusInBody, performanceApi.update);

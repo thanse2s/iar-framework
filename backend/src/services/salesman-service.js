@@ -12,7 +12,7 @@ exports.getIdByName = async function(db, firstname, surname){
 }
 
 exports.getAll = async function(db) {
-    return db.collection('salesman').find({}).toArray();
+    return db.collection('salesman').find({}, {projection:{_id: 0}}).toArray();
 }
 
 exports.delete = async function(db, id){
