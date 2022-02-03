@@ -65,6 +65,7 @@ exports.sendBack = function (req, res){
 
 exports.addMissingOrderEvaluations = async function (req, res) {
     const db = req.app.get('db');
+    let affected = 0;
     for (const orderEvaluation of req.body.orders_evaluation) {
         const reducedOrderEvaluation = new OrderEvaluation(
             orderEvaluation.name_of_product,
@@ -86,9 +87,10 @@ exports.addMissingOrderEvaluations = async function (req, res) {
             }
             performanceRecord.orders_evaluation.push(reducedOrderEvaluation);
             await performanceService.update(db, performanceRecord);
+            affected++;
         }
     }
-    res.status(200).send('Fetched all Data from OpenCRX!');
+    res.status(200).send(`Fetched Data from OpenCRX. ${affected} new Order Evaluations were created.`);
 }
 
 function performanceRecordMapper(body, id, year) {
