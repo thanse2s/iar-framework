@@ -26,7 +26,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {CommitPageComponent} from './pages/commit-page/commit-page.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {ManagerEvaluationRecordComponent} from './components/manager-eval-record/manager-eval-record.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     CommitPageComponent,
     MessagesComponent,
     EvaluationrecordPageComponent,
-    EvaluationRecordComponent
+    EvaluationRecordComponent,
+    ManagerEvaluationRecordComponent
   ],
     imports: [
         ReactiveFormsModule,
