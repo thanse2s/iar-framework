@@ -12,7 +12,8 @@ import {EvaluationRecordComponent} from '../evaluation-record/evaluation-record.
 @Component({
   selector: 'app-manager-evaluation-record',
   templateUrl: './manager-eval-record.component.html',
-  styleUrls: ['./manager-eval-record.component.css'],
+  styleUrls: ['./manager-eval-record.component.css',
+              '../evaluation-record/evaluation-record.component.css'],
   animations: [
     trigger('hideButtons', [
       state('editing', style({
@@ -65,7 +66,6 @@ export class ManagerEvaluationRecordComponent extends EvaluationRecordComponent 
               route: ActivatedRoute,
               fb: FormBuilder) {
     super(evalService, bonusSalaryService, messageService, route, fb);
-    this.editMode = false;
   }
 
   addSocialPerformance(record: Evaluationrecord): void {

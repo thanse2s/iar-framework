@@ -18,16 +18,17 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
 // Own
-import {SalesmanListComponent} from './pages/salesman-list-page/salesman-list-page.component';
-import {MessagesComponent} from './components/message/messages.component';
-import {EvaluationrecordPageComponent} from './pages/evaluationrecord-page/evaluationrecord-page.component';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {CommitPageComponent} from './pages/commit-page/commit-page.component';
-import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {ManagerEvaluationRecordComponent} from './components/manager-eval-record/manager-eval-record.component';
+import { SalesmanListComponent } from './pages/salesman-list-page/salesman-list-page.component';
+import { MessagesComponent } from './components/message/messages.component';
+import { EvaluationrecordPageComponent } from './pages/evaluationrecord-page/evaluationrecord-page.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommitPageComponent } from './pages/commit-page/commit-page.component';
+import { EvaluationRecordComponent } from './components/evaluation-record/evaluation-record.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ManagerEvaluationRecordComponent } from './components/manager-eval-record/manager-eval-record.component';
+import { HrEvaluationRecordComponent } from './components/hr-eval-record/hr-eval-record.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {ManagerEvaluationRecordComponent} from './components/manager-eval-record
     MessagesComponent,
     EvaluationrecordPageComponent,
     EvaluationRecordComponent,
-    ManagerEvaluationRecordComponent
+    ManagerEvaluationRecordComponent,
+    HrEvaluationRecordComponent
   ],
     imports: [
         ReactiveFormsModule,
