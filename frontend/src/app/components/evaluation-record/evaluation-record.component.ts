@@ -6,6 +6,7 @@ import { BonusSalaryService } from '../../services/bonussalary.service';
 import { BonusSalary } from '../../models/BonusSalary';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-record.component';
 
 @Component({
   selector: 'app-evaluation-record',
@@ -19,16 +20,14 @@ export class EvaluationRecordComponent implements OnInit {
   bonusSalaryService: BonusSalaryService;
 
   editMode: boolean;
-  evaluationRecord: Evaluationrecord[] = [];
+  evaluationRecords: Evaluationrecord[] = [];
   bonusSalaries: BonusSalary[] = [];
-  relation: Fields[] = [];
-  recordRelation: AllFields[] = [];
 
   constructor(evalService: EvaluationrecordService,
               bonusSalaryService: BonusSalaryService,
-              private messageService: MessageService,
-              private route: ActivatedRoute,
-              private fb: FormBuilder) {
+              protected messageService: MessageService,
+              protected route: ActivatedRoute,
+              protected fb: FormBuilder) {
     this.evalService = evalService;
     this.bonusSalaryService = bonusSalaryService;
     this.editMode = false;
@@ -40,16 +39,16 @@ export class EvaluationRecordComponent implements OnInit {
         records.forEach(record => {
           this.addRecord(record);
           this.getBonusSalary(record.employee_id);
-          this.createFormFields(record);
         });
       });
   }
-  addRecord(el: Evaluationrecord): void {
-    this.evaluationRecord.splice(this.findLoc(el, this.evaluationRecord) + 1, 0, el);
+  addRecord(evalRecord: Evaluationrecord): void {
+    this.evaluationRecords.splice(this.findLoc(evalRecord, this.evaluationRecords) + 1, 0, evalRecord);
   }
   findLoc(el: Evaluationrecord, arr: Evaluationrecord[]): number {
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i].year > el.year && arr[i].employee_id === el.employee_id) {
+      if (arr[i].year > el.year
+        && arr[i].employee_id === el.employee_id) {
         return i - 1;
       }
     }
@@ -64,37 +63,6 @@ export class EvaluationRecordComponent implements OnInit {
           });
         });
     }
-  }
-  createFormFields(record: Evaluationrecord): void {
-    this.recordRelation.push(new AllFields(
-      this.fb.array([]),
-      this.fb.group({
-        skill: [null, Validators.required],
-        target: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
-        actual: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
-        bonus: [null, [Validators.min(0), Validators.max(100000000)]],
-        comment: null
-      }), record));
-    record.orders_evaluation.forEach(order => {
-      this.createBonusAndCommentField(order, record);
-    });
-    record.social_performance.forEach(social => {
-      this.createBonusAndCommentField(social, record);
-    });
-  }
-  createBonusAndCommentField(socialOrOrder, record): void {
-    const newFormGroup = this.fb.group({
-      bonus: [{value: socialOrOrder.bonus, disabled: !this.editMode}, [Validators.required, Validators.min(0), Validators.max(100000000)]],
-      comment: [{value: socialOrOrder.comment, disabled: !this.editMode}]
-    });
-    this.relation.push(new Fields(newFormGroup, socialOrOrder));
-    this.findFieldsInRecordRelation(record).fields.push(newFormGroup);
-  }
-  findFieldsInRelation(content): Fields {
-    return this.relation.find(el => el.content === content) as Fields;
-  }
-  findFieldsInRecordRelation(record: Evaluationrecord): AllFields {
-    return this.recordRelation.find(el => el.content === record) as AllFields;
   }
   findBonusSalaryByIDAndYear(id: number, year: number): number {
     const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
@@ -116,25 +84,5 @@ export class EvaluationRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEvaluationRecord();
-  }
-}
-
-
-class Fields {
-  fields: FormGroup;
-  content: any;
-  constructor(fields: FormGroup, content) {
-    this.fields = fields;
-    this.content = content;
-  }
-}
-class AllFields {
-  fields: FormArray;
-  addSocial: FormGroup;
-  content: Evaluationrecord;
-  constructor(fields: FormArray, addSocial: FormGroup, content: Evaluationrecord) {
-    this.fields = fields;
-    this.addSocial = addSocial;
-    this.content = content;
   }
 }

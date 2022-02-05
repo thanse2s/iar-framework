@@ -29,6 +29,7 @@ import { EvaluationRecordComponent } from './components/evaluation-record/evalua
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ManagerEvaluationRecordComponent } from './components/manager-eval-record/manager-eval-record.component';
 import { HrEvaluationRecordComponent } from './components/hr-eval-record/hr-eval-record.component';
+import { SingleEvalRecordComponent } from './components/single-eval-record/single-eval-record.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { HrEvaluationRecordComponent } from './components/hr-eval-record/hr-eval
     EvaluationrecordPageComponent,
     EvaluationRecordComponent,
     ManagerEvaluationRecordComponent,
-    HrEvaluationRecordComponent
+    HrEvaluationRecordComponent,
+    SingleEvalRecordComponent
   ],
     imports: [
         ReactiveFormsModule,

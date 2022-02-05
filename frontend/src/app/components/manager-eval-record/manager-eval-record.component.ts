@@ -1,13 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MessageService } from '../../services/message.service';
+import { Component } from '@angular/core';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
 import { Evaluationrecord } from '../../models/Evaluationrecord';
 import { Socialperformance } from '../../models/Socialperformance';
-import { BonusSalaryService } from '../../services/bonussalary.service';
-import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
-import {EvaluationRecordComponent} from '../evaluation-record/evaluation-record.component';
+import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-record.component';
 
 @Component({
   selector: 'app-manager-evaluation-record',
@@ -55,66 +52,72 @@ import {EvaluationRecordComponent} from '../evaluation-record/evaluation-record.
   ]
 })
 
-export class ManagerEvaluationRecordComponent extends EvaluationRecordComponent {
+export class ManagerEvaluationRecordComponent extends SingleEvalRecordComponent{
 
-  editingRecord: Evaluationrecord;
+  addSocialRecordForm: FormGroup;
   addedSocialPerformances: Socialperformance[] = [];
+  editMode: boolean;
 
-  constructor(evalService: EvaluationrecordService,
-              bonusSalaryService: BonusSalaryService,
-              messageService: MessageService,
-              route: ActivatedRoute,
-              fb: FormBuilder) {
-    super(evalService, bonusSalaryService, messageService, route, fb);
+  constructor(fb: FormBuilder,
+              private evalService: EvaluationrecordService) {
+    super(fb);
+    this.editMode = false;
+    this.addSocialRecordForm = this.fb.group({
+      skill: [null, Validators.required],
+      target: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
+      actual: [5, [Validators.required, Validators.min(0), Validators.max(10)]],
+      bonus: [null, [Validators.min(0), Validators.max(100000000)]],
+      comment: null
+    });
   }
 
-  addSocialPerformance(record: Evaluationrecord): void {
-    const form = this.findFieldsInRecordRelation(record).addSocial;
-    if (!form.invalid) {
-      this.evalService.getCorrectBonusFromNull(record.employee_id, record.year, new Socialperformance(
-        form.value.actual,
-        form.value.target,
-        form.value.skill,
-        form.value.bonus,
-        form.value.comment
+  addSocialPerformance(): void {
+    if (!this.addSocialRecordForm.invalid) {
+      this.evalService.getCorrectBonusFromNull(this.evaluationRecord.employee_id, this.evaluationRecord.year, new Socialperformance(
+        this.addSocialRecordForm.value.actual,
+        this.addSocialRecordForm.value.target,
+        this.addSocialRecordForm.value.skill,
+        this.addSocialRecordForm.value.bonus,
+        this.addSocialRecordForm.value.comment
       )).subscribe(evaluationRecord => {
         const newSocialPerformance = evaluationRecord.social_performance[0];
-        record.social_performance.push(newSocialPerformance);
+        this.evaluationRecord.social_performance.push(newSocialPerformance);
         this.addedSocialPerformances.push(newSocialPerformance);
-        this.createBonusAndCommentField(newSocialPerformance, record);
-        form.patchValue({skill: null, target: 5, actual: 5, bonus: null, comment: null});
+        this.socialFormArray.push(this.createForm(newSocialPerformance));
+        this.addSocialRecordForm.patchValue({skill: null, target: 5, actual: 5, bonus: null, comment: null});
       });
     }
   }
-  enterEditMode(editRecord: Evaluationrecord): void {
+  enterEditMode(): void {
     if (!this.editMode) {
-      this.editingRecord = editRecord;
-      this.findFieldsInRecordRelation(this.editingRecord).fields.enable();
+      this.socialFormArray.enable();
+      this.orderFormArray.enable();
       this.editMode = !this.editMode;
     }
   }
   saveChanges(): void {
     if (this.editMode) {
-      const fields = this.findFieldsInRecordRelation(this.editingRecord).fields;
-      if (!fields.invalid) {
+      if (!this.forms.invalid) {
         // some fields were changed but no new social performance was added
-        const touched = fields.touched;
+        const touched = this.forms.touched;
         if (touched) {
-          this.editingRecord.orders_evaluation.forEach(order => {
-            order.bonus = this.findFieldsInRelation(order).fields.value.bonus;
-            order.comment = this.findFieldsInRelation(order).fields.value.comment;
-          });
-          this.editingRecord.social_performance.forEach(social => {
-            social.bonus = this.findFieldsInRelation(social).fields.value.bonus;
-            social.comment = this.findFieldsInRelation(social).fields.value.comment;
-          });
+          for (let i = 0; i < this.orderFormArray.length; i++) {
+            const order = this.evaluationRecord.orders_evaluation[i];
+            order.bonus = this.orderFormArray[i].value.bonus;
+            order.comment = this.orderFormArray[i].value.comment;
+          }
+          for (let i = 0; i < this.socialFormArray.length; i++) {
+            const social = this.evaluationRecord.social_performance[i];
+            social.bonus = this.socialFormArray[i].value.bonus;
+            social.comment = this.socialFormArray[i].value.comment;
+          }
         }
         // Any changes occurred that need to be updated
         if (touched || this.addedSocialPerformances.length > 0) {
-          this.evalService.updateEvaluationRecord(this.editingRecord).subscribe();
+          this.evalService.updateEvaluationRecord(this.evaluationRecord).subscribe();
           this.addedSocialPerformances = [];
         }
-        fields.disable();
+        this.forms.disable();
         this.editMode = !this.editMode;
       }
     }
@@ -124,28 +127,32 @@ export class ManagerEvaluationRecordComponent extends EvaluationRecordComponent 
       // reset social performances
       if (this.addedSocialPerformances.length > 0) {
         this.addedSocialPerformances.forEach(_ => {
-          this.editingRecord.social_performance.pop();
-          this.relation.pop();
+          this.evaluationRecord.social_performance.pop();
         });
       }
       // reset all fields if any was touched
-      if (this.findFieldsInRecordRelation(this.editingRecord).fields.touched) {
-        this.editingRecord.orders_evaluation.forEach(order => {
-          this.findFieldsInRelation(order).fields.patchValue({
+      if (this.forms.touched) {
+        for (let i = 0; i < this.orderFormArray.length; i++) {
+          const order = this.evaluationRecord.orders_evaluation[i];
+          this.orderFormArray[i].patchValue({
             bonus: order.bonus,
             comment: order.comment
           });
-        });
-        this.editingRecord.social_performance.forEach(social => {
-          this.findFieldsInRelation(social).fields.patchValue({
+        }
+        for (let i = 0; i < this.socialFormArray.length; i++) {
+          const social = this.evaluationRecord.social_performance[i];
+          this.socialFormArray[i].patchValue({
             bonus: social.bonus,
             comment: social.comment
           });
-        });
+        }
       }
       // leave edit-mode
-      this.findFieldsInRecordRelation(this.editingRecord).fields.disable();
+      this.forms.disable();
       this.editMode = !this.editMode;
     }
+  }
+  getEditMode(): string {
+    return this.editMode ? 'editing' : 'hide';
   }
 }

@@ -6,6 +6,7 @@ import {MessageService} from '../../services/message.service';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder} from '@angular/forms';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
+import {SingleEvalRecordComponent} from "../single-eval-record/single-eval-record.component";
 
 @Component({
   selector: 'app-hr-eval-record',
@@ -13,33 +14,23 @@ import {Evaluationrecord} from '../../models/Evaluationrecord';
   styleUrls: ['./hr-eval-record.component.css',
               '../evaluation-record/evaluation-record.component.css']
 })
-export class HrEvaluationRecordComponent extends EvaluationRecordComponent{
+export class HrEvaluationRecordComponent extends SingleEvalRecordComponent{
 
   open: number;
 
-  constructor(evalService: EvaluationrecordService,
-              bonusSalaryService: BonusSalaryService,
-              messageService: MessageService,
-              route: ActivatedRoute,
-              fb: FormBuilder) {
-    super(evalService, bonusSalaryService, messageService, route, fb);
+  constructor(fb: FormBuilder,
+              private evalService: EvaluationrecordService) {
+    super(fb);
     this.open = 0;
   }
 
-  getEvaluationRecord(): void {
-    this.evalService.getUncommittedEvaluationRecords()
-      .subscribe(records => {
-        records.forEach(record => {
-          this.addRecord(record);
-          this.getBonusSalary(record.employee_id);
-          this.createFormFields(record);
-        });
-      });
-  }
-  commitBonus(record: Evaluationrecord): void {
+  commitBonus(): void {
     this.open++;
-    record.is_committed = true;
-    this.evalService.commitBonus(record.employee_id, record.year, this.calculateTotalBonusSalary(record)).subscribe();
+    this.evaluationRecord.is_committed = true;
+    // this.evalService.commitBonus(
+    //   this.evaluationRecord.employee_id,
+    //   this.evaluationRecord.year,
+    //   this.calculateTotalBonusSalary(this.evaluationRecord)).subscribe();
   }
 
 }
