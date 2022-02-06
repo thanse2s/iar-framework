@@ -1,12 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MessageService } from '../../services/message.service';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
 import { Evaluationrecord } from '../../models/Evaluationrecord';
-import { BonusSalaryService } from '../../services/bonussalary.service';
-import { BonusSalary } from '../../models/BonusSalary';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-record.component';
 
 @Component({
   selector: 'app-evaluation-record',
@@ -16,20 +11,11 @@ import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-recor
 export class EvaluationRecordComponent implements OnInit {
 
   @Input() paramEmployeeID: number;
-  evalService: EvaluationrecordService;
-  bonusSalaryService: BonusSalaryService;
-
   editMode: boolean;
   evaluationRecords: Evaluationrecord[] = [];
-  bonusSalaries: BonusSalary[] = [];
 
-  constructor(evalService: EvaluationrecordService,
-              bonusSalaryService: BonusSalaryService,
-              protected messageService: MessageService,
-              protected route: ActivatedRoute,
-              protected fb: FormBuilder) {
-    this.evalService = evalService;
-    this.bonusSalaryService = bonusSalaryService;
+  constructor(protected evalService: EvaluationrecordService,
+              protected route: ActivatedRoute) {
     this.editMode = false;
   }
 
@@ -38,7 +24,6 @@ export class EvaluationRecordComponent implements OnInit {
       .subscribe(records => {
         records.forEach(record => {
           this.addRecord(record);
-          this.getBonusSalary(record.employee_id);
         });
       });
   }
@@ -53,30 +38,6 @@ export class EvaluationRecordComponent implements OnInit {
       }
     }
     return arr.length;
-  }
-  getBonusSalary(id: number): void {
-    if (!this.bonusSalaries.find(salary => salary.employee_id = id)) {
-      this.bonusSalaryService.getBonusSalary(id)
-        .subscribe(salaries => {
-          salaries.forEach(salary => {
-            this.bonusSalaries.push(salary);
-          });
-        });
-    }
-  }
-  findBonusSalaryByIDAndYear(id: number, year: number): number {
-    const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
-    return salary !== undefined ? salary.value : 0;
-  }
-  calculateTotalBonusSalary(record: Evaluationrecord): number {
-    let bonusSalary = 0;
-    record.orders_evaluation.forEach(order => {
-      bonusSalary += order.bonus;
-    });
-    record.social_performance.forEach(social => {
-      bonusSalary += social.bonus;
-    });
-    return bonusSalary;
   }
   getEditMode(): string {
     return this.editMode ? 'editing' : 'hide';

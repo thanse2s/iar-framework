@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
-import { Evaluationrecord } from '../../models/Evaluationrecord';
 import { Socialperformance } from '../../models/Socialperformance';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { trigger, state, style, animate, transition, query, stagger } from '@angular/animations';
 import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-record.component';
+import {BonusSalaryService} from '../../services/bonussalary.service';
 
 @Component({
   selector: 'app-manager-evaluation-record',
@@ -59,8 +59,9 @@ export class ManagerEvaluationRecordComponent extends SingleEvalRecordComponent{
   editMode: boolean;
 
   constructor(fb: FormBuilder,
+              bonusSalaryService: BonusSalaryService,
               private evalService: EvaluationrecordService) {
-    super(fb);
+    super(fb, bonusSalaryService);
     this.editMode = false;
     this.addSocialRecordForm = this.fb.group({
       skill: [null, Validators.required],
@@ -83,7 +84,7 @@ export class ManagerEvaluationRecordComponent extends SingleEvalRecordComponent{
         const newSocialPerformance = evaluationRecord.social_performance[0];
         this.evaluationRecord.social_performance.push(newSocialPerformance);
         this.addedSocialPerformances.push(newSocialPerformance);
-        this.socialFormArray.push(this.createForm(newSocialPerformance));
+        this.getFormGroup(this.socialFormArray.length, this.socialFormArray);
         this.addSocialRecordForm.patchValue({skill: null, target: 5, actual: 5, bonus: null, comment: null});
       });
     }

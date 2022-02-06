@@ -1,13 +1,3 @@
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index" [disabled]="editMode">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Record of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
-      </mat-panel-title>
-      <mat-panel-description>
-        Total Bonus-Salary of this year: {{this.calculateTotalBonusSalary(evaluationRecord)}}€, Already Committed: {{findBonusSalaryByIDAndYear(evaluationRecord.employee_id, evaluationRecord.year)}}€
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <app-single-eval-record [evaluationRecord]="evaluationRecord"></app-single-eval-record>
-  </mat-expansion-panel>
+  <app-single-eval-record *ngFor="let evaluationRecord of evaluationRecords" [evaluationRecord]="evaluationRecord"></app-single-eval-record>
 </mat-accordion>

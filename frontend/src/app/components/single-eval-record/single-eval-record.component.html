@@ -1,63 +1,73 @@
-<table *ngIf = "evaluationRecord.orders_evaluation" class="output_table">
-  <tr>
-    <th>Name of Product:</th>
-    <th>Client:</th>
-    <th>Client Ranking:</th>
-    <th>Items:</th>
-    <th>Bonus:</th>
-    <th>Comment:</th>
-  </tr>
-  <tr *ngFor="let orderEvaluation of evaluationRecord.orders_evaluation; let j = index">
-    <td>{{orderEvaluation.name_of_product}}</td>
-    <td>{{orderEvaluation.client}}</td>
-    <td>{{orderEvaluation.client_ranking}}</td>
-    <td>{{orderEvaluation.items}}</td>
-    <td>
-      <mat-form-field [formGroup]="this.getFormGroup(j, this.orderFormArray)" class="bonus-field" appearance="outline" >
-        <mat-label>Bonus</mat-label>
-        <input matInput type="number" formControlName="bonus" placeholder="0" min ="0">
-        <mat-icon matPrefix color="primary">euro</mat-icon>
-      </mat-form-field>
-    </td>
-    <td>
-      <form>
-        <mat-form-field [formGroup]="this.getFormGroup(j, this.orderFormArray)" class="comment-field" appearance="outline">
-          <mat-label>Leave a comment</mat-label>
-          <textarea matInput formControlName="comment" placeholder="Ex. nice one!"></textarea>
-        </mat-form-field>
-      </form>
-    </td>
-  </tr>
-</table>
-
-<table id="socialpTable" class="output_table">
-  <tr>
-    <th>Skill/Competence:</th>
-    <th>Target Value:</th>
-    <th>Actual Value:</th>
-    <th>Bonus:</th>
-    <th>Comment:</th>
-  </tr>
-  <tr *ngFor="let socialPerformance of evaluationRecord.social_performance; let j = index">
-    <td>{{socialPerformance.description}}</td>
-    <td>{{socialPerformance.target_value}}</td>
-    <td>{{socialPerformance.actual_value}}</td>
-    <td>
-      <form>
-        <mat-form-field [formGroup]="this.getFormGroup(j, this.socialFormArray)" class="bonus-field" appearance="outline">
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Record of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
+    </mat-panel-title>
+    <mat-panel-description>
+      Already Committed Bonus: {{this.committedBonusSalary}}€, Pending Bonus: {{this.pendingBonusSalary}}€
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <table *ngIf = "this.evaluationRecord.orders_evaluation.length > 0 && this.orderFormArray.length === this.evaluationRecord.orders_evaluation.length" class="output_table">
+    <tr>
+      <th>Name of Product:</th>
+      <th>Client:</th>
+      <th>Client Ranking:</th>
+      <th>Items:</th>
+      <th>Bonus:</th>
+      <th>Comment:</th>
+    </tr>
+    <tr *ngFor="let orderEvaluation of evaluationRecord.orders_evaluation; let j = index">
+      <td>{{orderEvaluation.name_of_product}}</td>
+      <td>{{orderEvaluation.client}}</td>
+      <td>{{orderEvaluation.client_ranking}}</td>
+      <td>{{orderEvaluation.items}}</td>
+      <td>
+        <mat-form-field [formGroup]="this.getFormGroup(j, this.orderFormArray)" class="bonus-field" appearance="outline" >
           <mat-label>Bonus</mat-label>
-          <input matInput type="number" formControlName="bonus" placeholder="0" min="0">
+          <input matInput type="number" formControlName="bonus" placeholder="0" min ="0">
           <mat-icon matPrefix color="primary">euro</mat-icon>
         </mat-form-field>
-      </form>
-    </td>
-    <td>
-      <form>
-        <mat-form-field [formGroup]="this.getFormGroup(j, this.socialFormArray)" class="comment-field" appearance="outline">
-          <mat-label>Leave a comment</mat-label>
-          <textarea matInput formControlName="comment" placeholder="Ex. good job!"></textarea>
-        </mat-form-field>
-      </form>
-    </td>
-  </tr>
-</table>
+      </td>
+      <td>
+        <form>
+          <mat-form-field [formGroup]="this.getFormGroup(j, this.orderFormArray)" class="comment-field" appearance="outline">
+            <mat-label>Leave a comment</mat-label>
+            <textarea matInput formControlName="comment" placeholder="Ex. nice one!"></textarea>
+          </mat-form-field>
+        </form>
+      </td>
+    </tr>
+  </table>
+
+  <table *ngIf = "evaluationRecord.social_performance.length > 0 && this.socialFormArray.length === this.evaluationRecord.social_performance.length" class="output_table">
+    <tr>
+      <th>Skill/Competence:</th>
+      <th>Target Value:</th>
+      <th>Actual Value:</th>
+      <th>Bonus:</th>
+      <th>Comment:</th>
+    </tr>
+    <tr *ngFor="let socialPerformance of evaluationRecord.social_performance; let j = index">
+      <td>{{socialPerformance.description}}</td>
+      <td>{{socialPerformance.target_value}}</td>
+      <td>{{socialPerformance.actual_value}}</td>
+      <td>
+        <form>
+          <mat-form-field [formGroup]="this.getFormGroup(j, this.socialFormArray)" class="bonus-field" appearance="outline">
+            <mat-label>Bonus</mat-label>
+            <input matInput type="number" formControlName="bonus" placeholder="0" min="0">
+            <mat-icon matPrefix color="primary">euro</mat-icon>
+          </mat-form-field>
+        </form>
+      </td>
+      <td>
+        <form>
+          <mat-form-field [formGroup]="this.getFormGroup(j, this.socialFormArray)" class="comment-field" appearance="outline">
+            <mat-label>Leave a comment</mat-label>
+            <textarea matInput formControlName="comment" placeholder="Ex. good job!"></textarea>
+          </mat-form-field>
+        </form>
+      </td>
+    </tr>
+  </table>
+</mat-expansion-panel>
