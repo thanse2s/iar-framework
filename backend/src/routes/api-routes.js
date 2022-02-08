@@ -38,10 +38,11 @@ router.post('/performance', checkAuthorizationByRole("manager"), correctBonusInB
 router.delete('/performance/:id', checkAuthorizationByRole("manager"), performanceApi.delete);
 module.exports = router;
 
+//OpenCRX
 const openCRXApi = require('../apis/opencrx-api');
-const {mapNamesToEmployeeIds} = require('../middlewares/salesman-middleware')
+const {mapNamesToEmployeeIds} = require('../middlewares/salesman-middleware');
+// CheckAuthorization not implemented for Backend and Postman - check TODOs
 router.get('/opencrx/update',
-    checkAuthorizationByRole('manager'),
     openCRXApi.updateAllOrderEvaluation,
     correctBonusInBody,
     mapNamesToEmployeeIds,
