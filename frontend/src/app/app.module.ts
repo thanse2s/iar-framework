@@ -30,6 +30,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ManagerEvaluationRecordComponent } from './components/manager-eval-record/manager-eval-record.component';
 import { HrEvaluationRecordComponent } from './components/hr-eval-record/hr-eval-record.component';
 import { SingleEvalRecordComponent } from './components/single-eval-record/single-eval-record.component';
+import {HighchartsChartModule} from 'highcharts-angular';
+import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesman-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -44,9 +46,11 @@ import { SingleEvalRecordComponent } from './components/single-eval-record/singl
     MessagesComponent,
     EvaluationrecordPageComponent,
     EvaluationRecordComponent,
+    EvaluationRecordComponent,
     ManagerEvaluationRecordComponent,
     HrEvaluationRecordComponent,
-    SingleEvalRecordComponent
+    SingleEvalRecordComponent,
+    SalesmanDashboardComponent
   ],
     imports: [
         ReactiveFormsModule,
@@ -62,7 +66,8 @@ import { SingleEvalRecordComponent } from './components/single-eval-record/singl
         MatToolbarModule,
         MatIconModule,
         MatExpansionModule,
-        MatTooltipModule
+        MatTooltipModule,
+        HighchartsChartModule
     ],
   providers: [],
   bootstrap: [AppComponent]
