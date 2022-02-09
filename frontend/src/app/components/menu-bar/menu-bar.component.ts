@@ -75,7 +75,8 @@ export class MenuBarComponent implements OnInit {
         default:
           this.buttons = [{title: 'Salesman', routerLink: 'salesman'},
             {title: 'Evaluation Record', routerLink: 'evaluationrecord'},
-            {title: 'Commit Dashboard', routerLink: 'commit'}];
+            {title: 'Commit Dashboard', routerLink: 'commit'},
+            {title: 'Salesman Dashboard', routerLink: 'salesman-dashboard'}]
           break;
       }
     });

@@ -27,6 +27,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {CommitPageComponent} from './pages/commit-page/commit-page.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesman-dashboard.component';
+import {SalesmanDashboardPageComponent} from "./pages/salesman-dashboard-page/salesman-dashboard-page.component";
+import {  HighchartsChartModule } from "highcharts-angular";
 
 @NgModule({
   declarations: [
@@ -40,7 +43,9 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     CommitPageComponent,
     MessagesComponent,
     EvaluationrecordPageComponent,
-    EvaluationRecordComponent
+    EvaluationRecordComponent,
+    SalesmanDashboardComponent,
+    SalesmanDashboardPageComponent
   ],
     imports: [
         ReactiveFormsModule,
@@ -56,7 +61,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         MatToolbarModule,
         MatIconModule,
         MatExpansionModule,
-        MatTooltipModule
+        MatTooltipModule,
+        HighchartsChartModule
     ],
   providers: [],
   bootstrap: [AppComponent]
