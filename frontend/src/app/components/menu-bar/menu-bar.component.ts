@@ -3,7 +3,7 @@ import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {User} from '../../models/User';
 import {UserService} from '../../services/user.service';
-import {Credentials} from "../../models/Credentials";
+import {Credentials} from '../../models/Credentials';
 
 @Component({
   selector: 'app-menu-bar',
@@ -76,7 +76,7 @@ export class MenuBarComponent implements OnInit {
           this.buttons = [{title: 'Salesman', routerLink: 'salesman'},
             {title: 'Evaluation Record', routerLink: 'evaluationrecord'},
             {title: 'Commit Dashboard', routerLink: 'commit'},
-            {title: 'Salesman Dashboard', routerLink: 'salesman-dashboard'}]
+            {title: 'Salesman Dashboard', routerLink: 'salesman-dashboard'}];
           break;
       }
     });

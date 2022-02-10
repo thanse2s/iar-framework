@@ -26,10 +26,9 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {CommitPageComponent} from './pages/commit-page/commit-page.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {HighchartsChartModule} from 'highcharts-angular';
 import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesman-dashboard.component';
-import {SalesmanDashboardPageComponent} from "./pages/salesman-dashboard-page/salesman-dashboard-page.component";
-import {  HighchartsChartModule } from "highcharts-angular";
 
 @NgModule({
   declarations: [
@@ -44,8 +43,7 @@ import {  HighchartsChartModule } from "highcharts-angular";
     MessagesComponent,
     EvaluationrecordPageComponent,
     EvaluationRecordComponent,
-    SalesmanDashboardComponent,
-    SalesmanDashboardPageComponent
+    SalesmanDashboardComponent
   ],
     imports: [
         ReactiveFormsModule,
