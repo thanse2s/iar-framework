@@ -29,6 +29,7 @@ import {EvaluationRecordComponent} from './components/evaluation-record/evaluati
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesman-dashboard.component';
+import {YearlyBonusChartComponent} from "./components/yearly-bonus-chart/yearly-bonus-chart.component";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesm
     MessagesComponent,
     EvaluationrecordPageComponent,
     EvaluationRecordComponent,
-    SalesmanDashboardComponent
+    SalesmanDashboardComponent,
+    YearlyBonusChartComponent
   ],
     imports: [
         ReactiveFormsModule,
