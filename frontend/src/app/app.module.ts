@@ -32,6 +32,7 @@ import { HrEvaluationRecordComponent } from './components/hr-eval-record/hr-eval
 import { SingleEvalRecordComponent } from './components/single-eval-record/single-eval-record.component';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesman-dashboard.component';
+import {YearlyBonusChartComponent} from "./components/yearly-bonus-chart/yearly-bonus-chart.component";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesm
     ManagerEvaluationRecordComponent,
     HrEvaluationRecordComponent,
     SingleEvalRecordComponent,
-    SalesmanDashboardComponent
+    SalesmanDashboardComponent,
+    YearlyBonusChartComponent
   ],
     imports: [
         ReactiveFormsModule,

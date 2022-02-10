@@ -60,8 +60,8 @@ MongoClient.connect('mongodb://' + credentials + domain + ':' + port + '/').then
 
 
 async function updateDbOpenCRX(){
-    await axios.get('https://localhost:4200/api/opencrx/update', { proxy: { host: '127.0.0.1', port: 4200 } })
-        .then(_ => { console.log("Successfully fetched") })
+    await axios.get('https://localhost:8080/api/opencrx/update', { proxy: { host: '127.0.0.1', port: 8080 } })
+        .then(_ => { console.log("Successfully fetched from OpenCRX.") })
         .catch(err => console.log(err));
 }
 
@@ -76,7 +76,7 @@ async function initDb(db){
         // await salesmanService.add(db,new salesman(22,"Tobias","Hansen","REST"));
 
         const adminPassword = crypto.randomBytes(8).toString('base64');
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true, "admin"));
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true, "admin", 2));
 
 
 

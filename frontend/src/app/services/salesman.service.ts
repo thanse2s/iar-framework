@@ -33,7 +33,7 @@ export class SalesmanService {
   getSalesman(id: number): Observable<Salesman>{
     const url = `${this.SalesmanUrl}/${id}`;
     return this.https.get<Salesman>(url).pipe(
-        tap(_ => this.log(`No Hero With ID:${id}`)),
+        tap(_ => this.log(`No Salesman with ID:${id} found`)),
         catchError(this.handleError<Salesman>(`get Salesman id=${id}`))
       );
   }

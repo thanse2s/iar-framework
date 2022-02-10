@@ -17,7 +17,7 @@ router.get('/user', checkAuthorizationForAllRoles, userApi.getSelf);
 
 const salesmanApi = require('../apis/salesman-api');
 router.get('/salesman/:id', checkAuthorizationByRole("manager"), salesmanApi.getOne);
-router.post('/salesman',  salesmanApi.addSalesMan);
+router.post('/salesman',checkAuthorizationByRole("manager"),  salesmanApi.addSalesMan);
 router.delete('/salesman/:id', checkAuthorizationByRole("manager"), salesmanApi.deleteSalesMan);
 router.get('/salesman', checkAuthorizationByRole("manager"), salesmanApi.getAll);
 
@@ -41,7 +41,7 @@ module.exports = router;
 //OpenCRX
 const openCRXApi = require('../apis/opencrx-api');
 const {mapNamesToEmployeeIds} = require('../middlewares/salesman-middleware');
-// CheckAuthorization not implemented for Backend and Postman - check TODOs
+// CheckAuthorization not implemented for Backend - check TODOs
 router.get('/opencrx/update',
     openCRXApi.updateAllOrderEvaluation,
     correctBonusInBody,
