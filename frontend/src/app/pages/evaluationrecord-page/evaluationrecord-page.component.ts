@@ -1,11 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MessageService} from '../../services/message.service';
-import {EvaluationrecordService} from '../../services/evaluationrecord.service';
-import {Evaluationrecord} from '../../models/Evaluationrecord';
-import {BonusSalaryService} from '../../services/bonussalary.service';
-import {BonusSalary} from '../../models/BonusSalary';
-import {ActivatedRoute} from '@angular/router';
-import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-evaluationrecord-page',
@@ -14,7 +8,16 @@ import {FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
 })
 
 export class EvaluationrecordPageComponent implements OnInit {
+
+  employeeID: number;
+
+  constructor(private userService: UserService) {
+  }
+
   ngOnInit(): void {
+    this.userService.getOwnUser().subscribe(user => {
+      this.employeeID = user.employee_id;
+    });
   }
 
 }
