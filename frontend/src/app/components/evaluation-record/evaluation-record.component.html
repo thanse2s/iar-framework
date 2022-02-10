@@ -1,3 +1,26 @@
 <mat-accordion>
-  <app-single-eval-record *ngFor="let evaluationRecord of evaluationRecords" [evaluationRecord]="evaluationRecord"></app-single-eval-record>
+  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Record of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
+      </mat-panel-title>
+      <mat-panel-description>
+        Already Committed Bonus: {{this.committedBonusSalaries[i]}}€, Pending Bonus: {{this.pendingBonusSalaries[i]}}€
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div [ngSwitch]="this.layout">
+      <div *ngSwitchCase="'manager'">
+        <app-manager-evaluation-record [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-manager-evaluation-record>
+      </div>
+      <div *ngSwitchCase="'hr'">
+        <app-hr-evaluation-record *ngIf="evaluationRecords.length >= 0" [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-hr-evaluation-record>
+        <div class="center" *ngIf="evaluationRecords.length === 0">
+          <h2>Nothing to do here!</h2>
+        </div>
+      </div>
+      <div *ngSwitchDefault>
+        <app-single-eval-record [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-single-eval-record>
+      </div>
+    </div>
+  </mat-expansion-panel>
 </mat-accordion>

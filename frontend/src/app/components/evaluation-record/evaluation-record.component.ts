@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
 import { Evaluationrecord } from '../../models/Evaluationrecord';
 import { ActivatedRoute } from '@angular/router';
@@ -11,23 +11,37 @@ import { ActivatedRoute } from '@angular/router';
 export class EvaluationRecordComponent implements OnInit {
 
   @Input() paramEmployeeID: number;
+  @Input() layout: string;
   editMode: boolean;
   evaluationRecords: Evaluationrecord[] = [];
+  committedBonusSalaries: number[] = [];
+  pendingBonusSalaries: number[] = [];
 
   constructor(protected evalService: EvaluationrecordService,
               protected route: ActivatedRoute) {
     this.editMode = false;
   }
 
-  getEvaluationRecord(): void {
-    this.evalService.getEvaluationRecord(this.paramEmployeeID)
-      .subscribe(records => {
-        records.forEach(record => {
-          this.addRecord(record);
+  getEvaluationRecords(): void {
+    if (this.layout === 'hr') {
+      this.evalService.getUncommittedEvaluationRecords()
+        .subscribe(records => {
+          records.forEach(record => {
+            this.addRecord(record);
+          });
         });
-      });
+    } else {
+      this.evalService.getEvaluationRecord(this.paramEmployeeID)
+        .subscribe(records => {
+          records.forEach(record => {
+            this.addRecord(record);
+          });
+        });
+    }
   }
   addRecord(evalRecord: Evaluationrecord): void {
+    this.committedBonusSalaries.push(0);
+    this.pendingBonusSalaries.push(0);
     this.evaluationRecords.splice(this.findLoc(evalRecord, this.evaluationRecords) + 1, 0, evalRecord);
   }
   findLoc(el: Evaluationrecord, arr: Evaluationrecord[]): number {
@@ -44,6 +58,6 @@ export class EvaluationRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getEvaluationRecord();
+    this.getEvaluationRecords();
   }
 }

@@ -5,7 +5,7 @@ import {FormBuilder} from '@angular/forms';
 import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-record.component';
 
 @Component({
-  selector: 'app-hr-eval-record',
+  selector: 'app-hr-evaluation-record',
   templateUrl: './hr-eval-record.component.html',
   styleUrls: ['./hr-eval-record.component.css',
               '../evaluation-record/evaluation-record.component.css']

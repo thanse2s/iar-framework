@@ -1,14 +1,14 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BonusSalaryService} from '../../services/bonussalary.service';
-import {MatExpansionPanelHeader} from '@angular/material/expansion';
+import {MatExpansionPanel} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-single-eval-record',
   templateUrl: './single-eval-record.component.html',
   styleUrls: ['./single-eval-record.component.css'],
-  viewProviders: [MatExpansionPanelHeader]
+  viewProviders: [MatExpansionPanel]
 })
 export class SingleEvalRecordComponent implements OnInit {
 
@@ -17,13 +17,13 @@ export class SingleEvalRecordComponent implements OnInit {
   forms: FormGroup;
   socialFormArray: FormArray;
   orderFormArray: FormArray;
-  committedBonusSalary: number;
-  pendingBonusSalary: number;
+  @Output() committedBonusSalary: EventEmitter<number>;
+  @Output() pendingBonusSalary: EventEmitter<number>;
 
   constructor(fb: FormBuilder,
               protected bonusSalaryService: BonusSalaryService) {
-    this.committedBonusSalary = 0;
-    this.pendingBonusSalary = 0;
+    this.committedBonusSalary = new EventEmitter<number>();
+    this.pendingBonusSalary = new EventEmitter<number>();
     this.fb = fb;
     this.socialFormArray = this.fb.array([]);
     this.orderFormArray = this.fb.array([]);
@@ -47,12 +47,13 @@ export class SingleEvalRecordComponent implements OnInit {
   getBonusSalaries(): void {
       this.bonusSalaryService.getBonusSalary(this.evaluationRecord.employee_id)
         .subscribe(salaries => {
-          this.committedBonusSalary = salaries.find(el => el.year === this.evaluationRecord.year).value;
-          this.pendingBonusSalary = this.calculatePendingBonusSalary();
+          const salary = salaries.find(el => el.year === this.evaluationRecord.year).value;
+          this.committedBonusSalary.emit(salary);
+          this.pendingBonusSalary.emit(this.calculatePendingBonusSalary(salary));
         });
   }
-  calculatePendingBonusSalary(): number {
-    let bonusSalary = 0 - this.committedBonusSalary;
+  calculatePendingBonusSalary(salary: number): number {
+    let bonusSalary = 0 - salary;
     this.evaluationRecord.orders_evaluation.forEach(order => {
       bonusSalary += order.bonus;
     });
