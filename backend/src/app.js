@@ -76,7 +76,7 @@ async function initDb(db){
         // await salesmanService.add(db,new salesman(22,"Tobias","Hansen","REST"));
 
         const adminPassword = crypto.randomBytes(8).toString('base64');
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true, "admin"));
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true, "admin", 2));
 
 
 
