@@ -1,8 +1,16 @@
 <mat-accordion>
   <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index">
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        Record of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
+      <mat-panel-title [ngSwitch]="this.layout">
+        <div *ngSwitchCase="'manager'">
+          <p>Record of the year {{evaluationRecord.year}}</p>
+        </div>
+        <div *ngSwitchCase="'hr'">
+          <p>Record of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}</p>
+        </div>
+        <div *ngSwitchDefault>
+          <p>Your record of the year {{evaluationRecord.year}}</p>
+        </div>
       </mat-panel-title>
       <mat-panel-description>
         Already Committed Bonus: {{this.committedBonusSalaries[i]}}€, Pending Bonus: {{this.pendingBonusSalaries[i]}}€
