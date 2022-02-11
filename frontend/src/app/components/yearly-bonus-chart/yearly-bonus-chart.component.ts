@@ -63,41 +63,43 @@ export class YearlyBonusChartComponent implements OnInit, OnDestroy {
     this.avgPerYear = this.getAveragePerYear(this.bonusPerYear);
     this.updateFlag = true;
 
-    this.statusReadingSubscription = this.resumeLiveService.getLiveResumeData().subscribe((liveReadings) => {
 
-      if (!this.updateFlag) {
-        for (const reading of liveReadings) {
-          if (reading.measurement_info.id > 10) {
-            continue;
-          }
-          const serieIndex = this.seriesIndexMap.get(reading.measurement_info.id);
-          if (serieIndex === undefined) {
-            this.seriesIndexMap.set(reading.measurement_info.id, this.Highcharts.charts[0].series.length);
-            const series = this.Highcharts.charts[0].addSeries({
-              name: reading.measurement_info.name,
-              type: 'spline',
-            });
-            series.addPoint([new Date(reading.reading.timestamp).getTime(), reading.reading.value]);
-          } else {
-            const dataTemp = this.Highcharts.charts[0].series[serieIndex].data;
-            if (dataTemp[dataTemp.length - 1] !== undefined && dataTemp[dataTemp.length - 1].y !== reading.reading.value &&
-              dataTemp[dataTemp.length - 1].x !== new Date(reading.reading.timestamp).getTime()) {
-              const tempRandom = Math.floor((Math.random() * 10) + 1);
-              const tempDate = new Date(reading.reading.timestamp);
-              let tempYValue = reading.reading.value;
-              const tempXValue = (tempDate.getTime());
-              if (tempRandom === 5) {
-                console.log('Insertion de NUll dans le graph pour' + reading.measurement_info.name + ' à x = ' +
-                  tempDate.toString());
-                tempYValue = null;
-              }
-              this.Highcharts.charts[0].series[serieIndex].addPoint([tempXValue, tempYValue]);
-            }
-          }
-        }
-        this.updateFlag = true;
-      }
-    });
+
+    // this.statusReadingSubscription = this.resumeLiveService.getLiveResumeData().subscribe((liveReadings) => {
+    //
+    //   if (!this.updateFlag) {
+    //     for (const reading of liveReadings) {
+    //       if (reading.measurement_info.id > 10) {
+    //         continue;
+    //       }
+    //       const serieIndex = this.seriesIndexMap.get(reading.measurement_info.id);
+    //       if (serieIndex === undefined) {
+    //         this.seriesIndexMap.set(reading.measurement_info.id, this.Highcharts.charts[0].series.length);
+    //         const series = this.Highcharts.charts[0].addSeries({
+    //           name: reading.measurement_info.name,
+    //           type: 'spline',
+    //         });
+    //         series.addPoint([new Date(reading.reading.timestamp).getTime(), reading.reading.value]);
+    //       } else {
+    //         const dataTemp = this.Highcharts.charts[0].series[serieIndex].data;
+    //         if (dataTemp[dataTemp.length - 1] !== undefined && dataTemp[dataTemp.length - 1].y !== reading.reading.value &&
+    //           dataTemp[dataTemp.length - 1].x !== new Date(reading.reading.timestamp).getTime()) {
+    //           const tempRandom = Math.floor((Math.random() * 10) + 1);
+    //           const tempDate = new Date(reading.reading.timestamp);
+    //           let tempYValue = reading.reading.value;
+    //           const tempXValue = (tempDate.getTime());
+    //           if (tempRandom === 5) {
+    //             console.log('Insertion de NUll dans le graph pour' + reading.measurement_info.name + ' à x = ' +
+    //               tempDate.toString());
+    //             tempYValue = null;
+    //           }
+    //           this.Highcharts.charts[0].series[serieIndex].addPoint([tempXValue, tempYValue]);
+    //         }
+    //       }
+    //     }
+    //     this.updateFlag = true;
+    //   }
+    // });
 
   }
 
