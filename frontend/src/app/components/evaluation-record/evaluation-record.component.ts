@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
 import { Evaluationrecord } from '../../models/Evaluationrecord';
 import { ActivatedRoute } from '@angular/router';
@@ -12,6 +12,7 @@ export class EvaluationRecordComponent implements OnInit {
 
   @Input() paramEmployeeID: number;
   @Input() layout: string;
+  @Input() EventEmitterEmployeeID: EventEmitter<number>;
   editMode: boolean;
   evaluationRecords: Evaluationrecord[] = [];
   committedBonusSalaries: number[] = [];
@@ -30,13 +31,24 @@ export class EvaluationRecordComponent implements OnInit {
             this.addRecord(record);
           });
         });
-    } else {
+    } else if (this.EventEmitterEmployeeID === undefined){
       this.evalService.getEvaluationRecord(this.paramEmployeeID)
         .subscribe(records => {
           records.forEach(record => {
             this.addRecord(record);
           });
         });
+    } else {
+      this.EventEmitterEmployeeID.subscribe(employeeID => {
+        console.log(employeeID);
+        this.paramEmployeeID = employeeID;
+        this.evalService.getEvaluationRecord(employeeID)
+          .subscribe(records => {
+            records.forEach(record => {
+              this.addRecord(record);
+            });
+          });
+      });
     }
   }
   addRecord(evalRecord: Evaluationrecord): void {

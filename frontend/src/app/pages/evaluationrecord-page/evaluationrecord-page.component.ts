@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {UserService} from '../../services/user.service';
 
 @Component({
@@ -9,14 +9,14 @@ import {UserService} from '../../services/user.service';
 
 export class EvaluationrecordPageComponent implements OnInit {
 
-  employeeID: number;
+  employeeID: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
     this.userService.getOwnUser().subscribe(user => {
-      this.employeeID = user.employee_id;
+      this.employeeID.emit(user.employee_id);
     });
   }
 

@@ -19,6 +19,7 @@ export class SingleEvalRecordComponent implements OnInit {
   orderFormArray: FormArray;
   @Output() committedBonusSalary: EventEmitter<number>;
   @Output() pendingBonusSalary: EventEmitter<number>;
+  totalBonusSalary: number;
 
   constructor(fb: FormBuilder,
               protected bonusSalaryService: BonusSalaryService) {
@@ -45,15 +46,16 @@ export class SingleEvalRecordComponent implements OnInit {
     }
   }
   getBonusSalaries(): void {
-      this.bonusSalaryService.getBonusSalary(this.evaluationRecord.employee_id)
-        .subscribe(salaries => {
-          const salary = salaries.find(el => el.year === this.evaluationRecord.year).value;
-          this.committedBonusSalary.emit(salary);
-          this.pendingBonusSalary.emit(this.calculatePendingBonusSalary(salary));
-        });
+    this.bonusSalaryService.getBonusSalary(this.evaluationRecord.employee_id)
+      .subscribe(salaries => {
+        const salary = salaries.find(el => el.year === this.evaluationRecord.year).value;
+        this.committedBonusSalary.emit(salary);
+        this.totalBonusSalary = this.calculatePendingBonusSalary(salary);
+        this.pendingBonusSalary.emit(this.totalBonusSalary - salary);
+      });
   }
   calculatePendingBonusSalary(salary: number): number {
-    let bonusSalary = 0 - salary;
+    let bonusSalary = 0;
     this.evaluationRecord.orders_evaluation.forEach(order => {
       bonusSalary += order.bonus;
     });

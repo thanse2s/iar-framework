@@ -24,10 +24,10 @@ export class HrEvaluationRecordComponent extends SingleEvalRecordComponent{
   commitBonus(): void {
     this.open++;
     this.evaluationRecord.is_committed = true;
-    // this.evalService.commitBonus(
-    //   this.evaluationRecord.employee_id,
-    //   this.evaluationRecord.year,
-    //   this.calculateTotalBonusSalary(this.evaluationRecord)).subscribe();
+    this.evalService.commitBonus(
+      this.evaluationRecord.employee_id,
+      this.evaluationRecord.year,
+      this.totalBonusSalary).subscribe();
   }
 
 }
