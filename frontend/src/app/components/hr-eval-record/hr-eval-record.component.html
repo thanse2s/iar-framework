@@ -1,7 +1,4 @@
-<app-single-eval-record></app-single-eval-record>
+<app-single-eval-record [evaluationRecord]="this.evaluationRecord"></app-single-eval-record>
 <mat-action-row>
   <button mat-raised-button color="warn" (click)="commitBonus()">Commit</button>
 </mat-action-row>
-<!--<div class="center" *ngIf="evaluationRecord.length === 0">-->
-<!--  <h2>Nothing to do here!</h2>-->
-<!--</div>-->

@@ -1,13 +1,34 @@
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index" [disabled]="editMode">
+  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index">
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        Record of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}
+      <mat-panel-title [ngSwitch]="this.layout">
+        <div *ngSwitchCase="'manager'">
+          <p>Record of the year {{evaluationRecord.year}}</p>
+        </div>
+        <div *ngSwitchCase="'hr'">
+          <p>Record of the year {{evaluationRecord.year}} for Employee {{evaluationRecord.employee_id}}</p>
+        </div>
+        <div *ngSwitchDefault>
+          <p>Your record of the year {{evaluationRecord.year}}</p>
+        </div>
       </mat-panel-title>
       <mat-panel-description>
-        Total Bonus-Salary of this year: {{this.calculateTotalBonusSalary(evaluationRecord)}}€, Already Committed: {{findBonusSalaryByIDAndYear(evaluationRecord.employee_id, evaluationRecord.year)}}€
+        Already Committed Bonus: {{this.committedBonusSalaries[i]}}€, Pending Bonus: {{this.pendingBonusSalaries[i]}}€
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <app-single-eval-record [evaluationRecord]="evaluationRecord"></app-single-eval-record>
+    <div [ngSwitch]="this.layout">
+      <div *ngSwitchCase="'manager'">
+        <app-manager-evaluation-record [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-manager-evaluation-record>
+      </div>
+      <div *ngSwitchCase="'hr'">
+        <app-hr-evaluation-record *ngIf="evaluationRecords.length >= 0" [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-hr-evaluation-record>
+        <div class="center" *ngIf="evaluationRecords.length === 0">
+          <h2>Nothing to do here!</h2>
+        </div>
+      </div>
+      <div *ngSwitchDefault>
+        <app-single-eval-record [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-single-eval-record>
+      </div>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>

@@ -1,12 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MessageService } from '../../services/message.service';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
 import { Evaluationrecord } from '../../models/Evaluationrecord';
-import { BonusSalaryService } from '../../services/bonussalary.service';
-import { BonusSalary } from '../../models/BonusSalary';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-record.component';
 
 @Component({
   selector: 'app-evaluation-record',
@@ -16,33 +11,49 @@ import {SingleEvalRecordComponent} from '../single-eval-record/single-eval-recor
 export class EvaluationRecordComponent implements OnInit {
 
   @Input() paramEmployeeID: number;
-  evalService: EvaluationrecordService;
-  bonusSalaryService: BonusSalaryService;
-
+  @Input() layout: string;
+  @Input() EventEmitterEmployeeID: EventEmitter<number>;
   editMode: boolean;
   evaluationRecords: Evaluationrecord[] = [];
-  bonusSalaries: BonusSalary[] = [];
+  committedBonusSalaries: number[] = [];
+  pendingBonusSalaries: number[] = [];
 
-  constructor(evalService: EvaluationrecordService,
-              bonusSalaryService: BonusSalaryService,
-              protected messageService: MessageService,
-              protected route: ActivatedRoute,
-              protected fb: FormBuilder) {
-    this.evalService = evalService;
-    this.bonusSalaryService = bonusSalaryService;
+  constructor(protected evalService: EvaluationrecordService,
+              protected route: ActivatedRoute) {
     this.editMode = false;
   }
 
-  getEvaluationRecord(): void {
-    this.evalService.getEvaluationRecord(this.paramEmployeeID)
-      .subscribe(records => {
-        records.forEach(record => {
-          this.addRecord(record);
-          this.getBonusSalary(record.employee_id);
+  getEvaluationRecords(): void {
+    if (this.layout === 'hr') {
+      this.evalService.getUncommittedEvaluationRecords()
+        .subscribe(records => {
+          records.forEach(record => {
+            this.addRecord(record);
+          });
         });
+    } else if (this.EventEmitterEmployeeID === undefined){
+      this.evalService.getEvaluationRecord(this.paramEmployeeID)
+        .subscribe(records => {
+          records.forEach(record => {
+            this.addRecord(record);
+          });
+        });
+    } else {
+      this.EventEmitterEmployeeID.subscribe(employeeID => {
+        console.log(employeeID);
+        this.paramEmployeeID = employeeID;
+        this.evalService.getEvaluationRecord(employeeID)
+          .subscribe(records => {
+            records.forEach(record => {
+              this.addRecord(record);
+            });
+          });
       });
+    }
   }
   addRecord(evalRecord: Evaluationrecord): void {
+    this.committedBonusSalaries.push(0);
+    this.pendingBonusSalaries.push(0);
     this.evaluationRecords.splice(this.findLoc(evalRecord, this.evaluationRecords) + 1, 0, evalRecord);
   }
   findLoc(el: Evaluationrecord, arr: Evaluationrecord[]): number {
@@ -54,35 +65,11 @@ export class EvaluationRecordComponent implements OnInit {
     }
     return arr.length;
   }
-  getBonusSalary(id: number): void {
-    if (!this.bonusSalaries.find(salary => salary.employee_id = id)) {
-      this.bonusSalaryService.getBonusSalary(id)
-        .subscribe(salaries => {
-          salaries.forEach(salary => {
-            this.bonusSalaries.push(salary);
-          });
-        });
-    }
-  }
-  findBonusSalaryByIDAndYear(id: number, year: number): number {
-    const salary = this.bonusSalaries.find(el => (el.employee_id === id) && (el.year === year));
-    return salary !== undefined ? salary.value : 0;
-  }
-  calculateTotalBonusSalary(record: Evaluationrecord): number {
-    let bonusSalary = 0;
-    record.orders_evaluation.forEach(order => {
-      bonusSalary += order.bonus;
-    });
-    record.social_performance.forEach(social => {
-      bonusSalary += social.bonus;
-    });
-    return bonusSalary;
-  }
   getEditMode(): string {
     return this.editMode ? 'editing' : 'hide';
   }
 
   ngOnInit(): void {
-    this.getEvaluationRecord();
+    this.getEvaluationRecords();
   }
 }
