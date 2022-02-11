@@ -16,8 +16,8 @@ StockModule(Highcharts);
 
 export class YearlyBonusChartComponent implements OnInit {
 
-  @Input() bonusPerYear: number[];
-  @Input() years: string[];
+  @Input() bonusPerYear: number[] = [400,500,600];
+  @Input() years: string[] = ['2019', '2020', '2021'];
   avgPerYear: number[];
 
   statusReadingSubscription: Subscription;
@@ -103,6 +103,8 @@ export class YearlyBonusChartComponent implements OnInit {
   updateChart(): void {
     const self = this,
       chart = this.chart;
+
+    this.avgPerYear = this.getAveragePerYear(this.bonusPerYear);
 
     chart.showLoading();
     setTimeout(() => {

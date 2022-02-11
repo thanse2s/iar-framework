@@ -18,22 +18,15 @@ export class SalesmanDashboardComponent implements OnInit {
   private salesmanService: SalesmanService;
   private userService: UserService
   private evaluationRecordService: EvaluationrecordService;
-  public currentSalesman: Salesman;
-  public currentUser: User;
-  public evaluationRecord: Evaluationrecord[]
-  public employeeId: number;
-  public bonus: number[];
-  public years: string[];
+  private currentSalesman: Salesman;
+  private currentUser: User;
+  private evaluationRecord: Evaluationrecord[]
+  private employeeId: number;
+  private bonus: number[];
+  private years: string[];
 
   ngOnInit(): void {
-    this.getUser();
-    console.log(this.currentUser);
-    this.getSalesman();
-    console.log(this.currentSalesman);
-    this.getEvaluationrecord();
-    console.log(this.evaluationRecord);
-    this.getBonus();
-    console.log(this.bonus);
+    // this.getUser();
   }
 
   constructor(salesmanService: SalesmanService, userService: UserService, evaluationRecordService: EvaluationrecordService) {
@@ -47,20 +40,21 @@ export class SalesmanDashboardComponent implements OnInit {
       .subscribe(user => {
         this.currentUser = user;
         this.employeeId = user.employee_id;
-        console.log(this.currentUser);
-        console.log(this.employeeId);
+        this.getSalesman(user.employee_id);
+        this.getEvaluationrecord(user.employee_id)
+        this.getBonus();
       });
   }
 
-  getSalesman(): void {
-    this.salesmanService.getSalesman(this.employeeId)
+  getSalesman(id): void {
+    this.salesmanService.getSalesman(id)
       .subscribe(salesman => {
         this.currentSalesman = salesman
       });
   }
 
-  getEvaluationrecord(): void {
-    this.evaluationRecordService.getEvaluationRecord(this.employeeId)
+  getEvaluationrecord(id): void {
+    this.evaluationRecordService.getEvaluationRecord(id)
       .subscribe(evaluationrecord => this.evaluationRecord = evaluationrecord);
   }
 
