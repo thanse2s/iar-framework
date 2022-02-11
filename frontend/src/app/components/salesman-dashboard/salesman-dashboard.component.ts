@@ -6,7 +6,6 @@ import {UserService} from "../../services/user.service";
 import {EvaluationrecordService} from "../../services/evaluationrecord.service";
 import {Evaluationrecord} from "../../models/Evaluationrecord";
 import {Orderevaluation} from "../../models/Orderevaluation";
-import {SalesmanDashboardService} from "../../services/salesman-dashboard.service";
 
 
 @Component({
@@ -19,19 +18,22 @@ export class SalesmanDashboardComponent implements OnInit {
   private salesmanService: SalesmanService;
   private userService: UserService
   private evaluationRecordService: EvaluationrecordService;
-  private salesmanDashboardService;
-  private currentSalesman: Salesman;
-  private currentUser: User;
-  private evaluationRecord: Evaluationrecord[]
-  private employeeId: number;
+  public currentSalesman: Salesman;
+  public currentUser: User;
+  public evaluationRecord: Evaluationrecord[]
+  public employeeId: number;
   public bonus: number[];
   public years: string[];
 
   ngOnInit(): void {
     this.getUser();
+    console.log(this.currentUser);
     this.getSalesman();
+    console.log(this.currentSalesman);
     this.getEvaluationrecord();
+    console.log(this.evaluationRecord);
     this.getBonus();
+    console.log(this.bonus);
   }
 
   constructor(salesmanService: SalesmanService, userService: UserService, evaluationRecordService: EvaluationrecordService) {
@@ -45,13 +47,16 @@ export class SalesmanDashboardComponent implements OnInit {
       .subscribe(user => {
         this.currentUser = user;
         this.employeeId = user.employee_id;
+        console.log(this.currentUser);
         console.log(this.employeeId);
       });
   }
 
   getSalesman(): void {
     this.salesmanService.getSalesman(this.employeeId)
-      .subscribe(salesman => this.currentSalesman = salesman);
+      .subscribe(salesman => {
+        this.currentSalesman = salesman
+      });
   }
 
   getEvaluationrecord(): void {
