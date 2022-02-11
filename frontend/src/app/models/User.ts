@@ -4,6 +4,7 @@
 export class User{
   constructor(
     public _id: string,
+    public employee_id: number,
     public username: string,
     public firstname: string,
     public lastname: string,

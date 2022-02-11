@@ -9,8 +9,9 @@
  * @param {string} role
  */
 class User{
-    constructor(username, firstname, lastname, email, password, isAdmin,role) {
+    constructor(username, firstname, lastname, email, password, isAdmin, role, employee_id) {
         this._id = undefined;
+        this.employee_id = employee_id
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;

@@ -33,7 +33,8 @@ app.use(session({
     }
 }));
 
-const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
+const apiRouter = require('./routes/api-routes');
+const axios = require("axios"); //get api-router from routes/api
 app.use('/api', apiRouter); //mount api-router at path "/api"
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
@@ -52,7 +53,17 @@ MongoClient.connect('mongodb://' + credentials + domain + ':' + port + '/').then
     app.listen(8080, () => { //start webserver, after database-connection was established
         console.log('Webserver started.');
     });
+    // Update Db with Opencrx
+    await updateDbOpenCRX();
 });
+
+
+
+async function updateDbOpenCRX(){
+    await axios.get('https://localhost:8080/api/opencrx/update', { proxy: { host: '127.0.0.1', port: 8080 } })
+        .then(_ => { console.log("Successfully fetched from OpenCRX.") })
+        .catch(err => console.log(err));
+}
 
 async function initDb(db){
     if(await db.collection('users').count() < 1){ //if no user exists create admin user
@@ -60,13 +71,14 @@ async function initDb(db){
         const User = require("./models/User");
 
         //Eigene Collection
-        const salesmanService =  require('./services/salesman-service')
-        const salesman = require("./models/Salesman");
-        await salesmanService.add(db,new salesman(22,"Tobias","Hansen","REST"));
+        // const salesmanService =  require('./services/salesman-service')
+        // const salesman = require("./models/Salesman");
+        // await salesmanService.add(db,new salesman(22,"Tobias","Hansen","REST"));
 
-        //Mock Performance-Record
         const adminPassword = crypto.randomBytes(8).toString('base64');
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true, "admin", 2));
+
+
 
         console.log('created admin user with password: '+adminPassword);
     }
