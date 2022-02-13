@@ -1,7 +1,12 @@
 <mat-accordion>
   <mat-expansion-panel *ngIf="(this.layout==='basic')" [expanded]="true">
     <mat-expansion-panel-header>
-      Dashboard
+      <mat-panel-title>
+        Dashboard
+      </mat-panel-title>
+      <mat-panel-description>
+        Your personal Achievements visualised!
+      </mat-panel-description>
     </mat-expansion-panel-header>
     <app-salesman-dashboard *ngIf="evaluationRecords" [evaluationRecords]="this.evaluationRecords"></app-salesman-dashboard>
   </mat-expansion-panel>

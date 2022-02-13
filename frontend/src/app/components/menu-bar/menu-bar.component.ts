@@ -3,7 +3,6 @@ import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {User} from '../../models/User';
 import {UserService} from '../../services/user.service';
-import {Credentials} from '../../models/Credentials';
 
 @Component({
   selector: 'app-menu-bar',
@@ -19,19 +18,6 @@ export class MenuBarComponent implements OnInit {
     This array holds the definition of the menu's buttons.
    */
   buttons = [];
-   /* {title: 'Welcome', routerLink: ''}, // the tile is the text on the button, the routerLink specifies, where it will navigate
-    //{title: 'Example', routerLink: 'example'},
-    {title: 'Salesman', routerLink: 'salesman'},
-    {title: 'Evaluation Record', routerLink: 'evaluationrecord'},
-    {title: 'Commit Dashboard', routerLink: 'commit'}
-  ];*/
-
-  /**
-   * The following parameters specify objects, which will be provided by dependency injection
-   * @param authService
-   * @param router
-   * @param userService
-   */
   constructor(private authService: AuthService, private router: Router, private userService: UserService) {
   }
 
@@ -64,19 +50,18 @@ export class MenuBarComponent implements OnInit {
     this.userService.getOwnUser().subscribe(user => {
       switch (user.role.toLocaleUpperCase()) {
         case 'SALESMAN':
-          this.buttons = [{title: 'Evaluation Record', routerLink: 'evaluationrecord'}];
+          this.buttons = [{title: 'Evaluation Results', routerLink: 'evaluationrecord'}];
           break;
         case 'HR':
           this.buttons = [{title: 'Commit Dashboard', routerLink: 'commit'}];
           break;
         case 'MANAGER':
-          this.buttons = [{title: 'Salesman', routerLink: 'salesman'}];
+          this.buttons = [{title: 'Salesman List', routerLink: 'salesman'}];
           break;
         default:
           this.buttons = [{title: 'Salesman', routerLink: 'salesman'},
             {title: 'Evaluation Record', routerLink: 'evaluationrecord'},
-            {title: 'Commit Dashboard', routerLink: 'commit'},
-            {title: 'Salesman Dashboard', routerLink: 'salesman-dashboard-page'}];
+            {title: 'Commit Dashboard', routerLink: 'commit'}];
           break;
       }
     });

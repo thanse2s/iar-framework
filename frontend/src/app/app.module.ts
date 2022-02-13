@@ -32,9 +32,8 @@ import { HrEvaluationRecordComponent } from './components/hr-eval-record/hr-eval
 import { SingleEvalRecordComponent } from './components/single-eval-record/single-eval-record.component';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {YearlyBonusChartComponent} from './components/yearly-bonus-chart/yearly-bonus-chart.component';
-import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesman-dashboard.component';
-import {SalesmanDashboardPageComponent} from './pages/salesman-dashboard-page/salesman-dashboard-page.component';
 import {SocialPerformanceChartComponent} from './components/social-performance-chart/social-performance-chart.component';
+import {SalesmanDashboardComponent} from './components/salesman-dashboard/salesman-dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,9 +50,8 @@ import {SocialPerformanceChartComponent} from './components/social-performance-c
     ManagerEvaluationRecordComponent,
     HrEvaluationRecordComponent,
     SingleEvalRecordComponent,
-    SalesmanDashboardComponent,
     YearlyBonusChartComponent,
-    SalesmanDashboardPageComponent,
+    SalesmanDashboardComponent,
     SocialPerformanceChartComponent
   ],
     imports: [
