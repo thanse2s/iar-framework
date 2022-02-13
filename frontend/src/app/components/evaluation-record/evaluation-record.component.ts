@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
 import { Evaluationrecord } from '../../models/Evaluationrecord';
 import { ActivatedRoute } from '@angular/router';
@@ -12,7 +12,8 @@ export class EvaluationRecordComponent implements OnInit {
 
   @Input() paramEmployeeID: number;
   @Input() layout: string;
-  @Input() EventEmitterEmployeeID: EventEmitter<number>;
+  @Input() eventEmitterEmployeeID: EventEmitter<number>;
+  @Output() editModeEmitter: EventEmitter<boolean>;
   editMode: boolean;
   evaluationRecords: Evaluationrecord[] = [];
   committedBonusSalaries: number[] = [];
@@ -21,6 +22,7 @@ export class EvaluationRecordComponent implements OnInit {
   constructor(protected evalService: EvaluationrecordService,
               protected route: ActivatedRoute) {
     this.editMode = false;
+    this.editModeEmitter = new EventEmitter<boolean>();
   }
 
   getEvaluationRecords(): void {
@@ -31,7 +33,7 @@ export class EvaluationRecordComponent implements OnInit {
             this.addRecord(record);
           });
         });
-    } else if (this.EventEmitterEmployeeID === undefined){
+    } else if (this.eventEmitterEmployeeID === undefined){
       this.evalService.getEvaluationRecord(this.paramEmployeeID)
         .subscribe(records => {
           records.forEach(record => {
@@ -39,8 +41,7 @@ export class EvaluationRecordComponent implements OnInit {
           });
         });
     } else {
-      this.EventEmitterEmployeeID.subscribe(employeeID => {
-        console.log(employeeID);
+      this.eventEmitterEmployeeID.subscribe(employeeID => {
         this.paramEmployeeID = employeeID;
         this.evalService.getEvaluationRecord(employeeID)
           .subscribe(records => {
@@ -67,6 +68,11 @@ export class EvaluationRecordComponent implements OnInit {
   }
   getEditMode(): string {
     return this.editMode ? 'editing' : 'hide';
+  }
+  switchEditMode(editMode: boolean): boolean{
+    this.editMode = editMode;
+    this.editModeEmitter.emit(editMode);
+    return editMode;
   }
 
   ngOnInit(): void {

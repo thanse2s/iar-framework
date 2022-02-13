@@ -16,9 +16,11 @@ export class SalesmanListComponent implements OnInit {
 
   private salesmanService: SalesmanService;
   salesmenList: Salesman[] = [];
+  editMode: boolean;
 
   constructor(salesmanService: SalesmanService, private messageService: MessageService, private router: Router) {
     this.salesmanService = salesmanService;
+    this.editMode = false;
   }
 
   getSalesman(): void {
@@ -26,12 +28,11 @@ export class SalesmanListComponent implements OnInit {
         .subscribe(salesmenList =>  this.salesmenList = salesmenList);
   }
 
-
   ngOnInit(): void {
     this.getSalesman();
   }
 
-  public detail(event, salesman){
+  public detail(event, salesman): void{
     this.router.navigate([`evaluationrecord/${salesman.employee_id}`]);
   }
 

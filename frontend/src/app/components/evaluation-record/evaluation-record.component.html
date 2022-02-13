@@ -1,5 +1,11 @@
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index">
+  <mat-expansion-panel *ngIf="(this.layout==='basic')">
+    <mat-expansion-panel-header>
+      Dashboard
+    </mat-expansion-panel-header>
+    <app-salesman-dashboard [evaluationRecords]="this.evaluationRecords"></app-salesman-dashboard>
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index" [disabled]="this.editMode">
     <mat-expansion-panel-header>
       <mat-panel-title [ngSwitch]="this.layout">
         <div *ngSwitchCase="'manager'">
@@ -18,7 +24,11 @@
     </mat-expansion-panel-header>
     <div [ngSwitch]="this.layout">
       <div *ngSwitchCase="'manager'">
-        <app-manager-evaluation-record [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-manager-evaluation-record>
+        <app-manager-evaluation-record
+          [evaluationRecord]="evaluationRecord"
+          (committedBonusSalary)="this.committedBonusSalaries[i] = $event"
+          (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"
+          (editModeEmitter)="this.switchEditMode($event)"></app-manager-evaluation-record>
       </div>
       <div *ngSwitchCase="'hr'">
         <app-hr-evaluation-record *ngIf="evaluationRecords.length >= 0" [evaluationRecord]="evaluationRecord" (committedBonusSalary)="this.committedBonusSalaries[i] = $event" (pendingBonusSalary)="this.pendingBonusSalaries[i] = $event"></app-hr-evaluation-record>
@@ -32,6 +42,3 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-<div *ngIf="(this.layout==='basic')">
-  <app-salesman-dashboard [evaluationRecords]="this.evaluationRecords"></app-salesman-dashboard>
-</div>

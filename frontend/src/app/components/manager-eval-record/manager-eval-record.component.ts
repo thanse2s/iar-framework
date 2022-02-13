@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import { EvaluationrecordService } from '../../services/evaluationrecord.service';
 import { Socialperformance } from '../../models/Socialperformance';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -56,12 +56,14 @@ export class ManagerEvaluationRecordComponent extends SingleEvalRecordComponent{
 
   addSocialRecordForm: FormGroup;
   addedSocialPerformances: Socialperformance[] = [];
+  @Output() editModeEmitter: EventEmitter<boolean>;
   editMode: boolean;
 
   constructor(fb: FormBuilder,
               bonusSalaryService: BonusSalaryService,
               private evalService: EvaluationrecordService) {
     super(fb, bonusSalaryService);
+    this.editModeEmitter = new EventEmitter<boolean>();
     this.editMode = false;
     this.addSocialRecordForm = this.fb.group({
       skill: [null, Validators.required],
@@ -93,7 +95,8 @@ export class ManagerEvaluationRecordComponent extends SingleEvalRecordComponent{
     if (!this.editMode) {
       this.socialFormArray.enable();
       this.orderFormArray.enable();
-      this.editMode = !this.editMode;
+      this.editMode = true;
+      this.editModeEmitter.emit(true);
     }
   }
   saveChanges(): void {
@@ -119,7 +122,8 @@ export class ManagerEvaluationRecordComponent extends SingleEvalRecordComponent{
           this.addedSocialPerformances = [];
         }
         this.forms.disable();
-        this.editMode = !this.editMode;
+        this.editMode = false;
+        this.editModeEmitter.emit(false);
       }
     }
   }
@@ -150,7 +154,8 @@ export class ManagerEvaluationRecordComponent extends SingleEvalRecordComponent{
       }
       // leave edit-mode
       this.forms.disable();
-      this.editMode = !this.editMode;
+      this.editMode = false;
+      this.editModeEmitter.emit(false);
     }
   }
   getEditMode(): string {

@@ -46,15 +46,16 @@ export class SingleEvalRecordComponent implements OnInit {
     }
   }
   getBonusSalaries(): void {
+    console.log(this.evaluationRecord.employee_id);
     this.bonusSalaryService.getBonusSalary(this.evaluationRecord.employee_id)
       .subscribe(salaries => {
         const salary = salaries.find(el => el.year === this.evaluationRecord.year).value;
         this.committedBonusSalary.emit(salary);
-        this.totalBonusSalary = this.calculatePendingBonusSalary(salary);
+        this.totalBonusSalary = this.calculateTotalBonusSalary();
         this.pendingBonusSalary.emit(this.totalBonusSalary - salary);
       });
   }
-  calculatePendingBonusSalary(salary: number): number {
+  calculateTotalBonusSalary(): number {
     let bonusSalary = 0;
     this.evaluationRecord.orders_evaluation.forEach(order => {
       bonusSalary += order.bonus;
