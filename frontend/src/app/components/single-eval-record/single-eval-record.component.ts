@@ -57,11 +57,15 @@ export class SingleEvalRecordComponent implements OnInit {
   getBonusSalaries(): void {
     this.bonusSalaryService.getBonusSalary(this.evaluationRecord.employee_id)
       .subscribe(salaries => {
-        console.log(salaries);
-        const salary = salaries.find(el => el.year === this.evaluationRecord.year).value;
-        this.committedBonusSalary.emit(salary);
+        let committedBonusSalary = 0;
+        const salary = salaries.find(el => el.year === this.evaluationRecord.year);
+        // May be undefined if not Pushed to OrangeHRM yet
+        if (salary !== undefined) {
+          committedBonusSalary = salary.value;
+        }
+        this.committedBonusSalary.emit(committedBonusSalary);
         this.totalBonusSalary = this.calculateTotalBonusSalary();
-        this.pendingBonusSalary.emit(this.totalBonusSalary - salary);
+        this.pendingBonusSalary.emit(this.totalBonusSalary - committedBonusSalary);
       });
   }
   calculateTotalBonusSalary(): number {
