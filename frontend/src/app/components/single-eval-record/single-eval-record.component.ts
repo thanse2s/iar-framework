@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output
+} from '@angular/core';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BonusSalaryService} from '../../services/bonussalary.service';
@@ -46,9 +55,9 @@ export class SingleEvalRecordComponent implements OnInit {
     }
   }
   getBonusSalaries(): void {
-    console.log(this.evaluationRecord.employee_id);
     this.bonusSalaryService.getBonusSalary(this.evaluationRecord.employee_id)
       .subscribe(salaries => {
+        console.log(salaries);
         const salary = salaries.find(el => el.year === this.evaluationRecord.year).value;
         this.committedBonusSalary.emit(salary);
         this.totalBonusSalary = this.calculateTotalBonusSalary();

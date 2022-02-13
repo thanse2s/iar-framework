@@ -1,4 +1,4 @@
-<table *ngIf = "this.evaluationRecord.orders_evaluation.length > 0 && this.orderFormArray.length === this.evaluationRecord.orders_evaluation.length" class="output_table">
+<table *ngIf = "this.evaluationRecord.orders_evaluation.length > 0" class="output_table">
   <tr>
     <th>Name of Product:</th>
     <th>Client:</th>
@@ -30,7 +30,7 @@
   </tr>
 </table>
 
-<table *ngIf = "evaluationRecord.social_performance.length > 0 && this.socialFormArray.length === this.evaluationRecord.social_performance.length" class="output_table">
+<table *ngIf = "evaluationRecord.social_performance.length > 0" class="output_table">
   <tr>
     <th>Skill/Competence:</th>
     <th>Target Value:</th>

@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, Input} from '@angular/core';
+import {OnInit, Component, Input} from '@angular/core';
 import {Evaluationrecord} from '../../models/Evaluationrecord';
 
 
@@ -7,14 +7,14 @@ import {Evaluationrecord} from '../../models/Evaluationrecord';
   templateUrl: './salesman-dashboard.component.html',
   styleUrls: ['./salesman-dashboard.component.css']
 })
-export class SalesmanDashboardComponent implements AfterContentChecked {
+export class SalesmanDashboardComponent implements OnInit {
 
   @Input() evaluationRecords: Evaluationrecord[];
   bonus: number[];
   avgBonusPerYears: number[];
   years: string[];
 
-  ngAfterContentChecked(): void {
+  ngOnInit(): void {
     this.synchronizedBuild();
   }
 
