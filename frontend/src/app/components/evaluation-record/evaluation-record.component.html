@@ -3,7 +3,7 @@
     <mat-expansion-panel-header>
       Dashboard
     </mat-expansion-panel-header>
-    <app-salesman-dashboard [evaluationRecords]="this.evaluationRecords"></app-salesman-dashboard>
+    <app-salesman-dashboard *ngIf="evaluationRecords" [evaluationRecords]="this.evaluationRecords"></app-salesman-dashboard>
   </mat-expansion-panel>
   <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index" [disabled]="this.editMode || evaluationRecord.is_committed && layout === 'hr'">
     <mat-expansion-panel-header>
