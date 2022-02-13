@@ -1,4 +1,4 @@
 <app-single-eval-record [evaluationRecord]="this.evaluationRecord"></app-single-eval-record>
 <mat-action-row>
-  <button mat-raised-button color="warn" (click)="commitBonus()">Commit</button>
+  <button mat-raised-button color="warn" (click)="commitBonus()" [disabled]="this.evaluationRecord.is_committed">Commit</button>
 </mat-action-row>

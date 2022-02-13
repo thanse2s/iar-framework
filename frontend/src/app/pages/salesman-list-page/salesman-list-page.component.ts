@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { Salesman } from '../../models/Salesman';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 import {SalesmanService} from '../../services/salesman.service';
 import {MessageService} from '../../services/message.service';
 

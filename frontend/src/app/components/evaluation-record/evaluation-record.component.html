@@ -1,11 +1,11 @@
 <mat-accordion>
-  <mat-expansion-panel *ngIf="(this.layout==='basic')">
+  <mat-expansion-panel *ngIf="(this.layout==='basic')" [expanded]="true">
     <mat-expansion-panel-header>
       Dashboard
     </mat-expansion-panel-header>
     <app-salesman-dashboard [evaluationRecords]="this.evaluationRecords"></app-salesman-dashboard>
   </mat-expansion-panel>
-  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index" [disabled]="this.editMode">
+  <mat-expansion-panel *ngFor="let evaluationRecord of evaluationRecords; let i = index" [disabled]="this.editMode || evaluationRecord.is_committed && layout === 'hr'">
     <mat-expansion-panel-header>
       <mat-panel-title [ngSwitch]="this.layout">
         <div *ngSwitchCase="'manager'">
