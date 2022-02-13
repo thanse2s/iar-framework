@@ -32,7 +32,7 @@ exports.correctBonusInBody = (req, res, next) => {
             if (isNullOrUndefined(social.bonus)) {
                 if (!isNullOrUndefined(social.actual_value) && !isNullOrUndefined(social.target_value)) {
                     // This is the algorithm to calculate the Bonus of a social performance
-                    social.bonus = social.actual_value / social.target_value * 100;
+                    social.bonus = (social.actual_value / social.target_value * 100).toFixed(0);
                 } else {
                     invalid = true;
                 }
@@ -44,7 +44,7 @@ exports.correctBonusInBody = (req, res, next) => {
             if (isNullOrUndefined(order.bonus)) {
                 if (!isNullOrUndefined(order.client_ranking) && !isNullOrUndefined(order.items)) {
                     // This is the algorithm to calculate the Bonus of an order evaluation
-                    order.bonus = rankingMap.indexOf(order.client_ranking) * order.items * 15;
+                    order.bonus = rankingMap.indexOf(order.client_ranking) * order.items * 8;
                 } else invalid = true;
             }
         });
