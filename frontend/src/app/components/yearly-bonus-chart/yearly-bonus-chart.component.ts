@@ -3,6 +3,7 @@ import * as Highcharts from 'highcharts';
 import {isNumeric} from "rxjs/internal-compatibility";
 import {Subscription} from "rxjs";
 import StockModule from 'highcharts/modules/stock';
+import {Evaluationrecord} from "../../models/Evaluationrecord";
 StockModule(Highcharts);
 
 
@@ -18,9 +19,8 @@ export class YearlyBonusChartComponent implements OnInit {
 
   @Input() bonusPerYear: number[] = [400,500,600];
   @Input() years: string[] = ['2019', '2020', '2021'];
-  avgPerYear: number[];
+  @Input() avgPerYear: number[];
 
-  statusReadingSubscription: Subscription;
   Highcharts: typeof Highcharts = Highcharts; // required
   chartConstructor: string = 'chart'; // optional string, defaults to 'chart'
   chart;
@@ -83,28 +83,14 @@ export class YearlyBonusChartComponent implements OnInit {
 
   }
 
-  /*
-    Helper Function to calculate Yearly Averages of the Bonus, given the Complete Bonus Salary
-   */
-  getAveragePerYear(data: number[]): number[] {
-    if (data === null) return null;
-    let ret: number[] = [];
-    let tmp: number[] = [];
-    data.forEach(singleData => {
-      let sumTilNow: number = tmp.reduce((pv, cv) => pv + cv, 0);
-      let avg: number = (singleData + sumTilNow) / (ret.length + 1);
-      tmp.push(singleData);
-      ret.push(avg);
-    });
-    return ret;
-  }
-
 
   updateChart(): void {
     const self = this,
       chart = this.chart;
 
-    this.avgPerYear = this.getAveragePerYear(this.bonusPerYear);
+    console.log(this.years);
+    console.log(this.bonusPerYear);
+    console.log(this.avgPerYear);
 
     chart.showLoading();
     setTimeout(() => {

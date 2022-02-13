@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message.service';
 
 @Component({
-  selector: 'salesman-dashboard',
+  selector: 'salesman-dashboard-page',
   templateUrl: './salesman-dashboard-page.component.html',
   styleUrls: ['./salesman-dashboard-page.component.css']
 })

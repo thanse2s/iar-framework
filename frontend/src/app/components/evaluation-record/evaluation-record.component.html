@@ -32,3 +32,6 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
+<div *ngIf="(this.layout==='basic')">
+  <salesman-dashboard [evaluationRecords]="this.evaluationRecords"></salesman-dashboard>
+</div>
