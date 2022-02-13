@@ -8,7 +8,7 @@ StockModule(Highcharts);
 
 
 @Component({
-  selector: 'yearly-bonus-pie',
+  selector: 'app-yearly-bonus-chart',
   templateUrl: './yearly-bonus-chart.component.html',
   styleUrls: ['./yearly-bonus-chart.component.css']
 })
@@ -85,12 +85,8 @@ export class YearlyBonusChartComponent implements OnInit {
 
 
   updateChart(): void {
-    const self = this,
-      chart = this.chart;
-
-    console.log(this.years);
-    console.log(this.bonusPerYear);
-    console.log(this.avgPerYear);
+    const self = this;
+    const chart = this.chart;
 
     chart.showLoading();
     setTimeout(() => {
@@ -108,7 +104,7 @@ export class YearlyBonusChartComponent implements OnInit {
       ];
       this.chartOptions.xAxis = {
         categories: this.years
-      }
+      };
 
       self.updateFlag = true;
     }, 2000);
