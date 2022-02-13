@@ -14,6 +14,8 @@ export class SalesmanDashboardComponent implements AfterContentChecked {
   avgBonusPerYears: number[];
   years: string[];
 
+  avgSocialPerformancePerYear: number[];
+
   ngAfterContentChecked(): void {
     this.synchronizedBuild();
   }
@@ -26,7 +28,8 @@ export class SalesmanDashboardComponent implements AfterContentChecked {
     const bonusAndYear = this.getBonusAndYears(this.evaluationRecords);
     this.bonus = bonusAndYear.bonus;
     this.years = bonusAndYear.years;
-    this.avgBonusPerYears = this.getAveragePerYear(this.bonus);
+    this.avgBonusPerYears = this.getAverageBonusPerYear(this.bonus);
+    this.avgSocialPerformancePerYear = this.getAverageSocialPerformancePerYear(this.evaluationRecords);
   }
 
   /*
@@ -52,19 +55,38 @@ export class SalesmanDashboardComponent implements AfterContentChecked {
   /*
     Helper Function to calculate Yearly Averages of the Bonus, given the Complete Bonus Salary
    */
-  getAveragePerYear(data: number[]): number[] {
-    if (data === null || data === undefined) {
+  getAverageBonusPerYear(bonus: number[]): number[] {
+    if (bonus === null || bonus === undefined) {
       return null;
     }
     const ret: number[] = [];
     const tmp: number[] = [];
-    data.forEach(singleData => {
+    bonus.forEach(singleData => {
       const sumTilNow: number = tmp.reduce((pv, cv) => pv + cv, 0);
       const avg: number = (singleData + sumTilNow) / (ret.length + 1);
       tmp.push(singleData);
       ret.push(avg);
     });
     return ret;
+  }
+
+  /*
+  Helper Function to calculcate Yearly Averages of the Social Performance
+   */
+
+  getAverageSocialPerformancePerYear(evaluationRecord: Evaluationrecord[]): number[] {
+    if (evaluationRecord === null || undefined) {
+      return null;
+    }
+    const averages: number[] = [];
+    for(const record of evaluationRecord) {
+      let valueSum = 0;
+      record.social_performance.forEach(socialPerformance => {
+        valueSum += socialPerformance.actual_value;
+      });
+      averages.push(valueSum/record.social_performance.length);
+    }
+    return averages;
   }
 
 }

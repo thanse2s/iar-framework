@@ -14,9 +14,6 @@ StockModule(Highcharts);
 
 export class SocialPerformanceChartComponent implements OnInit {
 
-  @Input() bonusPerYear: number[] = [400,500,600];
-  @Input() avgPerYear: number[];
-
   @Input() socialPerformancesAverages: number[] = [5,3,4]
   @Input() years: string[] = ['2019', '2020', '2021'];
 

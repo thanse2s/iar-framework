@@ -33,15 +33,15 @@ export class YearlyBonusChartComponent implements OnInit {
       enabled: true
     },
     title: {
-      text: "Yearly Bonus Income"
+      text: "Your Yearly Bonus Income"
     },
     subtitle: {
-      text: "Visualisation of your bonus income per year"
+      text: "Visualisation of your bonus income per year, with Averages"
     },
     yAxis: {
       allowDecimals: false,
       title: {
-        text: 'Yearly Bonus'
+        text: 'Bonus €'
       }
     },
     xAxis: {
